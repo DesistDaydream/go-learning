@@ -1,0 +1,218 @@
+package main
+
+import (
+	"bufio"
+	"compress/gzip"
+	"fmt"
+	"io"
+	"io/ioutil"
+	"log"
+	"os"
+	"reflect"
+)
+
+var srcFile string = "../testFile/test.txt"
+
+// var srcFile string = `F:\Documents\GitHub\Golang\testFile\test.txt`
+
+func main() {
+
+	fmt.Println("1.读取一个文件的内容并输出")
+	// ReadFile()
+	fmt.Println("\n2.逐行读取一个文件的内容并逐行输出的方法1")
+	// ReadFile2()
+	fmt.Println("\n3.行与列互换")
+	// ReadFile3()
+	fmt.Println("\n4.读取一个文件的内容并复制到一个新文件中")
+	// RWFile()
+	fmt.Println("\n5.读取压缩文件")
+	// ReadCompress()
+	fmt.Println("\n6.写文件")
+	// WriteFile()
+	fmt.Println("\n7.通过命令行参数把一个文件复制到另一个文件")
+	// CopyFile()
+	fmt.Println("\n8.逐行读取一个文件的内容并逐行输出的方法2")
+	ReadFile22()
+}
+
+func ReadFile() {
+	// 以下变量声明仅用来查看其类。因为下面的代码的变量在初始化的时候直接声明加赋值了，没法显式得看出变量的类型
+	// var fd *os.File
+	// var data []uint8	//uint8与byte类型一样
+
+	// 步骤概述：获取文件描述符(简写为FD)，通过FD读取文件放到变量中，然后从变量中输出文件中的内容。
+	// 第一步:使用os包中的Open()函数来打开指定文件,返回值为该文件的FD
+	fd, err := os.Open(srcFile)
+	fmt.Println("FD为：", fd, "\nOpen函数的第二个返回值为：", err)
+	// 下面几行不影响代码功能，可省略的代码，判断文件是否存在，如果不存在会提示
+	if err != nil {
+		log.Fatal(err)
+	}
+	// 第二步，初始化一个切片变量，使用Read方法，读取Read方法作用的fd变量里的内容，并赋值给括号内的data变量，返回值为指定变量的字节数
+	// Read函数详见https://golang.org/pkg/os/#File.Read
+	data := make([]byte, 168)
+	count, err := fd.Read(data)
+	if err != nil {
+		log.Fatal(err)
+	}
+	// 第三步，使用string函数把byte类型的数据转换成字符型，以便数据可以让人类看懂
+	fmt.Printf("比特计数为：%d\n文件内容为：\n%s", count, string(data))
+}
+
+func ReadFile2() {
+	// var inputFile *os.File
+	// var inputReader *bufio.Reader
+	// var inputString
+	inputFile, inputError := os.Open(srcFile)
+	if inputError != nil {
+		fmt.Printf("文件不存在或出现问题")
+		return // 出错时退出这个函数
+	}
+	defer inputFile.Close() // 确保正常可以在函数结束前关闭打开的文件
+
+	// 使用读取器函数NewReader()通过FD把文件内容缓存到一个变量中
+	// https://golang.org/pkg/bufio/#NewReader
+	inputReader := bufio.NewReader(inputFile)
+	// 第三步:使用bufio包中的Readstring方法作用在之前初始化的结构体变量上，输出换行符之前的内容，并用无限for循环逐行输出，直到最后一行
+	// https://golang.org/pkg/bufio/#Reader.ReadString
+	for {
+		inputString, readerError := inputReader.ReadString('\n')
+		if readerError == io.EOF {
+			return
+		}
+		fmt.Printf("The input was: %s", inputString)
+	}
+}
+
+// readFile3函数用于行与列互相转换
+// 列的数量必须相同，否则切片变量为空
+func ReadFile3() {
+	file, err := os.Open(srcFile)
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+
+	var col1, col2, col3 []string
+	for {
+		var v1, v2, v3 string
+		_, err := fmt.Fscanln(file, &v1, &v2, &v3)
+		// scans until newline
+		if err != nil {
+			break
+		}
+		col1 = append(col1, v1)
+		col2 = append(col2, v2)
+		col3 = append(col3, v3)
+	}
+
+	fmt.Println(col1)
+	fmt.Println(col2)
+	fmt.Println(col3)
+}
+
+func RWFile() {
+	inputFile := srcFile
+	outputFile := "../testFile/test_copy.txt"
+	buf, err := ioutil.ReadFile(inputFile)
+	// buf变量类型为[]uint8,也叫[]byte
+	fmt.Println(reflect.TypeOf(buf), "\n", buf, "\n")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "File Error: %s\n", err)
+		panic(err.Error())
+	}
+	fmt.Printf("%s\n", string(buf)) // 使用string()函数把buf变量的值转变成字符串让人类可读
+	// 使用WriteFile()函数把变buf变量中的内容复制到outputFile,若无文件则创建
+	ioutil.WriteFile(outputFile, buf, 0644) // oct, not hex
+}
+
+func ReadCompress() {
+	fName := "MyFile.gz"
+	var r *bufio.Reader
+	fi, err := os.Open(fName)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v, Can't open %s: error: %s\n", os.Args[0], fName,
+			err)
+		os.Exit(1)
+	}
+	fz, err := gzip.NewReader(fi)
+	if err != nil {
+		r = bufio.NewReader(fi)
+	} else {
+		r = bufio.NewReader(fz)
+	}
+
+	for {
+		line, err := r.ReadString('\n')
+		if err != nil {
+			fmt.Println("Done reading file")
+			os.Exit(0)
+		}
+		fmt.Println(line)
+	}
+}
+
+func WriteFile() {
+	// var outputWriter *bufio.Writer
+	// var outputFile *os.File
+	// var outputError os.Error
+	outputFile, outputError := os.OpenFile("../testFile/writeTest.txt", os.O_WRONLY|os.O_CREATE, 0666)
+	if outputError != nil {
+		fmt.Printf("An error occurred with file opening or creation\n")
+		return
+	}
+	defer outputFile.Close()
+	// 使用NewWriter函数创建一个写入器(与某文件关联的缓冲区)
+	outputWriter := bufio.NewWriter(outputFile)
+	// 使用for循环，通过写入器写入字符串到缓冲区，缓冲区的内容被完全写入关联的文件中
+	for i := 0; i < 10; i++ {
+		outputWriter.WriteString("hello world!\n")
+	}
+	outputWriter.Flush()
+}
+
+func CopyFile() {
+	dstName := "../testFile/target.txt"
+	// 使用Go自带的Args变量获取命令参数。在使用该程序时候，后面加上参数即可把参数赋值给变量srcName。
+	// os.Args变量
+	srcName := os.Args[1]
+	src, err := os.Open(srcName) //打开源文件并获取文件描述符
+	if err != nil {
+		fmt.Println("无法打开文件")
+		return
+	}
+	defer src.Close()
+
+	dst, err := os.OpenFile(dstName, os.O_WRONLY|os.O_CREATE, 0644) //打开目标文件并获取文件描述符，如果没有文件则创建，打开的文件`只写`
+	if err != nil {
+		fmt.Println("无法打开文件")
+		return
+	}
+	defer dst.Close()
+	// 通过文件描述符把源文件内容拷贝到目标文件
+	io.Copy(dst, src)
+}
+
+func ReadFile22() {
+	// var inputFile *os.File
+	// var inputReader *bufio.Reader
+	// var inputString
+	var slices []string
+	inputFile, inputError := os.Open(srcFile)
+	if inputError != nil {
+		fmt.Printf("文件不存在或出现问题")
+		return // 出错时退出这个函数
+	}
+	defer inputFile.Close() // 确保正常可以在函数结束前关闭打开的文件
+
+	// 使用读取器函数NewScanner()通过FD把文件内容缓存到一个变量中
+	scanner := bufio.NewScanner(inputFile)
+	// 第三步:使用bufio包中的Readstring方法作用在之前初始化的结构体变量上，输出换行符之前的内容，并用无限for循环逐行输出，直到最后一行
+	// https://golang.org/pkg/bufio/#Reader.ReadString
+	for scanner.Scan() {
+		fmt.Printf("The input was: %s\n", scanner.Text())
+		// 还可以通过append函数将每一行内容赋值给一个切片，以便后续使用		
+		slices = append(slices, scanner.Text())
+		fmt.Println(slices)
+	}
+}
