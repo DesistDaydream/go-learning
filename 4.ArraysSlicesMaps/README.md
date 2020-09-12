@@ -38,7 +38,7 @@
 格式：`var SliceID []TYPE = make([]TYPE, LEN, CAP)`也可以简写为`SliceD ：= make([]TYPE, LEN, CAP)`（其中CAP是可省的，默认与LEN相同）。`MapID`为切片名；`TYPE`为该切片的数据类型；`LEN`为该切片的长度；`CAP`为该切片的总容量。CAP可以理解为切片所引用的数组的长度，切片的长度不能超过容量i.e.不能超过所引用的数组的长度。make()函数接受2个参数：元素的类型、切片的个数。  
    1. e.g.`s2 := make([]int, 10)`。定义了一个名为s2，长度与容量都为10的整型切片  
       1. 这个例子可以拆解为两句，首先会声明一个数组`var XX [10]int`，然后使用该数组初始化一个切片`var s2 []int = XX[:]`  
-Note:使用make，而不是直接使用var persons []Person的声明方式。还是有所差别的，使用make的方式，当数组切片没有元素的时候，Json会返回[]。如果直接声明，json会返回null  
+Note:使用make，而不是直接使用`var persons []Person`的声明方式。还是有所差别的，使用make的方式，当数组切片没有元素的时候，Json会返回[]。如果直接声明，json会返回null  
 4. for-range结构  
 使用该结构可以对数组或切片中的索引和元素的值进行相关操作，该结构可以返回索引与元素的值  
 格式：`for INDEX,VAL := range SliceID {...}`。返回值INDEX为数组或切片的索引；返回值VAL为该索引位置的值；MapID为该数组或切片的名字  

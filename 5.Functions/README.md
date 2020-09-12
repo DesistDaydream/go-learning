@@ -82,7 +82,7 @@ Greeting("hello:", "Joe", "Anna", "Eileen")
 当一个函数在其函数体内调用自身，则称之为**递归**。最经典的例子是计算斐波那契数列，即前两个数为1，从第三个数开始每个数均为前两个数之和。  
 
 ### 6.Other
-展示一个计算过程所消耗的时间：使用time包中的Now()和Sub函数，在计算开始之前设置一个起始时间，再由计算结束时的结束时间与起始时间相减，即为执行计算的消耗时间。代码示例[fibonnaci.go](/5.Functions/fibonnaci.go)
+展示一个计算过程所消耗的时间：使用time包中的`Now()`和`Sub()`函数，在计算开始之前设置一个起始时间，再由计算结束时的结束时间与起始时间相减，即为执行计算的消耗时间。代码示例[fibonnaci.go](/5.Functions/fibonnaci.go)
 **make()与new()**
 **make**
 make用于内建类型(map、slice、channel)的内存分配  
