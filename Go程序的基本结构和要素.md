@@ -6,30 +6,30 @@
 Go语言非常简单，只有25个`关键字(Keywords)`可以使用，记住这25个关键字，就掌握了最基本的Go语言用法。这些关键字是 go 语言保留的，不能用作标识符
 `关键字`在编程语言中是指该语言的一个功能，比如下文面的 var，就是指声明一个变量，func 就是定义一个函数等等。  
 `Note: if-else 算两个关键字所以在这里一共只写了24个。`
-1. [break]控制结构  
-2. [case]控制结构  
-3. [chan](/10.GoroutinesAndChannels/channel.go)用于channel通讯  
-4. [const]语言基础里面的常量申明  
-5. [continue]控制结构  
-6. [default]控制结构  
-7. [defer](/5.Functions/defer.go)用于在函数退出之前执行某语句的功能  
-8. [fallthrough]控制结构  
-9. [for]控制结构  
-10. [func](/5.Functions/README.md)用于定义函数和方法  
-11. [go](/10.GoroutinesAndChannels/goroutine.go)用于并发  
-12. [goto]控制结构  
-13. [if-else](/3.ControlStructures/if-else.go)控制结构  
-14. [import]用于定义该文件引用某个包  
-15. [interface](/7.Structs-Interfaces/interface.go)用于定义接口  
-16. [map](/4.ArraysSlicesMaps/maps.go)用于声明map类型数据  
-17. [package]用于定义该文件所属的包  
-18. [range]用于读取slice、map、channel数据  
-19. [return](/5.Functions/return.go)用于从函数返回  
-20. [select]用于选择不同类型的通讯  
+1. [break] 控制结构  
+2. [case] 控制结构  
+3. [chan](/10.GoroutinesAndChannels/channel.go) 用于channel通讯  
+4. [const] 语言基础里面的常量申明  
+5. [continue] 控制结构  
+6. [default] 控制结构  
+7. [defer](/5.Functions/defer.go) 用于在函数退出之前执行某语句的功能  
+8. [fallthrough] 控制结构  
+9. [for] 控制结构  
+10. [func](/5.Functions/README.md) 用于定义函数和方法  
+11. [go](/10.GoroutinesAndChannels/goroutine.go) 用于并发  
+12. [goto] 控制结构  
+13. [if-else](/3.ControlStructures/if-else.go) 控制结构  
+14. [import] 用于定义该文件引用某个包  
+15. [interface](/7.Structs-Interfaces/interface.go) 用于定义接口  
+16. [map](/4.ArraysSlicesMaps/maps.go) 用于声明map类型数据  
+17. [package] 用于定义该文件所属的包  
+18. [range] 用于读取slice、map、channel数据  
+19. [return](/5.Functions/return.go) 用于从函数返回  
+20. [select] 用于选择不同类型的通讯  
 21. [struct](/7.Structs-Interfaces/struct.go) 用于定义抽象数据类型  
-22. [switch]控制结构  
-23. [type]用于声明自定义类型  
-24. [var]语言基础里面的变量申明   
+22. [switch] 控制结构  
+23. [type] 用于声明自定义类型  
+24. [var] 语言基础里面的变量申明   
 
 # Go程序的基本结构和要素
 代码示例：[hello_world.go](/hello_world.go)  
