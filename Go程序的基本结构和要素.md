@@ -1,8 +1,11 @@
-# Go语言关键字  
+# Go 编程语言规范  
+[官方文档](https://golang.org/ref/spec)  
 
-Go语言非常简单，只有25个**关键字**可以使用，记住这25个关键字，就掌握了最基本的Go语言用法。
-`关键字`在编程语言中是指该语言的一个功能，比如下文面的var，就是指声明一个变量，func就是定义一个函数等等。  
-`note:if-else算两个关键字`
+# Go 编程语言关键字(Keywords)  
+[官方文档](https://golang.org/ref/spec#Keywords)  
+Go语言非常简单，只有25个`关键字(Keywords)`可以使用，记住这25个关键字，就掌握了最基本的Go语言用法。这些关键字是 go 语言保留的，不能用作标识符
+`关键字`在编程语言中是指该语言的一个功能，比如下文面的 var，就是指声明一个变量，func 就是定义一个函数等等。  
+`Note: if-else 算两个关键字所以在这里一共只写了24个。`
 1. [break]控制结构  
 2. [case]控制结构  
 3. [chan](/10.GoroutinesAndChannels/channel.go)用于channel通讯  
