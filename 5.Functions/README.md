@@ -15,21 +15,27 @@ Golang有3中类型的函数：
 
 ## 定义函数  
 ```
-func FunctionName(Parameter) (returnValue) {
+func FunctionName([Parameter]) [(returnValue)] {
 	代码块
 }
 ```
    1. 其中`()`里的Parameter以及returnValue可以省略，但是至少要包含一个`()`，哪怕这个小括号内没有任何内容。i.e.一个函数可以没有参数，与返回值，仅仅执行本身所提供的功能
    2. `Parameter`形式参数。这是一个参数列表，包括参数名以及参数类型。参数一般情况是变量、或者另一个函数(这个函数也可以当做变量来使用，是函数类型的变量，在调用时，可以通过实参改变该函数)。  
    3. `returnValue`返回值。同样包括参数名以及参数类型，参数一般是变量。可以直接定义变量名与类型，也可以省略变量名直接指明返回值的类型  
+   4. 其中 Parameter 与 returnValue 都是可省的，最简化的定义格式为 `function Name(){}`  
 
 ## 调用函数i.e.使用函数  
 格式为：  
-`Pack.Function(ARG1, ARG2, ..., ARGn)`  
+`[Pack.]Function([ARG1, ARG2, ..., ARGn])`  
+其中 Pack 与 ARG 都是可省的，若在同一个包中，则 Pack 可省，若不用传递参数，则 ARG 可省。  
 包名.函数名(实际参数)。`Function`是`Pack`包里的一个函数，括号里的是被调用函数的实参，这些实参的值被传递给被调用函数的形参，参数的传递是一一对应的，第一位传递给第一位，第二位传递给第二位，以此类推。在引用的时候参数可省略为空，但是括号必须要有  
    1. 实参：actual parameter实际参数,一般用arguments表示，在调用函数时使用实参  
    2. 形参：formal parameter形式参数，一般用parameter表示，在定义函数时使用形参    
-注意：在使用函数返回值对变量进行赋值的时候，可以使用`_`下划线，来把函数的某一个返回值丢弃。详见[return.go](/5.Functions/return.go)中下划线的使用方法  
+注意：
+```
+在使用函数返回值对变量进行赋值的时候，可以使用`_`下划线，来把函数的某一个返回值丢弃。详见[return.go](/5.Functions/return.go)中下划线的使用方法  
+如果在同一个包下的多个文件之间互相调用函数，在执行 go run XXX.go 命令时，需要指定所有文件，即 go run *.go 只有这样在引用其他文件中的函数时，才可以成功。  
+```
 
 ### 回调函数
 函数可以作为其他函数的参数进行传递，然后在其它函数内调用执行，一般称之为**回调**。e.g.[function_parameter.go](/5.Functions/function_parameter.go)
