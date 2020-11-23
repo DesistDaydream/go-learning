@@ -1,15 +1,20 @@
 # Structs and Interfaces结构体和接口
-1. [Structs结构体](#1.Structs结构体)  
-2. [Methods方法](#Methods方法) 
+1. [Structs 结构体](#1.Structs结构体)  
+2. [Methods 方法](#Methods方法) 
    1. [方法与结构体的关系](#方法与结构体的关系) 
-3. [Interfaces接口](#Interfaces接口)  
-4. [Reflection反射](#Reflection反射)
+3. [Interfaces 接口](#Interfaces接口)  
+4. [Reflection 反射](#Reflection反射)
 
-## 1.Structs结构体  
-是一种复合数据类型，当需要[自定义一个Type](/1.Type/README.md)，且这个Type由一系列的属性组成，每个属性都有自己的类型和值得时候，就需要使用Structs，Structs把数据聚集在一起，然后访问这些数据的时候，好像这些数据是一个独立实体的一部分。Structs也是值类型，可以通过new()函数创建。
-组成结构体的属性分两部分，FIELD(字段)和BaseType，每个字段都有其对应的基础数据类型，在一个结构体中，FIELD名字必须是唯一的。代码示例：[struct.go](7.Structs-Interfaces/struct.go)
+## Structs 结构体  
+
+组成结构体的属性分两部分
+* FIELD(字段)
+* BaseType(基础类型)
+> 基础类型可以是另一个结构体,表示该结构体包含另一个结构体
+
+每个字段都有其对应的基础数据类型，在一个结构体中，FIELD名字必须是唯一的。代码示例：[struct.go](7.Structs-Interfaces/struct.go)
 结构体的定义格式：
-```
+```go
 type StructID struct {
 	FIELD1 BaseType1 ["TAG"]
 	FIELD2 BaseType2 [`TAG`]
@@ -18,7 +23,7 @@ type StructID struct {
 ```
 也可以使用简单的方法定义：`type T struct {a, b int}`
 
-结构体的初始化格式：`VarID ：= new(PackageID.StructID)`。若初始化的结构体为当前包的，则可以省略PackageID
+结构体的初始化格式：`VarID ：= new(PackageID.StructID)`。若初始化的结构体为当前包的，则可以省略 PackageID
 
 结构体中字段的引用格式：`StrcutID.FIELD1`。结构体名，中间跟一个点，再接该结构体内的字段名。
 在Go语言中，这个`.`点符号叫做**选择器(selector)**。无论定义的变量是一个结构体类型还是一个结构体类型指针，都是用同样的**选择器符(selector-notation)**来引用结构体的字段。
@@ -27,7 +32,7 @@ TAG
 除了 FIeld 和 BaseType 之外，还可以给该属性添加 TAG(标签)，TAG使用`双引号`或者`重音号`来表示。这些TAG能被用来做文档或者重要的标签。  
 TAG里面的内容在正常编程中没有作用。一般在反射、某些第三方库(比如gin的数据绑定功能)、等等地方可以起到关键的作用。
 
-## Methods方法
+## Methods 方法
 方法是一种特殊类型的**函数**。是**作用在`接收者(receiver)`上的一个函数**，`接收者`是某种类型的**变量**。接收者的类型不能是一个接口类型；也不能是一个指针类型，但是可以使任何其他允许类型的指针。代码示例[methods](/7.Structs-Interfaces/method.go)  
 
 定义格式：`func (RecvID RecvType) MethodID(ParameterList) (ReturnValueList) {...}`。RecvID就是receiver的标识符，即：Recv类型的**变量**。如果Method不需要Recv的值，可以用`_`代替RecvID。定义方法就是用类型来定义其方法  
@@ -39,12 +44,12 @@ TAG里面的内容在正常编程中没有作用。一般在反射、某些第�
 
 用白话说：其实一个结构体就是一个对象，这个对象有很多很多的属性，想要根据这个对象的属性来得出某些结果，就可以将这个对象作用在某个方法上，这个方法就可以根据这个对象的某些属性进行计算来得出结果。再举一个例子，有一个人有多种属性(身高，体重，性别，腰围)；根据这些属性，可以创建一个计算体型的方法，这个方法根据这些属性中的1个或者多个计算出结果是偏瘦、偏胖还是适中。
 
-## Interfaces接口  
+## Interfaces 接口  
 接口是一组仅包含方法名、参数、返回值的未具体实现的方法的集合。接口也是类型的一种。当一个类型定义了接口中所有的方法，就称这个类型实现了该接口。接口指定了一个类型应该具有的方法，并由该类型决定如何实现这些方法。接口里不能包含变量。代码示例：[interface.go](/7.Structs-Interfaces/interface.go)（接口也可以算自定义类型的一种，使用关键字type与interface，所以可以对接口赋值，并且接口可以动态改变其自身的类型，只要某个类型实现了该接口，该接口的类型在使用这个类型的时候，就会变成这个类型，这称为接口的[**多态性**](#接口的多态性)）
 使用接口的好处：详见代码[interface1.go](/7.Structs-Interfaces/interface1.go)中相关好处的说明  
 例如：`WashingMachine`是一个含有`Cleaning()`和`Drying()`两个方法的接口。任何定义了`Cleaning()`和`Drying()`方法的类型，都称该类型实现了`WashingMachine`接口。
 接口定义格式：
-```
+```go
 type InterfaceID interface {
 	Method1(ParameterList) ReturnType
 	Method2(ParameterList) ReturnType
@@ -66,7 +71,7 @@ type InterfaceID interface {
 **接口嵌套接口**  
 一个接口可以包含一个或多个其他的接口，这相当于直接将这些内嵌接口的方法列举在外层接口中一样。  
 比如下面的例子接口`File`包含了`ReadWrite`和`Lock`的所有方法，它还额外有一个`Close()`方法。
-```
+```go
 type ReadWrite interface {
     Read(b Buffer) bool
     Write(b Buffer) bool
@@ -97,7 +102,7 @@ type File interface {
 一个接口类型的变量`InterfaceVar`中可以包含任何类型的值，必须有一种方式来检测它的动态类型i.e.运行时在接口变量中存储的值的实际类型。在执行过程中动态类型可能会有所不同，但是它总是可以分配给接口变量本身的类型。通常我们可以使用`TypeAssertion类型断言`来测试在当前执行该语句的时候`InterfaceVar`所定义的接口是否是`Type`这个类型  
 使用格式：`v := InterfaceVar.(Type)`  
 类型断言可能是无效的，虽然编译器会尽力检查转换是否有效，但是它不可能预见所有的可能性。如果转换在程序运行时失败会导致错误发生。更安全的方式是使用以下形式来进行类型断言：  
-```
+```go
 if v, ok := InterfaceVar.(Type); ok {  // checked type assertion
     Process(v)
     return
@@ -105,7 +110,7 @@ if v, ok := InterfaceVar.(Type); ok {  // checked type assertion
 ```
 如果转换合法`v`是`InterfaceVar`转换到类型`Type`的值，`ok`会是`true`；否则`v`是类型`Type`的零值,`ok`是`false`，也没有运行时错误发生。  
 
-## reflection反射  
+## reflection 反射  
 反射是用程序检查其所拥有的结构，尤其是类型的一种能力。可以通过反射来分析一个结构体。反射可以在运行时检查类型和变量，例如它的大小、方法和动态的调用这些方法。  
 `reflect.TypeOf()`和`reflect.ValueOf()`两个函数返回被检查对象的类型和值。e.g.`var x float64 = 3.4`,那么reflect.TypeOf(x)返回float64，reflect.ValueOf(x)返回 
 
