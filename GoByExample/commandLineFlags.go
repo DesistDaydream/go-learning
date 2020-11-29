@@ -18,23 +18,24 @@ func main() {
 	flag.StringVar(&svar, "svar", "bar", "a string var")
 	// 所有flag声明完成以后，调用`flag.Parse()`来解析命令行，否则命令行标志不起作用，只能自己使用默认值
 	flag.Parse()
-	
+
 	// 我们将仅输出解析的选项以及后面的位置参数
 	fmt.Println("word:", *wordPtr)
 	fmt.Println("numb:", *numPtr)
 	fmt.Println("fork:", *boolPtr)
 	fmt.Println("svar:", svar)
-	fmt.Println("tail:", flag.Args())	
+	fmt.Println("tail:", flag.Args())
 }
 
 /*
 可以使用如下方式测试该程序的运行结果
-使用-h或者--help标志来得到这个程序的帮助文本
+使用 -h 或者 --help 标志来得到这个程序的帮助文本
 1. ./commandLineFlags -h
+注意：单横线 - 也可以用双横线 --
 2. ./commandLineFlags -word opt
-3. ./commandLineFlags -word=opt a1 a2 a3
-4. ./commandLineFlags -word=opt a1 a2 a3 -numb=7
+3. ./commandLineFlags --word opt a1
+4. ./commandLineFlags -word=opt a1 a2 a3
+5. ./commandLineFlags -word=opt a1 a2 a3 -numb=7
 如果提供一个没有定义的flag，程序会输出一个错误信息，并再次显示帮助文本
-5. ./commandLineFlags -wat
+6. ./commandLineFlags -wat
 */
-
