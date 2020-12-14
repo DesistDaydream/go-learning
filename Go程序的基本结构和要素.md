@@ -24,7 +24,7 @@ Go语言非常简单，只有25个`关键字(Keywords)`可以使用，记住这2
 16. [map](/4.ArraysSlicesMaps/maps.go) 用于声明map类型数据  
 17. [package] 用于定义该文件所属的包  
 18. [range] 用于读取slice、map、channel数据  
-19. [return](/5.Functions/return.go) 用于从函数返回  
+19. [return](/5.Functions/return.go) 用于从函数返回。有时候也用来直接跳出当前函数，回到主程序继续执行  
 20. [select] 用于选择不同类型的通讯  
 21. [struct](/7.Structs-Interfaces/struct.go) 用于定义抽象数据类型  
 22. [switch] 控制结构  
