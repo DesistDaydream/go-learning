@@ -13,7 +13,7 @@
 * BaseType(基础类型)
 > 基础类型可以是另一个结构体,表示该结构体包含另一个结构体
 
-每个字段都有其对应的基础数据类型，在一个结构体中，FIELD名字必须是唯一的。代码示例：[struct.go](7.Structs-Interfaces/struct.go)
+每个字段都有其对应的基础数据类型，在一个结构体中，FIELD名字必须是唯一的。代码示例：[struct.go](/7.Structs_Interfaces/struct/struct.go)
 结构体的定义格式：
 ```go
 type StructID struct {
@@ -34,7 +34,7 @@ TAG
 TAG里面的内容在正常编程中没有作用。一般在反射、某些第三方库(比如gin的数据绑定功能)、等等地方可以起到关键的作用。
 
 ## Methods 方法
-方法是一种特殊类型的**函数**。是**作用在`接收者(receiver)`上的一个函数**，`接收者`是某种类型的**变量**。接收者的类型不能是一个接口类型；也不能是一个指针类型，但是可以使任何其他允许类型的指针。代码示例[methods](/7.Structs-Interfaces/method.go)  
+方法是一种特殊类型的**函数**。是**作用在`接收者(receiver)`上的一个函数**，`接收者`是某种类型的**变量**。接收者的类型不能是一个接口类型；也不能是一个指针类型，但是可以使任何其他允许类型的指针。代码示例[methods](/7.Structs_Interfaces/method/method.go)  
 
 定义格式：`func (RecvID RecvType) MethodID(ParameterList) (ReturnValueList) {...}`。RecvID就是receiver的标识符，即：Recv类型的**变量**。如果Method不需要Recv的值，可以用`_`代替RecvID。定义方法就是用类型来定义其方法  
 
@@ -46,8 +46,8 @@ TAG里面的内容在正常编程中没有作用。一般在反射、某些第�
 用白话说：其实一个结构体就是一个对象，这个对象有很多很多的属性，想要根据这个对象的属性来得出某些结果，就可以将这个对象作用在某个方法上，这个方法就可以根据这个对象的某些属性进行计算来得出结果。再举一个例子，有一个人有多种属性(身高，体重，性别，腰围)；根据这些属性，可以创建一个计算体型的方法，这个方法根据这些属性中的1个或者多个计算出结果是偏瘦、偏胖还是适中。
 
 ## Interfaces 接口  
-接口是一组仅包含方法名、参数、返回值的未具体实现的方法的集合。接口也是类型的一种。当一个类型定义了接口中所有的方法，就称这个类型实现了该接口。接口指定了一个类型应该具有的方法，并由该类型决定如何实现这些方法。接口里不能包含变量。代码示例：[interface.go](/7.Structs-Interfaces/interface.go)（接口也可以算自定义类型的一种，使用关键字type与interface，所以可以对接口赋值，并且接口可以动态改变其自身的类型，只要某个类型实现了该接口，该接口的类型在使用这个类型的时候，就会变成这个类型，这称为接口的[**多态性**](#接口的多态性)）
-使用接口的好处：详见代码[interface1.go](/7.Structs-Interfaces/interface1.go)中相关好处的说明  
+接口是一组仅包含方法名、参数、返回值的未具体实现的方法的集合。接口也是类型的一种。当一个类型定义了接口中所有的方法，就称这个类型实现了该接口。接口指定了一个类型应该具有的方法，并由该类型决定如何实现这些方法。接口里不能包含变量。代码示例：[interface.go](/7.Structs_Interfaces/interface/interface.go)（接口也可以算自定义类型的一种，使用关键字type与interface，所以可以对接口赋值，并且接口可以动态改变其自身的类型，只要某个类型实现了该接口，该接口的类型在使用这个类型的时候，就会变成这个类型，这称为接口的[**多态性**](#接口的多态性)）
+使用接口的好处：详见代码[interface1.go](/7.Structs_Interfaces/interface1.go)中相关好处的说明  
 例如：`WashingMachine`是一个含有`Cleaning()`和`Drying()`两个方法的接口。任何定义了`Cleaning()`和`Drying()`方法的类型，都称该类型实现了`WashingMachine`接口。
 接口定义格式：
 ```go
@@ -96,8 +96,8 @@ type File interface {
 可以给一个空接口类型的变量赋任何类型的值
 
 ### 接口的多态性
-代码示例1：[interface1.go](/7.Structs-Interfaces/interface.go)其中接口变量的类型可以动态得随着不通的值而变化为对应的类型
-代码示例2：[interface1.go](/7.Structs-Interfaces/interface1.go)其中接口变量切片中的元素可以是任意类型；不像普通的切片，所有元素都是同一个类型
+代码示例1：[interface1.go](/7.Structs_Interfaces/interface.go)其中接口变量的类型可以动态得随着不通的值而变化为对应的类型
+代码示例2：[interface1.go](/7.Structs_Interfaces/interface1.go)其中接口变量切片中的元素可以是任意类型；不像普通的切片，所有元素都是同一个类型
 
 **检测和转换接口变量的类型**  
 一个接口类型的变量`InterfaceVar`中可以包含任何类型的值，必须有一种方式来检测它的动态类型i.e.运行时在接口变量中存储的值的实际类型。在执行过程中动态类型可能会有所不同，但是它总是可以分配给接口变量本身的类型。通常我们可以使用`TypeAssertion类型断言`来测试在当前执行该语句的时候`InterfaceVar`所定义的接口是否是`Type`这个类型  

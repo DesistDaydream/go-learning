@@ -5,30 +5,30 @@ import (
 	"reflect"
 )
 
-// 薪酬计算器接口，包含一个计算薪酬的方法
+// SalaryCalculator 薪酬计算器接口，包含一个计算薪酬的方法
 type SalaryCalculator interface {
 	CalculateSalary() int
 }
 
-// 永久员工类型，属性有ID和基本工资与附加工资
+// Permanent 永久员工类型，属性有ID和基本工资与附加工资
 type Permanent struct {
 	empId    int
 	basicpay int
 	pf       int
 }
 
-// 临时工类型，属性有ID和基本工资
+// Contract 临时工类型，属性有ID和基本工资
 type Contract struct {
 	empId    int
 	basicpay int
 }
 
-//永久员工的工资是基本工资和附加工资的综合
+// CalculateSalary 永久员工的工资是基本工资和附加工资的综合
 func (p Permanent) CalculateSalary() int {
 	return p.basicpay + p.pf
 }
 
-//临时员工的工资只有基本工资
+// CalculateSalary 临时员工的工资只有基本工资
 func (c Contract) CalculateSalary() int {
 	return c.basicpay
 }
@@ -39,13 +39,14 @@ func totalExpense(s []SalaryCalculator) {
 	// 通过接口的切片s来获取其内每个元素的值v，根据其所对应的结构体类型，来引用相应的方法。
 	// 虽然变量v的类型会变成不同的结构体类型，但是本质上，变量v依然是接口
 	for index, v := range s {
-		fmt.Printf("当前循环:%v，接口的类型转变为:%v\n",index,reflect.TypeOf(v))
+		fmt.Printf("当前循环:%v，接口的类型转变为:%v\n", index, reflect.TypeOf(v))
 		expense = expense + v.CalculateSalary()
 	}
 	fmt.Printf("Total Expense Per Month $%d", expense)
 }
 
-func main() {
+// Salary 计算工资薪酬
+func Salary() {
 	pemp1 := Permanent{empId: 1, basicpay: 5000, pf: 20}
 	pemp2 := Permanent{empId: 2, basicpay: 6000, pf: 30}
 	cemp1 := Contract{empId: 3, basicpay: 3000}

@@ -1,3 +1,3 @@
-module github.com/DesistDaydream/GoProgrammingLanguageLearn
+module github.com/DesistDaydream/GoLearning
 
-go 1.13
+go 1.15
