@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-func main() {
+func forControl() {
 	// 最基本的类型，具有单一条件的循环体
 	// 如果i小于等于3，则执行循环体
 	i := 1

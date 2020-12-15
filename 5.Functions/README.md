@@ -126,6 +126,29 @@ s.METHOD2
 ....等等
 ```
 
+再比如在 [kubernetes](https://github.com/kubernetes/kubernetes) 项目中，也可以在很多地方看到这类**设计思想**
+这里用 kubelet 的[一段代码](https://github.com/kubernetes/kubernetes/blob/2b23e71f6c88a08b9ab43523a86e34c4ba0601ae/pkg/kubemark/hollow_kubelet.go#L65)举例：
+```go
+type HollowKubelet struct {
+   KubeletFlags         *options.KubeletFlags
+   KubeletConfiguration *kubeletconfig.KubeletConfiguration
+   KubeletDeps          *kubelet.Dependencies
+}
+
+func NewHollowKubelet(
+   flags *options.KubeletFlags,
+ .....
+
+   return &HollowKubelet{
+      KubeletFlags:         flags,
+      KubeletConfiguration: config,
+      KubeletDeps:          d,
+   }
+}
+```
+这里用 NewHollowKubelet() 函数实例化了一个 HollowKubelet 结构体。后续想要使用时，调用 New 函数，生成一个实例(指针变量)，然后调用作用在这个结构体上的方法即可。
+
+
 **总结：**  
 `new`负责分配内存，`new(T)`返回`*T`指向一个零值`T`的指针  
 make 负责初始化值，make(T) 返回初始化后的 T ，而非指针  

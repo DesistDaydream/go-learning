@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 )
+
 // 这是基本的接口
 type geometry interface {
 	area() float64
@@ -27,6 +28,7 @@ func (r rect) area() float64 {
 func (r rect) perim() float64 {
 	return 2*r.width + 2*r.height
 }
+
 // 这是在`circle`类型上实现了接口
 func (c circle) area() float64 {
 	return math.Pi * c.radius * c.radius
@@ -43,7 +45,7 @@ func measure(g geometry) {
 	fmt.Println(g.perim())
 }
 
-func main() {
+func interfaceType() {
 	r := rect{width: 3, height: 4}
 	c := circle{radius: 5}
 	// 结构体类型`circle`和`rect`都实现了`geometry`接口

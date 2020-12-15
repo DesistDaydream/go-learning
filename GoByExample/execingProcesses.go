@@ -3,12 +3,12 @@
 package main
 
 import (
-	"syscall"
 	"os"
 	"os/exec"
+	"syscall"
 )
 
-func main() {
+func execingProcesses() {
 	// 取得将要执行的程序的绝对路径
 	binary, lookErr := exec.LookPath("ls")
 	if lookErr != nil {

@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-func main() {
+func ifElse() {
 	// 基本的if-else循环结构例子
 	if 7%2 == 0 {
 		fmt.Println("7 is even")

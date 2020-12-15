@@ -5,17 +5,17 @@ import (
 	"fmt"
 )
 
-func f(from string) {
+func fa(from string) {
 	for i := 0; i < 3; i++ {
 		fmt.Println(from, ":", i)
 	}
 }
 
-func main() {
+func goroutines() {
 	// 一般情况下，正常调用函数。同步地(synchronously)运行
-	f("direct")
+	fa("direct")
 	// 在一个Go协程中调用这个函数。这个新的Go协程将会并发(concurrently)执行这个函数
-	go f("goroutine")
+	go fa("goroutine")
 	// 也可以为匿名函数启动一个Go协程
 	go func(msg string) {
 		fmt.Println(msg)

@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-func main() {
+func exitHandling() {
 	defer fmt.Println("!")
 	// 当使用os.Exit时，defer将不会执行
 	os.Exit(3)

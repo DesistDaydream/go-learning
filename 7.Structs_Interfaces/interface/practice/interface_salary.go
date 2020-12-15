@@ -12,14 +12,14 @@ type SalaryCalculator interface {
 
 // Permanent 永久员工类型，属性有ID和基本工资与附加工资
 type Permanent struct {
-	empId    int
+	empID    int
 	basicpay int
 	pf       int
 }
 
 // Contract 临时工类型，属性有ID和基本工资
 type Contract struct {
-	empId    int
+	empID    int
 	basicpay int
 }
 
@@ -47,9 +47,9 @@ func totalExpense(s []SalaryCalculator) {
 
 // Salary 计算工资薪酬
 func Salary() {
-	pemp1 := Permanent{empId: 1, basicpay: 5000, pf: 20}
-	pemp2 := Permanent{empId: 2, basicpay: 6000, pf: 30}
-	cemp1 := Contract{empId: 3, basicpay: 3000}
+	pemp1 := Permanent{empID: 1, basicpay: 5000, pf: 20}
+	pemp2 := Permanent{empID: 2, basicpay: 6000, pf: 30}
+	cemp1 := Contract{empID: 3, basicpay: 3000}
 	// 接口是动态类型,本身的类型为nil，由于切片中的元素类型必须一样，所以接口切片中的元素也是接口并且类型为nil
 	// 但是元素的类型会随着该元素的值的类型而变化，因为接口是动态类型，类型是可变的
 	// 所以接口切片的底层切片类型依然是接口，但是表现出来的是已经改变过的类型

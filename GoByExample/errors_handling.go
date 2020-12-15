@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 )
+
 // 错误通常是最后一个返回值，并且是`error`类型，一个内建的接口
 func f1(arg int) (int, error) {
 	if arg == 42 {
@@ -14,6 +15,7 @@ func f1(arg int) (int, error) {
 	// 返回的错误值为`nil`，则表示没有错误
 	return arg + 3, nil
 }
+
 // 通过实现`Error`方法来自定义`error`类型，这里使用自定义错误类型来表示
 type argError struct {
 	arg  int
@@ -31,7 +33,7 @@ func f2(arg int) (int, error) {
 	return arg + 3, nil
 }
 
-func main() {
+func errorHandling() {
 	// 循环测试各个返回错误的函数
 	for _, i := range []int{7, 42} {
 		if r, e := f1(i); e != nil {
