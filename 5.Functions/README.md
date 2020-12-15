@@ -94,10 +94,32 @@ Greeting("hello:", "Joe", "Anna", "Eileen")
 make用于内建类型(map、slice、channel)的内存分配  
 `make(T,args)`与`new(T)`有着不同的功能，make只能创建slice,map,channel，并且返回一个有初始值(非零)的T类型，而不是`*T`  
 **new**
-`new`用于各种类型的内存分配new返回指针  
-new(T)分配了零值填充的T类型的内存空间，并且返回其地址，即一个`*T`类型的值(GO语言的术语：返回了一个指针，指向新分配的类型T的零值)
+`new`用于为各种类型分配内存。 第一个参数是类型，而不是值，返回的值是指向该类型新分配的零值的指针。
 
-new() 是 go 语言中很重要的一种设计思想
+new(T)分配了零值填充的 `T类型` 的内存空间，并且返回其地址，即一个 `*T` 类型的值(GO语言的术语：返回了一个指针，指向新分配的类型T的零值)
+
+new() 是 go 语言中很重要的一种 **设计思想**,在原生基础包里，仅仅返回一个类型的指针。而在实际项目中，人们常常将 new() 思想与 struct 相结合。比如下面这个例子：
+```go
+// 声明一个结构体
+type MemorySession struct {
+	sessionID string
+	data      map[string]interface{}
+	rwlock    sync.RWMutex
+}
+
+// NewMemorySession 返回一个储存 Session 的内存引擎
+func NewMemorySession(id string) *MemorySession {
+	s := &MemorySession{}
+	return s
+}
+```
+这个例子中，就使用了 new() 的思想，通过一个方法，来生成一个结构体的指针，这个指针通常称为该结构体的 **instance(实例)**。这样，后续要操作这个结构体属性的值，调用这些实例即可
+```go
+s := NeNewMemorySession("DD")
+s.METHOD1
+s.METHOD2
+....等等
+```
 
 **总结：**  
 `new`负责分配内存，`new(T)`返回`*T`指向一个零值`T`的指针  
