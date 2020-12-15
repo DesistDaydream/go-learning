@@ -10,7 +10,7 @@ func hello(done chan bool) {
 	// 如果下面一行代码，编译会报错，因为信道没有接收到任何数据，后续代码被阻塞不会执行
 	done <- true
 }
-func main() {
+func channel() {
 	// 创建了一个bool类型的信道，名为done的变量
 	done := make(chan bool)
 	// 把done作为参数传递给hello协程，使得hello()函数可以在函数体内部使用done通道

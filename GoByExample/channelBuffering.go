@@ -9,7 +9,7 @@ import (
 	"fmt"
 )
 
-func main() {
+func channelBuffering() {
 	// 使用make创建一个通道，最多允许缓存两个值
 	messages := make(chan string, 2)
 	// 因为这个通道有缓冲区，即使没有一个对应的并发接收方，仍然可以发送这些值

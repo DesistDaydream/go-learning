@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-func main() {
+func arrays() {
 	// 创建数组`a`，存放5个int类型的数据。元素的类型和氚度都是数组类型的一部分
 	// 数组默认是`零`值，对于int类型数组来说，默认为`0`
 	var a [5]int

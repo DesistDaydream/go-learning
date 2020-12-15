@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func main() {
+func channelSelect() {
 	// 后续代码会从这两个通道中选择
 	c1 := make(chan string)
 	c2 := make(chan string)

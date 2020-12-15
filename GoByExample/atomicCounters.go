@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func main() {
+func atomicCounters() {
 	// 使用一个无符号整数来表示这个计数器
 	var ops uint64 = 0
 	// 启动50个Go协程，对计数器每隔1ms进行一次加一操作

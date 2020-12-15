@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-func main() {
+func channelClosing() {
 	// jobs通道来传递Go协程任务执行的结束信息
 	jobs := make(chan int, 5)
 	done := make(chan bool)

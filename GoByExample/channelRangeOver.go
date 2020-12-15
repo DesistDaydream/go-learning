@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-func main() {
+func channelRangeOver() {
 	queue := make(chan string, 2)
 	queue <- "one"
 	queue <- "two"

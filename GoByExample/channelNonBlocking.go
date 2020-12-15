@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-func main() {
+func channelNonBlocking() {
 	messages := make(chan string)
 	signals := make(chan bool)
 	// 这是一个非阻塞接收的例子，如果在messages中存在
