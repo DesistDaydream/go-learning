@@ -1,10 +1,10 @@
 # Functions函数 
 1. Your Second Function第二个函数  
 2. Returning Multiple Values返回多个值  
-3. [Variadic Functions](#3.variadic-functions)可变参数函数 
-4. [Closure](#4.Closure)闭包  
-5. [Recursion](#5.Recursion)递归i.e.指递归函数  
-6. [Other](#6.Other)
+3. [Variadic Functions](##variadic-functions)可变参数函数 
+4. [Closure](##Closure)闭包  
+5. [Recursion](##Recursion)递归i.e.指递归函数  
+6. [Other](##Other)
 
 DRY原则：Don't Repeart Yourself不要重复你自己  
 Golang有3中类型的函数：  
@@ -54,9 +54,9 @@ func FunctionName([Parameter]) [(returnValue)] {
 |print、println|底层打印函数，在部署环境中建议使用fmt包内的打印函数|
 |complex、real imag|用于创建和操作复数|
 
-## 函数的其余功能  
+# 函数的其余功能  
 
-### 3.Variadic Functions 可变参数函数  
+## Variadic Functions 可变参数函数  
 代码示例[variadic.go](/5.Functions/variadic.go)
 如果函数的最后一个参数是采用`...type`的形式，那么这个函数就可以处理一个变长的参数，这个长度可以为0，这样的函数称为VariadicFunctions。  
 格式为：`func Funcition(Param1,Param2,...ParamX ...TYPE) {}`。最后一个参数`ParamX`类型为`TYPE切片`，这个参数称为`变长参数`，该参数可接收多个值。  
@@ -69,7 +69,7 @@ Greeting("hello:", "Joe", "Anna", "Eileen")
 
 这类函数可以接受**任意数量的形参**，因为使用的的`...`作为形参列表  
 
-### 4.Closure 闭包
+## Closure 闭包
 **闭包**,通俗得讲，就是函数a的内部函数b，被函数a外部的一个变量引用的时候，就创建了一个闭包代码示例[closure.go](/5.Functions/closure.go)  
 
 **匿名函数**，当我们不希望给函起名字的时候可以使用`匿名函数`。  
@@ -84,10 +84,10 @@ Greeting("hello:", "Joe", "Anna", "Eileen")
 
 闭包是一个有状态(不消失的私有数据)的函数。闭包是一个有记忆的函数。闭包相当于一个只有一个方法的紧凑对象。  
 
-### 5.Recursion  
+## Recursion  
 当一个函数在其函数体内调用自身，则称之为**递归**。最经典的例子是计算斐波那契数列，即前两个数为1，从第三个数开始每个数均为前两个数之和。  
 
-### 6.Other
+## Other
 展示一个计算过程所消耗的时间：使用time包中的`Now()`和`Sub()`函数，在计算开始之前设置一个起始时间，再由计算结束时的结束时间与起始时间相减，即为执行计算的消耗时间。代码示例:[fibonnaci.go](/5.Functions/fibonacci/fibonacci.go)
 
 **make()与new()**
