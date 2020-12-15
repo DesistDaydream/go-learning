@@ -1,10 +1,10 @@
 # Functions函数 
 1. Your Second Function第二个函数  
 2. Returning Multiple Values返回多个值  
-3. [Variadic Functions](##variadic-functions)可变参数函数 
-4. [Closure](##Closure)闭包  
-5. [Recursion](##Recursion)递归i.e.指递归函数  
-6. [Other](##Other)
+3. [Variadic Functions](#variadic-functions)可变参数函数 
+4. [Closure](#Closure)闭包  
+5. [Recursion](#Recursion)递归i.e.指递归函数  
+6. [Other](#Other)
 
 DRY原则：Don't Repeart Yourself不要重复你自己  
 Golang有3中类型的函数：  
