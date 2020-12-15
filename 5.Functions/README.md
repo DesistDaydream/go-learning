@@ -118,7 +118,7 @@ func NewMemorySession(id string) *MemorySession {
 	return s
 }
 ```
-这个例子中，就使用了 new() 的思想，通过一个方法，来生成一个结构体的指针，这个指针通常称为该结构体的 **instance(实例)**。这样，后续要操作这个结构体属性的值，调用这些实例即可
+这个例子中，就使用了 new() 的思想，通过一个函数，来生成一个结构体的指针，这个指针通常称为该结构体的 **instance(实例)**。这样，后续要操作这个结构体属性的值，调用这些指针(i.e.实例)即可
 ```go
 s := NeNewMemorySession("DD")
 s.METHOD1

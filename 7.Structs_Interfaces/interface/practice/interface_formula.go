@@ -2,6 +2,13 @@ package main
 
 import "fmt"
 
+// FormulaOperator 定义了一个接口，包含两个方法
+// 该接口实现了一个求面积的方法和一个求周长的方法
+type FormulaOperator interface {
+	Area() float32
+	Perimeter() float32
+}
+
 // 定义了两个结构体，结构体实现了接口FormulaOperator
 // 名为正方形的结构体，里面有一个参数是边长。名为矩形的结构体里面有两个参数
 
@@ -34,13 +41,6 @@ func (r Rectangle) Area() float32 {
 // Perimeter 矩形求周长的方法
 func (r Rectangle) Perimeter() float32 {
 	return r.length*2 + r.width*2
-}
-
-// FormulaOperator 定义了一个接口，包含两个方法
-// 该接口实现了一个求面积的方法和一个求周长的方法
-type FormulaOperator interface {
-	Area() float32
-	Perimeter() float32
 }
 
 // PrintResult 输出计算结果
