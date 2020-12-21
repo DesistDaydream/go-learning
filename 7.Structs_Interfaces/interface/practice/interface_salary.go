@@ -17,15 +17,15 @@ type Permanent struct {
 	pf       int
 }
 
+// CalculateSalary 永久员工的工资是基本工资和附加工资的综合
+func (p Permanent) CalculateSalary() int {
+	return p.basicpay + p.pf
+}
+
 // Contract 临时工类型，属性有ID和基本工资
 type Contract struct {
 	empID    int
 	basicpay int
-}
-
-// CalculateSalary 永久员工的工资是基本工资和附加工资的综合
-func (p Permanent) CalculateSalary() int {
-	return p.basicpay + p.pf
 }
 
 // CalculateSalary 临时员工的工资只有基本工资
