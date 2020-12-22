@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/DesistDaydream/GoLearning/7.Structs_Interfaces/interface/practice/pkg/rectangle"
-	"github.com/DesistDaydream/GoLearning/7.Structs_Interfaces/interface/practice/pkg/square"
+	"github.com/DesistDaydream/GoLearning/practice/interface/pkg/rectangle"
+	"github.com/DesistDaydream/GoLearning/practice/interface/pkg/square"
 )
 
 // Formula 计算不同图形的周长和面积

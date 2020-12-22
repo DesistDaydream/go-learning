@@ -4,8 +4,7 @@ import (
 	"fmt"
 )
 
-// FormulaOperator 定义了一个接口，包含两个方法
-// 该接口实现了一个求面积的方法和一个求周长的方法
+// FormulaOperator 定义了一个接口，该接口包含一个求面积的方法和一个求周长的方法
 type FormulaOperator interface {
 	Area() float32
 	Perimeter() float32
