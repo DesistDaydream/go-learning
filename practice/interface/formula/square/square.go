@@ -1,6 +1,6 @@
 package square
 
-// Square 正方形的属性
+// Square 正方形的属性，属性是边长。
 type Square struct {
 	Side float32
 }
