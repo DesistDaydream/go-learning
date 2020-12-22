@@ -24,7 +24,7 @@ func Salary() {
 	// 使用接口的好处：如果不使用接口，每种类型的结构体就需要单独引用方法来计算总和，而没法放在一个数组中，进行迭代处理
 	// 使用了接口后，可以把各种实现该接口的类型，放到该接口的数组里，进行统一处理。比如新加一个员工的类型就不用修改计算函数
 	employees := []SalaryCalculator{pemp1, pemp2, cemp1}
-	totalExpense(employees)
+	TotalExpense(employees)
 }
 
 /*

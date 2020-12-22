@@ -10,7 +10,7 @@ type FormulaOperator interface {
 	Perimeter() float32
 }
 
-// 在 pkg/ 下定义了两个结构体及其方法，结构体实现了 FormulaOperator 接口
+// 在 formula/ 下定义了两个结构体及其方法，结构体实现了 FormulaOperator 接口
 
 // PrintResult 输出计算结果
 func PrintResult(shape string, result FormulaOperator) {
