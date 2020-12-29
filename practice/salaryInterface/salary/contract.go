@@ -1,4 +1,4 @@
-package contract
+package salary
 
 // Contract 临时工类型，属性有ID和基本工资
 type Contract struct {

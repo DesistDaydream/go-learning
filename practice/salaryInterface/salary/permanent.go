@@ -1,4 +1,4 @@
-package permanent
+package salary
 
 // Permanent 永久员工类型，属性有ID和基本工资与附加工资
 type Permanent struct {

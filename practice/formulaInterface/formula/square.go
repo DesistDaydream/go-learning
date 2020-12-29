@@ -1,4 +1,4 @@
-package square
+package formula
 
 // Square 正方形的属性，属性是边长。
 type Square struct {

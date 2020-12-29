@@ -1,4 +1,4 @@
-package rectangle
+package formula
 
 // Rectangle 长方形的属性。属性是长和宽。
 type Rectangle struct {
