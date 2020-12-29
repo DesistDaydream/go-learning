@@ -29,7 +29,7 @@ func (k *KingstonDisk) Start() {
 
 // End is
 func (k *KingstonDisk) End() {
-
+	//
 }
 
 func main() {
