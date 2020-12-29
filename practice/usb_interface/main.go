@@ -6,7 +6,8 @@ import (
 )
 
 func main() {
-	//
 	k := usbdevice.NewKingstonDisk()
 	usbinterface.OperatorRead(k)
+	m := usbdevice.NewMouse()
+	usbinterface.OperatorRead(m)
 }

@@ -1,4 +1,4 @@
-package usb_device
+package usbdevice
 
 import "fmt"
 
@@ -9,7 +9,7 @@ type KingstonDisk struct {
 	Data string
 }
 
-// NewKingstonDisk is
+// NewKingstonDisk 实例化 KingstonDisk
 func NewKingstonDisk() *KingstonDisk {
 	return &KingstonDisk{
 		Name: "A1",
@@ -18,12 +18,12 @@ func NewKingstonDisk() *KingstonDisk {
 	}
 }
 
-// Start is
+// Start 让 KingstonDisk 实现 USB 接口的方法
 func (k *KingstonDisk) Start() {
 	fmt.Println("金士顿SSD硬盘已连接")
 }
 
-// End is
+// End 让 KingstonDisk 实现 USB 接口的方法
 func (k *KingstonDisk) End() {
 	//
 }

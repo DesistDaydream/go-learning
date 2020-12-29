@@ -1,6 +1,8 @@
 package usbinterface
 
-import "fmt"
+import (
+	"fmt"
+)
 
 // USB 接口
 type USB interface {
