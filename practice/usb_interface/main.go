@@ -14,8 +14,9 @@ func main() {
 	usbinterface.OperatorRead(m)
 
 	// usbs 测试接口多态效果，实现了接口的接口体，可以作为该接口的值。
-	var usbs = map[usbinterface.USB]bool{
+	usbs := map[usbinterface.USB]bool{
 		&usbdevice.KingstonDisk{}: true,
+		&usbdevice.Mouse{}:        false,
 	}
 	fmt.Println(usbs)
 }
