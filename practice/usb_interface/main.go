@@ -19,4 +19,10 @@ func main() {
 		&usbdevice.Mouse{}:        false,
 	}
 	fmt.Println(usbs)
+
+	// 这是一个最简单的，把接口当作变量，把结构体当作值，然后调用接口下方法的例子
+	// 此时 结构体=方法，所以作用在 usbVar 变量上的方法，实际上就是 func (k *KingstonDisk) Start() {}
+	var usbsVar usbinterface.USB
+	usbsVar = usbdevice.NewKingstonDisk()
+	usbsVar.Start()
 }
