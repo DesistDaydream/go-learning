@@ -24,7 +24,7 @@ ASYNC：asynchronization异步。
 bool：boolean布尔、布尔型、布尔值  
 ###	C
 CAP：capacity容量。 
-chan：channel信道。
+chan：channel通道。
 CSP：Communicating Sequential Processes顺序通信处理。  
 CLI：Command Line Interface命令行接口。常代指使用命令来对程序进行操作，相对的非命令行是GUI
 ###	D

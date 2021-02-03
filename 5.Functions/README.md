@@ -151,7 +151,7 @@ func NewHollowKubelet(
 
 **总结：**  
 `new`负责分配内存，`new(T)`返回`*T`指向一个零值`T`的指针  
-make 负责初始化值，make(T) 返回初始化后的 T ，而非指针  
+`make` 负责初始化值，`make(T)` 返回初始化后的 `T` ，而非指针  
 最重要的一点：make 仅适用于slice，map 和channel  
 关于，并非是空值，而是一种“变量未填充前”的默认值，通常为0，如下  
 ```
@@ -167,3 +167,7 @@ float64 0 //长度为8 byte
 bool false
 string ""
 ```
+
+### 何时使用new()和make()
+* 切片、映射和通道，使用make()
+* 数组、结构体和所有的值类型，使用new()
