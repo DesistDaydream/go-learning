@@ -67,7 +67,9 @@ func (r *RSA) RSASign(plaintext []byte) []byte {
 
 // RSAVerify RSA 验签
 func (r *RSA) RSAVerify(plaintext []byte, signature []byte) bool {
+	// 与签名一样，只可以对 hash 后的消息进行验证。
 	hashed := sha256.Sum256(plaintext)
+	// 使用公钥、已签名的信息，验证签名的真实性
 	err := rsa.VerifyPKCS1v15(r.rsaPublicKey, crypto.SHA256, hashed[:], signature)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error from verification: %s\n", err)

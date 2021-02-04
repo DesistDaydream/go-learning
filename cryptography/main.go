@@ -17,6 +17,7 @@ func main() {
 	fmt.Printf("解密后的字符串为：%v\n", string(decryptedMessages))
 
 	// 使用私钥签名，公钥验签
+	// 注意，验证签名需要使用签名时发送的消息作为对比，只有消息一致，才算验证通过
 	signature := r.RSASign(messages)
 	if r.RSAVerify(messages, signature) {
 		fmt.Println("验证成功")
