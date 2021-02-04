@@ -11,8 +11,8 @@ import (
 	"os"
 )
 
-// GeneratePrivateKey 使用私钥生成 *rsa.PrivateKey 实例
-func GeneratePrivateKey(fileName string) (rsaPrivateKey *rsa.PrivateKey, err error) {
+// GenerateRsaPrivateKey 使用私钥生成 *rsa.PrivateKey 实例
+func GenerateRsaPrivateKey(fileName string) (rsaPrivateKey *rsa.PrivateKey, err error) {
 	// 解码私钥
 	block, _ := pem.Decode(GetKeyByte(fileName))
 	rsaPrivateKey, err = x509.ParsePKCS1PrivateKey(block.Bytes)
@@ -25,8 +25,8 @@ func GeneratePrivateKey(fileName string) (rsaPrivateKey *rsa.PrivateKey, err err
 	return rsaPrivateKey, nil
 }
 
-// GeneratePublicKey 使用公钥生成 *rsa.PublicKey 实例
-func GeneratePublicKey(fileName string) (rsaPublicKey *rsa.PublicKey, err error) {
+// GenerateRsaPublicKey 使用公钥生成 *rsa.PublicKey 实例
+func GenerateRsaPublicKey(fileName string) (rsaPublicKey *rsa.PublicKey, err error) {
 	// 解码公钥
 	block, _ := pem.Decode(GetKeyByte(fileName))
 	rsaPublicKey, err = x509.ParsePKCS1PublicKey(block.Bytes)
@@ -63,7 +63,7 @@ func Signature(message []byte, fileName string) ([]byte, error) {
 	// 这要求哈希函数必须具有抗冲突性。 SHA-256是编写本文时(2016年)应使用的最低强度的哈希函数。
 	hashed := sha256.Sum256(message)
 
-	rsaPrivateKey, _ := GeneratePrivateKey(fileName)
+	rsaPrivateKey, _ := GenerateRsaPrivateKey(fileName)
 
 	// ######################
 	// ######## 签名 ########
@@ -83,7 +83,7 @@ func Verifying(signedMessage []byte, message []byte, fileName string) bool {
 	// 这要求哈希函数必须具有抗冲突性。 SHA-256是编写本文时(2016年)应使用的最低强度的哈希函数。
 	hashed := sha256.Sum256(message)
 
-	rsaPublicKey, _ := GeneratePublicKey(fileName)
+	rsaPublicKey, _ := GenerateRsaPublicKey(fileName)
 
 	// #########################
 	// ######## 验证签名 ########

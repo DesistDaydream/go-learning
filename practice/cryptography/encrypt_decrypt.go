@@ -9,29 +9,19 @@ import (
 	"crypto/x509"
 
 	"encoding/pem"
-
-	"os"
 )
 
 // RSAEncrypt RSA 加密, 公钥加密
 func RSAEncrypt(plainText []byte, fileName string) []byte {
-	// 1. 打开文件, 并且读出文件内容
-	file, err := os.Open(fileName)
-	if err != nil {
-		panic(err)
+	// 解码 pem 格式的密钥文件，若密钥文件格式错误，将会 panic
+	block, _ := pem.Decode(GetKeyByte(fileName))
+	if block == nil {
+		fmt.Println("解码 pem 格式文件错误")
+		return nil
 	}
-	defer file.Close()
-	fileInfo, err := file.Stat()
-	if err != nil {
-		panic(err)
-	}
-	buf := make([]byte, fileInfo.Size())
-	file.Read(buf)
-
-	// 2. pem解码
-	block, _ := pem.Decode(buf)
+	// 1. 解析 PKCS1 格式的公钥
 	rsaPublicKey, err := x509.ParsePKCS1PublicKey(block.Bytes)
-	// 3. 使用公钥加密
+	// 2. 使用公钥加密
 	cipherText, err := rsa.EncryptPKCS1v15(rand.Reader, rsaPublicKey, plainText)
 	if err != nil {
 		panic(err)
@@ -41,20 +31,9 @@ func RSAEncrypt(plainText []byte, fileName string) []byte {
 
 // RSADecrypt RSA 解密
 func RSADecrypt(cipherText []byte, fileName string) []byte {
-	// 1. 打开文件, 并且读出文件内容
-	file, err := os.Open(fileName)
-	if err != nil {
-		panic(err)
-	}
-	defer file.Close()
-	fileInfo, err := file.Stat()
-	if err != nil {
-		panic(err)
-	}
-	buf := make([]byte, fileInfo.Size())
-	file.Read(buf)
-	// 2. pem解码
-	block, _ := pem.Decode(buf)
+	// 解码 pem 格式的密钥文件，并
+	block, _ := pem.Decode(GetKeyByte(fileName))
+	// 1. 解析 PKCS1 格式的私钥
 	privKey, err := x509.ParsePKCS1PrivateKey(block.Bytes)
 	if err != nil {
 		panic(err)

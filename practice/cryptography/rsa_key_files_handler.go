@@ -2,25 +2,21 @@ package main
 
 import (
 	"crypto/rand"
+	"fmt"
+	"os"
 
 	"crypto/rsa"
 
-	"crypto/sha256"
-
 	"crypto/x509"
 
-	"encoding/hex"
-
 	"encoding/pem"
-
-	"fmt"
-
-	"os"
 )
 
 // GenerateRsaKey 生成rsa的密钥对, 并且保存到磁盘文件中
 func GenerateRsaKey(keySize int) {
-	// ============ 生成私钥 ==========
+	// ===============================
+	// ========= 生成私钥文件 =========
+	// ===============================
 	// 1. 使用rsa中的GenerateKey方法生成私钥
 	privateKey, err := rsa.GenerateKey(rand.Reader, keySize)
 	if err != nil {
@@ -40,9 +36,10 @@ func GenerateRsaKey(keySize int) {
 	}
 	defer file.Close()
 	pem.Encode(file, &block)
-	file.Close()
 
-	// ============ 生成公钥 ==========
+	// ===============================
+	// ========== 生成公钥文件 ========
+	// ===============================
 	// 1. 从私钥中取出公钥
 	publicKey := privateKey.PublicKey
 	// 2. 以PKCS#1格式整理公钥。将RSA公钥转换为PKCS＃1，ASN.1 DER形式。该形式符合 x509 标准
@@ -60,10 +57,11 @@ func GenerateRsaKey(keySize int) {
 	if err != nil {
 		panic(err)
 	}
+	defer file.Close()
 	pem.Encode(file, &block)
 }
 
-// GetKeyByte 生成密钥文件的二进制流
+// GetKeyByte 读取密钥文件并转换为二进制流
 func GetKeyByte(fileName string) []byte {
 	// 1. 打开私钥文件, 并且读出文件内容
 	file, err := os.Open(fileName)
@@ -80,36 +78,37 @@ func GetKeyByte(fileName string) []byte {
 	return fileByte
 }
 
-func main() {
-	// 生成rsa的密钥对, 并且保存到磁盘文件中
-	// GenerateRsaKey(4096)
-
-	// 待加密的信息
-	message := []byte("你好 DesistDaydream！...这是一串待加密的字符串，如果你能看到，那么说明功能实现了！")
-
-	// 使用公钥加密，私钥解密
-	// EncryptAndDecrypt(message)
-
-	// 使用私钥签名，公钥验签
-	SignatureAndVerifying(message)
-
-	// myHash()
+// RSAFileEncrypt RSA 加密, 公钥加密
+func RSAFileEncrypt(messages []byte, fileName string) []byte {
+	// 解码 pem 格式的密钥文件，若密钥文件格式错误，将会 panic
+	block, _ := pem.Decode(GetKeyByte(fileName))
+	if block == nil {
+		fmt.Println("解码 pem 格式文件错误")
+		return nil
+	}
+	// 1. 解析 PKCS1 格式的公钥
+	rsaPublicKey, err := x509.ParsePKCS1PublicKey(block.Bytes)
+	// 2. 使用公钥加密
+	encryptedMessages, err := rsa.EncryptPKCS1v15(rand.Reader, rsaPublicKey, messages)
+	if err != nil {
+		panic(err)
+	}
+	return encryptedMessages
 }
 
-// 使用sha256
-
-func myHash() {
-	// sha256.Sum256([]byte("hello, go"))
-	// 1. 创建哈希接口对象
-	myHash := sha256.New()
-	// 2. 添加数据
-	src := []byte("你好 DesistDaydream！...这是一串待加密的字符串，如果你能看到，那么说明功能实现了！")
-	myHash.Write(src)
-	myHash.Write(src)
-	myHash.Write(src)
-	// 3. 计算结果
-	res := myHash.Sum(nil)
-	// 4. 格式化为16进制形式
-	myStr := hex.EncodeToString(res)
-	fmt.Printf("%s\n", myStr)
+// RSAFileDecrypt RSA 解密
+func RSAFileDecrypt(encryptedMessages []byte, fileName string) []byte {
+	// 解码 pem 格式的密钥文件，并
+	block, _ := pem.Decode(GetKeyByte(fileName))
+	// 1. 解析 PKCS1 格式的私钥
+	privKey, err := x509.ParsePKCS1PrivateKey(block.Bytes)
+	if err != nil {
+		panic(err)
+	}
+	// 3. 使用私钥解密
+	plainText, err := rsa.DecryptPKCS1v15(rand.Reader, privKey, encryptedMessages)
+	if err != nil {
+		panic(err)
+	}
+	return plainText
 }
