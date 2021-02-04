@@ -1,8 +1,6 @@
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
 func main() {
 	// 生成rsa的密钥对, 并且保存到磁盘文件中
@@ -14,9 +12,14 @@ func main() {
 
 	// 使用公钥加密，私钥解密
 	// EncryptAndDecrypt(r, message)
-	encryptedMessages := r.RSAEncrypt(messages, "./cryptography/public.pem")
-	decryptedMessages := r.RSADecrypt(encryptedMessages, "./cryptography/private.pem")
-	fmt.Printf("解密后的字符串为：%v\n", string(decryptedMessages))
+	// encryptedMessages := r.RSAEncrypt(messages)
+	// decryptedMessages := r.RSADecrypt(encryptedMessages)
+	// fmt.Printf("解密后的字符串为：%v\n", string(decryptedMessages))
 
 	// 使用私钥签名，公钥验签
+	signature := r.RSASign(messages)
+	if r.RSAVerify(messages, signature) {
+		fmt.Println("验证成功")
+	}
+
 }
