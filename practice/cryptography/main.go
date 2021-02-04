@@ -10,8 +10,7 @@ import (
 
 func main() {
 	// 生成rsa的密钥对, 并且保存到磁盘文件中
-	// GenerateRsaKey(4096)
-	// NewRSA(2048)
+	NewRSA(2048)
 
 	// 待加密的信息
 	message := []byte("你好 DesistDaydream！...这是一串待加密的字符串，如果你能看到，那么说明功能实现了！")

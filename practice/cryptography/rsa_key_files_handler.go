@@ -57,6 +57,8 @@ func GenerateX509Key(rsaPrivateKey *rsa.PrivateKey, rsaPublicKey *rsa.PublicKey)
 	// 1. 以PKCS#1格式整理密钥对。将RSA密钥对转换为PKCS＃1，ASN.1 DER形式。该形式符合 x509 标准
 	privateByte := x509.MarshalPKCS1PrivateKey(rsaPrivateKey)
 	publicByte := x509.MarshalPKCS1PublicKey(rsaPublicKey)
+	// privateByte, _ := x509.MarshalPKCS8PrivateKey(rsaPrivateKey)
+	// publicByte, _ := x509.MarshalPKIXPublicKey(rsaPublicKey)
 
 	// 组织 pem 格式内容，添加头尾
 	blockPrivate := pem.Block{
