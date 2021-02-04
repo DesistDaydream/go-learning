@@ -2,7 +2,6 @@ package main
 
 import (
 	"crypto/rand"
-	"fmt"
 	"os"
 
 	"crypto/rsa"
@@ -12,56 +11,7 @@ import (
 	"encoding/pem"
 )
 
-// GenerateRsaKey 生成rsa的密钥对, 并且保存到磁盘文件中
-func GenerateRsaKey(keySize int) {
-	// ===============================
-	// ========= 生成私钥文件 =========
-	// ===============================
-	// 1. 使用rsa中的GenerateKey方法生成私钥
-	privateKey, err := rsa.GenerateKey(rand.Reader, keySize)
-	if err != nil {
-		panic(err)
-	}
-	// 2. 以PKCS#1格式整理私钥。将RSA私钥转换为PKCS＃1，ASN.1 DER形式。该形式符合 x509 标准
-	derText := x509.MarshalPKCS1PrivateKey(privateKey)
-	// 3. 要组织一个pem.Block(base64编码)
-	block := pem.Block{
-		Type:  "RSA PRIVATE KEY", // 这个地方写个字符串就行
-		Bytes: derText,
-	}
-	// 4. pem编码
-	file, err := os.Create("./cryptography/private.pem")
-	if err != nil {
-		panic(err)
-	}
-	defer file.Close()
-	pem.Encode(file, &block)
-
-	// ===============================
-	// ========== 生成公钥文件 ========
-	// ===============================
-	// 1. 从私钥中取出公钥
-	publicKey := privateKey.PublicKey
-	// 2. 以PKCS#1格式整理公钥。将RSA公钥转换为PKCS＃1，ASN.1 DER形式。该形式符合 x509 标准
-	derstream := x509.MarshalPKCS1PublicKey(&publicKey)
-	if err != nil {
-		panic(err)
-	}
-	// 3. 将得到的数据放到pem.Block中
-	block = pem.Block{
-		Type:  "RSA PUBLIC KEY",
-		Bytes: derstream,
-	}
-	// 4. pem编码
-	file, err = os.Create("./cryptography/public.pem")
-	if err != nil {
-		panic(err)
-	}
-	defer file.Close()
-	pem.Encode(file, &block)
-}
-
-// GetKeyByte 读取密钥文件并转换为二进制流
+// GetKeyByte 读取密钥文件并转换为二进制流。该行为用于在 加密/解密，签名/验签 中。
 func GetKeyByte(fileName string) []byte {
 	// 1. 打开私钥文件, 并且读出文件内容
 	file, err := os.Open(fileName)
@@ -78,37 +28,68 @@ func GetKeyByte(fileName string) []byte {
 	return fileByte
 }
 
-// RSAFileEncrypt RSA 加密, 公钥加密
-func RSAFileEncrypt(messages []byte, fileName string) []byte {
-	// 解码 pem 格式的密钥文件，若密钥文件格式错误，将会 panic
-	block, _ := pem.Decode(GetKeyByte(fileName))
-	if block == nil {
-		fmt.Println("解码 pem 格式文件错误")
-		return nil
-	}
-	// 1. 解析 PKCS1 格式的公钥
-	rsaPublicKey, err := x509.ParsePKCS1PublicKey(block.Bytes)
-	// 2. 使用公钥加密
-	encryptedMessages, err := rsa.EncryptPKCS1v15(rand.Reader, rsaPublicKey, messages)
-	if err != nil {
-		panic(err)
-	}
-	return encryptedMessages
+// RSA 是公钥和私钥两个组成一组的密钥对，以及使用 X509 格式化后的密钥对。
+type RSA struct {
+	x509PrivateKey string
+	x509PublicKey  string
+	rsaPrivateKey  *rsa.PrivateKey
+	rsaPublicKey   *rsa.PublicKey
 }
 
-// RSAFileDecrypt RSA 解密
-func RSAFileDecrypt(encryptedMessages []byte, fileName string) []byte {
-	// 解码 pem 格式的密钥文件，并
-	block, _ := pem.Decode(GetKeyByte(fileName))
-	// 1. 解析 PKCS1 格式的私钥
-	privKey, err := x509.ParsePKCS1PrivateKey(block.Bytes)
+// NewRSA 生成密钥对
+func NewRSA(bits int) *RSA {
+	// 随机生成一个给定大小的 RSA 密钥对。可以使用 crypto 包中的 rand.Reader 来随机。
+	privateKey, _ := rsa.GenerateKey(rand.Reader, bits)
+	// 从私钥中，获取公钥
+	publicKey := privateKey.PublicKey
+	// 生成 X509 格式的密钥对
+	x509PrivateKey, x509PublicKey, _ := GenerateX509Key(privateKey, &publicKey)
+	return &RSA{
+		x509PrivateKey: x509PrivateKey,
+		x509PublicKey:  x509PublicKey,
+		rsaPrivateKey:  privateKey,
+		rsaPublicKey:   &publicKey,
+	}
+}
+
+// GenerateX509Key 生成 x509 格式密钥对，并为其创建文件
+func GenerateX509Key(rsaPrivateKey *rsa.PrivateKey, rsaPublicKey *rsa.PublicKey) (string, string, error) {
+	// 1. 以PKCS#1格式整理密钥对。将RSA密钥对转换为PKCS＃1，ASN.1 DER形式。该形式符合 x509 标准
+	privateByte := x509.MarshalPKCS1PrivateKey(rsaPrivateKey)
+	publicByte := x509.MarshalPKCS1PublicKey(rsaPublicKey)
+
+	// 组织 pem 格式内容，添加头尾
+	blockPrivate := pem.Block{
+		Type:  "RSA PRIVATE KEY",
+		Bytes: privateByte,
+	}
+	blockPublic := pem.Block{
+		Type:  "RSA PUBLIC KEY",
+		Bytes: publicByte,
+	}
+	// 为 x509 格式的密钥对生成文件
+	GenerateKeyFile(blockPrivate, blockPublic)
+
+	// 将 pem 格式内容转为 string
+	x509PrivateKey := string(pem.EncodeToMemory(&blockPrivate))
+	x509PublicKey := string(pem.EncodeToMemory(&blockPublic))
+
+	return x509PrivateKey, x509PublicKey, nil
+
+}
+
+// GenerateKeyFile 为 x509 格式密钥对生成文件
+func GenerateKeyFile(blockPrivate, blockPublic pem.Block) {
+	privateKeyFile, err := os.Create("./practice/cryptography/private.pem")
 	if err != nil {
 		panic(err)
 	}
-	// 3. 使用私钥解密
-	plainText, err := rsa.DecryptPKCS1v15(rand.Reader, privKey, encryptedMessages)
+	defer privateKeyFile.Close()
+	pem.Encode(privateKeyFile, &blockPrivate)
+	publicKeyFile, err := os.Create("./practice/cryptography/public.pem")
 	if err != nil {
 		panic(err)
 	}
-	return plainText
+	defer publicKeyFile.Close()
+	pem.Encode(publicKeyFile, &blockPublic)
 }

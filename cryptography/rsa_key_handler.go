@@ -56,21 +56,21 @@ func (r *RSA) RSASign(plaintext []byte) []byte {
 	// 这要求哈希函数必须具有抗冲突性。 SHA-256是编写本文时(2016年)应使用的最低强度的哈希函数。
 	hashed := sha256.Sum256(plaintext)
 	// 使用私钥签名，必须要将明文hash后才可以签名，当验证时，同样需要对明文进行hash运算。签名于验签并不用于加密消息或消息传递，仅仅作为验证传递消息方的真实性。
-	signature, err := rsa.SignPKCS1v15(rand.Reader, r.rsaPrivateKey, crypto.SHA256, hashed[:])
+	signed, err := rsa.SignPKCS1v15(rand.Reader, r.rsaPrivateKey, crypto.SHA256, hashed[:])
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error from signing: %s\n", err)
 		return nil
 	}
-	fmt.Printf("Signature: %x\n", signature)
-	return signature
+	fmt.Printf("已签名的消息为: %x\n", signed)
+	return signed
 }
 
 // RSAVerify RSA 验签
-func (r *RSA) RSAVerify(plaintext []byte, signature []byte) bool {
+func (r *RSA) RSAVerify(plaintext []byte, signed []byte) bool {
 	// 与签名一样，只可以对 hash 后的消息进行验证。
 	hashed := sha256.Sum256(plaintext)
 	// 使用公钥、已签名的信息，验证签名的真实性
-	err := rsa.VerifyPKCS1v15(r.rsaPublicKey, crypto.SHA256, hashed[:], signature)
+	err := rsa.VerifyPKCS1v15(r.rsaPublicKey, crypto.SHA256, hashed[:], signed)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error from verification: %s\n", err)
 		return false
