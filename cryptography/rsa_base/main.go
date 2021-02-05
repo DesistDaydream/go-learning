@@ -22,5 +22,4 @@ func main() {
 	if r.RSAVerify(messages, signed) {
 		fmt.Println("验证成功")
 	}
-
 }
