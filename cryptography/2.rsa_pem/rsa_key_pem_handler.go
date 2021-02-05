@@ -49,9 +49,13 @@ func NewRsaKey(bits int) *RsaKey {
 	// bytePrivateKey := rsaPrivateKey.D.Bytes()
 	// bytePublicKey := rsaPublicKey.N.Bytes()
 	// 为什么不能直接转换而必须使用 X.509 呢，因为 go 的标准库中，无法直接将 []byte 格式的数据转换为 *rsa.PrivateKey 和 *rsa.PublicKey 类型
-	// 这样会导致到在使用 rsa 加密/解密，签名/验签时，无法正确获取使用 *rsa.PrivateKey 和 *rsa.PublicKey 类型的密钥。
+	// 这样会导致后面在使用 rsa 加密/解密，签名/验签时，无法正确获取使用 *rsa.PrivateKey 和 *rsa.PublicKey 类型的密钥。
+	// 因为 go 没有函数或方法，可以将密钥从 []byte 类型转换为 *rsa.PrivateKey 或 *rsa.PublicKey 类型
+	// =================================================================================================================
+	// ！！！！！注意！！！！！在正常情况下，无需将密钥先编码为 DER 格式。这是 go 语言的强制要求。
+	// go 在处理密钥时，需要先将密钥先转换成 DER 格式再使用 PEM 编码的，是 go 的需求！！！！！！！！！！！！！！！！注意！！！！！！！！！！！！！！！！！！！！！！
 	// ==================================================================================================================
-	// 因此，只能先使用 x509 包中的方法，将密钥对转换为 PKCS#1 ASN.1 DER 的形式，并以 []byte 的数据类型保存，以供 PEM 包将其编码。
+	// 因此，只能先使用 x509 包中的方法，将密钥对转换为 PKCS#1,ASN.1 DER 的形式，并以 []byte 的数据类型保存，以供 PEM 包将其编码。
 	bytePrivateKey := x509.MarshalPKCS1PrivateKey(rsaPrivateKey)
 	bytePublicKey := x509.MarshalPKCS1PublicKey(&rsaPublicKey)
 
@@ -84,11 +88,12 @@ func NewRsaKey(bits int) *RsaKey {
 
 // RsaPemEncrypt 使用 RSA 算法，加密指定明文，其中私钥是 PEM 编码后的格式
 func (r *RsaKey) RsaPemEncrypt(plaintext []byte) []byte {
+	// 由于这次要通过 PEM 格式编码的公钥进行加密，所以需要先解码 PEM 格式，再将解码后的数据转换为 *rsa.PublicKey 类型
+	block, _ := pem.Decode(r.bytePublicKey)
+	// 之前在编码时，使用了 x509 进行了编码，所以同样，需要使用 x509 解码以获得 *rsa.PublicKey 类型的公钥
+	rsaPublicKey, _ := x509.ParsePKCS1PublicKey(block.Bytes)
 	// 使用公钥加密 plaintext(明文，也就是准备加密的消息)。并返回 ciphertext(密文)
 	// 其中 []byte("DesistDaydream") 是加密中的标签，解密时标签需与加密时的标签相同，否则解密失败
-	block, _ := pem.Decode(r.bytePrivateKey)
-	rsaPublicKey, _ := x509.ParsePKCS1PublicKey(block.Bytes)
-	fmt.Print("解析结果：", rsaPublicKey)
 	ciphertext, err := rsa.EncryptOAEP(sha256.New(), rand.Reader, rsaPublicKey, plaintext, []byte("DesistDaydream"))
 	if err != nil {
 		panic(err)
