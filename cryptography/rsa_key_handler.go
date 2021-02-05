@@ -10,26 +10,26 @@ import (
 	"crypto/rsa"
 )
 
-// RSA 是公钥和私钥两个组成一组的密钥对
-type RSA struct {
+// RsaKey 是公钥和私钥两个组成一组的密钥对
+type RsaKey struct {
 	rsaPrivateKey *rsa.PrivateKey
 	rsaPublicKey  *rsa.PublicKey
 }
 
 // NewRSA 生成密钥对
-func NewRSA(bits int) *RSA {
+func NewRSA(bits int) *RsaKey {
 	// 随机生成一个给定大小的 RSA 密钥对。可以使用 crypto 包中的 rand.Reader 来随机。
 	privateKey, _ := rsa.GenerateKey(rand.Reader, bits)
 	// 从私钥中，获取公钥
 	publicKey := privateKey.PublicKey
-	return &RSA{
+	return &RsaKey{
 		rsaPrivateKey: privateKey,
 		rsaPublicKey:  &publicKey,
 	}
 }
 
 // RSAEncrypt 使用 RSA 算法，加密指定明文
-func (r *RSA) RSAEncrypt(plaintext []byte) []byte {
+func (r *RsaKey) RSAEncrypt(plaintext []byte) []byte {
 	// 使用公钥加密 plaintext(明文，也就是准备加密的消息)。并返回 ciphertext(密文)
 	// 其中 []byte("DesistDaydream") 是加密中的标签，解密时标签需与加密时的标签相同，否则解密失败
 	ciphertext, err := rsa.EncryptOAEP(sha256.New(), rand.Reader, r.rsaPublicKey, plaintext, []byte("DesistDaydream"))
@@ -40,7 +40,7 @@ func (r *RSA) RSAEncrypt(plaintext []byte) []byte {
 }
 
 // RSADecrypt 使用 RSA 算法，解密指定密文
-func (r *RSA) RSADecrypt(ciphertext []byte) []byte {
+func (r *RsaKey) RSADecrypt(ciphertext []byte) []byte {
 	// 使用私钥解密 ciphertext(密文，也就是加过密的消息)。并返回 plaintext(明文)
 	// 其中 []byte("DesistDaydream") 是加密中的标签，解密时标签需与加密时的标签相同，否则解密失败
 	plaintext, err := rsa.DecryptOAEP(sha256.New(), rand.Reader, r.rsaPrivateKey, ciphertext, []byte("DesistDaydream"))
@@ -51,7 +51,7 @@ func (r *RSA) RSADecrypt(ciphertext []byte) []byte {
 }
 
 // RSASign RSA 签名
-func (r *RSA) RSASign(plaintext []byte) []byte {
+func (r *RsaKey) RSASign(plaintext []byte) []byte {
 	// 只有小消息可以直接签名； 因此，对消息的哈希进行签名，而不能对消息本身进行签名。
 	// 这要求哈希函数必须具有抗冲突性。 SHA-256是编写本文时(2016年)应使用的最低强度的哈希函数。
 	hashed := sha256.Sum256(plaintext)
@@ -66,7 +66,7 @@ func (r *RSA) RSASign(plaintext []byte) []byte {
 }
 
 // RSAVerify RSA 验签
-func (r *RSA) RSAVerify(plaintext []byte, signed []byte) bool {
+func (r *RsaKey) RSAVerify(plaintext []byte, signed []byte) bool {
 	// 与签名一样，只可以对 hash 后的消息进行验证。
 	hashed := sha256.Sum256(plaintext)
 	// 使用公钥、已签名的信息，验证签名的真实性

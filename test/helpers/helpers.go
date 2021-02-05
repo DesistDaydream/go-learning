@@ -136,30 +136,6 @@ func (r *Rsa) Verify(data []byte, sign []byte, sHash crypto.Hash) bool {
 	return rsa.VerifyPKCS1v15(r.rsaPublicKey, sHash, h.Sum(nil), sign) == nil
 }
 
-//CreateKeys 生成pkcs1 格式的公钥私钥
-func (r *Rsa) CreateKeys(keyLength int) (privateKey, publicKey string) {
-	//根据 随机源 与 指定位数，生成密钥对。rand.Reader = 密码强大的伪随机生成器的全球共享实例
-	rsaPrivateKey, err := rsa.GenerateKey(rand.Reader, keyLength)
-	if err != nil {
-		return
-	}
-	//编码私钥
-	privateKey = string(pem.EncodeToMemory(&pem.Block{
-		Type:  "RSA PRIVATE KEY", //自定义类型
-		Bytes: x509.MarshalPKCS1PrivateKey(rsaPrivateKey),
-	}))
-	//编码公钥
-	objPkix, err := x509.MarshalPKIXPublicKey(&rsaPrivateKey.PublicKey)
-	if err != nil {
-		return
-	}
-	publicKey = string(pem.EncodeToMemory(&pem.Block{
-		Type:  "PUBLIC KEY",
-		Bytes: objPkix,
-	}))
-	return
-}
-
 //CreatePkcs8Keys 生成pkcs8 格式公钥私钥
 func (r *Rsa) CreatePkcs8Keys(keyLength int) (privateKey, publicKey string) {
 	rsaPrivateKey, err := rsa.GenerateKey(rand.Reader, keyLength)

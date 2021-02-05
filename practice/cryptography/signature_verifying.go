@@ -36,11 +36,13 @@ func GenerateRsaPublicKey(fileName string) (rsaPublicKey *rsa.PublicKey, err err
 }
 
 // Signature 使用私钥签名
-func (r *RSA) Signature(message []byte, fileName string) ([]byte, error) {
+func (r *RSA) Signature(plaintext []byte, fileName string) ([]byte, error) {
 	// 只有小消息可以直接签名； 因此，对消息的哈希进行签名，而不能对消息本身进行签名。
 	// 这要求哈希函数必须具有抗冲突性。 SHA-256是编写本文时(2016年)应使用的最低强度的哈希函数。
-	hashed := sha256.Sum256(message)
+	hashed := sha256.Sum256(plaintext)
 	rsaPrivateKey, _ := GenerateRsaPrivateKey(fileName)
+	// block, _ := pem.Decode(r.x509RsaPrivateKey)
+	// rsaPrivateKey, _ := x509.ParsePKCS1PrivateKey(block.Bytes)
 
 	// ######################
 	// ######## 签名 ########
@@ -55,16 +57,18 @@ func (r *RSA) Signature(message []byte, fileName string) ([]byte, error) {
 }
 
 // Verifying 使用公钥验证签名
-func (r *RSA) Verifying(signedMessage []byte, message []byte, fileName string) bool {
+func (r *RSA) Verifying(plaintext []byte, signed []byte, fileName string) bool {
 	// 只有小消息可以直接签名； 因此，对消息的哈希而不是消息本身进行签名。
 	// 这要求哈希函数必须具有抗冲突性。 SHA-256是编写本文时(2016年)应使用的最低强度的哈希函数。
-	hashed := sha256.Sum256(message)
+	hashed := sha256.Sum256(plaintext)
 	rsaPublicKey, _ := GenerateRsaPublicKey(fileName)
+	// block, _ := pem.Decode(r.X509RsaPublicKey)
+	// rsaPublicKey, _ := x509.ParsePKCS1PublicKey(block.Bytes)
 
 	// #########################
 	// ######## 验证签名 ########
 	// #########################
-	err := rsa.VerifyPKCS1v15(rsaPublicKey, crypto.SHA256, hashed[:], signedMessage)
+	err := rsa.VerifyPKCS1v15(rsaPublicKey, crypto.SHA256, hashed[:], signed)
 	if err != nil {
 		fmt.Printf("验证失败：%v\n", err)
 		return false
@@ -73,12 +77,12 @@ func (r *RSA) Verifying(signedMessage []byte, message []byte, fileName string) b
 }
 
 // SignatureAndVerifying 使用私钥签名，公钥验签
-func SignatureAndVerifying(message []byte, r *RSA) {
+func SignatureAndVerifying(plaintext []byte, r *RSA) {
 	// 使用指定的私钥进行签名
-	signedMessage, _ := r.Signature(message, "./practice/cryptography/private.pem")
+	signedMessage, _ := r.Signature(plaintext, "./practice/cryptography/private.pem")
 	fmt.Printf("已签名的消息为: %x\n", signedMessage)
 	// 验证签名的数据
-	ok := r.Verifying(message, signedMessage, "./practice/cryptography/public.pem")
+	ok := r.Verifying(plaintext, signedMessage, "./practice/cryptography/public.pem")
 	if ok == true {
 		fmt.Println("验证成功")
 	}

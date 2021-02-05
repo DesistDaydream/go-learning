@@ -30,10 +30,10 @@ func GetKeyByte(fileName string) []byte {
 
 // RSA 是公钥和私钥两个组成一组的密钥对，以及使用 X509 格式化后的密钥对。
 type RSA struct {
-	x509RsaPrivateKey string
-	X509RsaPublicKey  string
-	rsaPrivateKey     *rsa.PrivateKey
-	rsaPublicKey      *rsa.PublicKey
+	pemPrivateKey []byte
+	pemPublicKey  []byte
+	rsaPrivateKey *rsa.PrivateKey
+	rsaPublicKey  *rsa.PublicKey
 }
 
 // NewRSA 生成密钥对
@@ -43,42 +43,42 @@ func NewRSA(bits int) *RSA {
 	// 从私钥中，获取公钥
 	publicKey := privateKey.PublicKey
 	// 生成 X509 格式的密钥对
-	x509PrivateKey, x509PublicKey, _ := GenerateX509Key(privateKey, &publicKey)
+	pemPrivateKey, pemPublicKey := GenerateX509Key(privateKey, &publicKey)
 	return &RSA{
-		x509RsaPrivateKey: x509PrivateKey,
-		X509RsaPublicKey:  x509PublicKey,
-		rsaPrivateKey:     privateKey,
-		rsaPublicKey:      &publicKey,
+		pemPrivateKey: pemPrivateKey,
+		pemPublicKey:  pemPublicKey,
+		rsaPrivateKey: privateKey,
+		rsaPublicKey:  &publicKey,
 	}
 }
 
 // GenerateX509Key 生成 x509 格式密钥对，并为其创建文件
-func GenerateX509Key(rsaPrivateKey *rsa.PrivateKey, rsaPublicKey *rsa.PublicKey) (string, string, error) {
-	// 1. 以PKCS#1格式整理密钥对。将RSA密钥对转换为PKCS＃1，ASN.1 DER形式。该形式符合 x509 标准
-	privateByte := x509.MarshalPKCS1PrivateKey(rsaPrivateKey)
-	publicByte := x509.MarshalPKCS1PublicKey(rsaPublicKey)
+func GenerateX509Key(rsaPrivateKey *rsa.PrivateKey, rsaPublicKey *rsa.PublicKey) ([]byte, []byte) {
+	// 1. 以 x509 标准格式编码密钥对。将密钥对转换为 PKCS#1 ASN.1 DER 的形式
+	x509Private := x509.MarshalPKCS1PrivateKey(rsaPrivateKey)
+	x509Public := x509.MarshalPKCS1PublicKey(rsaPublicKey)
 	// privateByte, _ := x509.MarshalPKCS8PrivateKey(rsaPrivateKey)
 	// publicByte, _ := x509.MarshalPKIXPublicKey(rsaPublicKey)
 
-	// 组织 pem 格式内容，添加头尾
+	// 组织 pem 格式内容，设定要添加的页眉和页脚
 	blockPrivate := pem.Block{
 		Type:  "RSA PRIVATE KEY",
-		Bytes: privateByte,
+		Bytes: x509Private,
 	}
 	blockPublic := pem.Block{
 		Type:  "RSA PUBLIC KEY",
-		Bytes: publicByte,
+		Bytes: x509Public,
 	}
-	// 为 x509 格式的密钥对生成文件
+	// [可选]为 x509 格式的密钥对生成文件
 	GenerateKeyFile(blockPrivate, blockPublic)
 
-	// 将 pem 格式内容转为 string
-	x509RsaPrivateKey := string(pem.EncodeToMemory(&blockPrivate))
-	X509RsaPublicKey := string(pem.EncodeToMemory(&blockPublic))
-	// fmt.Println(x509RsaPrivateKey)
+	// 基于 DER 格式编码的密钥对，再进行 base64 编码。将密钥对转换为 PEM 格式
+	pemPrivateKey := pem.EncodeToMemory(&blockPrivate)
+	pemPublicKey := pem.EncodeToMemory(&blockPublic)
+	// fmt.Println(string(x509RsaPrivateKey))
+	// fmt.Println(string(X509RsaPublicKey))
 
-	return x509RsaPrivateKey, X509RsaPublicKey, nil
-
+	return pemPrivateKey, pemPublicKey
 }
 
 // GenerateKeyFile 为 x509 格式密钥对生成文件

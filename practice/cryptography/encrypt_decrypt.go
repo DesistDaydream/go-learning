@@ -12,7 +12,7 @@ import (
 )
 
 // Encrypt RSA 加密, 公钥加密
-func Encrypt(plainText []byte, publicKeyFile string) []byte {
+func Encrypt(plaintext []byte, publicKeyFile string) []byte {
 	// 解码 pem 格式的密钥文件，若密钥文件格式错误，将会 panic
 	block, _ := pem.Decode(GetKeyByte(publicKeyFile))
 	if block == nil {
@@ -22,7 +22,7 @@ func Encrypt(plainText []byte, publicKeyFile string) []byte {
 	// 1. 解析 PKCS1 格式的公钥
 	rsaPublicKey, err := x509.ParsePKCS1PublicKey(block.Bytes)
 	// 2. 使用公钥加密
-	cipherText, err := rsa.EncryptPKCS1v15(rand.Reader, rsaPublicKey, plainText)
+	cipherText, err := rsa.EncryptPKCS1v15(rand.Reader, rsaPublicKey, plaintext)
 	if err != nil {
 		panic(err)
 	}
@@ -30,7 +30,7 @@ func Encrypt(plainText []byte, publicKeyFile string) []byte {
 }
 
 // Decrypt RSA 解密
-func Decrypt(cipherText []byte, privateKeyFile string) []byte {
+func Decrypt(ciphertext []byte, privateKeyFile string) []byte {
 	// 解码 pem 格式的密钥文件，并
 	block, _ := pem.Decode(GetKeyByte(privateKeyFile))
 	if block == nil {
@@ -43,7 +43,7 @@ func Decrypt(cipherText []byte, privateKeyFile string) []byte {
 		panic(err)
 	}
 	// 3. 使用私钥解密
-	plainText, err := rsa.DecryptPKCS1v15(rand.Reader, privKey, cipherText)
+	plainText, err := rsa.DecryptPKCS1v15(rand.Reader, privKey, ciphertext)
 	if err != nil {
 		panic(err)
 	}
@@ -51,11 +51,11 @@ func Decrypt(cipherText []byte, privateKeyFile string) []byte {
 }
 
 // EncryptAndDecrypt 加密与解密
-func EncryptAndDecrypt(message []byte, r *RSA) {
+func EncryptAndDecrypt(plaintext []byte, r *RSA) {
 	// 使用公钥加密
-	cipherText := Encrypt(message, "./practice/cryptography/public.pem")
+	ciphertext := Encrypt(plaintext, "./practice/cryptography/public.pem")
 	// 使用私钥解密
-	plainText := Decrypt(cipherText, "./practice/cryptography/private.pem")
+	plainText := Decrypt(ciphertext, "./practice/cryptography/private.pem")
 
 	// 输出解密后的内容
 	fmt.Printf("解密后的字符串为：%v\n", string(plainText))
