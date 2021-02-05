@@ -11,8 +11,8 @@ import (
 	"encoding/pem"
 )
 
-// RSAEncrypt RSA 加密, 公钥加密
-func RSAEncrypt(plainText []byte, publicKeyFile string) []byte {
+// Encrypt RSA 加密, 公钥加密
+func Encrypt(plainText []byte, publicKeyFile string) []byte {
 	// 解码 pem 格式的密钥文件，若密钥文件格式错误，将会 panic
 	block, _ := pem.Decode(GetKeyByte(publicKeyFile))
 	if block == nil {
@@ -29,8 +29,8 @@ func RSAEncrypt(plainText []byte, publicKeyFile string) []byte {
 	return cipherText
 }
 
-// RSADecrypt RSA 解密
-func RSADecrypt(cipherText []byte, privateKeyFile string) []byte {
+// Decrypt RSA 解密
+func Decrypt(cipherText []byte, privateKeyFile string) []byte {
 	// 解码 pem 格式的密钥文件，并
 	block, _ := pem.Decode(GetKeyByte(privateKeyFile))
 	if block == nil {
@@ -51,11 +51,11 @@ func RSADecrypt(cipherText []byte, privateKeyFile string) []byte {
 }
 
 // EncryptAndDecrypt 加密与解密
-func EncryptAndDecrypt(message []byte) {
+func EncryptAndDecrypt(message []byte, r *RSA) {
 	// 使用公钥加密
-	cipherText := RSAEncrypt(message, "./practice/cryptography/public.pem")
+	cipherText := Encrypt(message, "./practice/cryptography/public.pem")
 	// 使用私钥解密
-	plainText := RSADecrypt(cipherText, "./practice/cryptography/private.pem")
+	plainText := Decrypt(cipherText, "./practice/cryptography/private.pem")
 
 	// 输出解密后的内容
 	fmt.Printf("解密后的字符串为：%v\n", string(plainText))

@@ -30,10 +30,10 @@ func GetKeyByte(fileName string) []byte {
 
 // RSA 是公钥和私钥两个组成一组的密钥对，以及使用 X509 格式化后的密钥对。
 type RSA struct {
-	x509PrivateKey string
-	x509PublicKey  string
-	rsaPrivateKey  *rsa.PrivateKey
-	rsaPublicKey   *rsa.PublicKey
+	x509RsaPrivateKey string
+	X509RsaPublicKey  string
+	rsaPrivateKey     *rsa.PrivateKey
+	rsaPublicKey      *rsa.PublicKey
 }
 
 // NewRSA 生成密钥对
@@ -45,10 +45,10 @@ func NewRSA(bits int) *RSA {
 	// 生成 X509 格式的密钥对
 	x509PrivateKey, x509PublicKey, _ := GenerateX509Key(privateKey, &publicKey)
 	return &RSA{
-		x509PrivateKey: x509PrivateKey,
-		x509PublicKey:  x509PublicKey,
-		rsaPrivateKey:  privateKey,
-		rsaPublicKey:   &publicKey,
+		x509RsaPrivateKey: x509PrivateKey,
+		X509RsaPublicKey:  x509PublicKey,
+		rsaPrivateKey:     privateKey,
+		rsaPublicKey:      &publicKey,
 	}
 }
 
@@ -73,10 +73,11 @@ func GenerateX509Key(rsaPrivateKey *rsa.PrivateKey, rsaPublicKey *rsa.PublicKey)
 	GenerateKeyFile(blockPrivate, blockPublic)
 
 	// 将 pem 格式内容转为 string
-	x509PrivateKey := string(pem.EncodeToMemory(&blockPrivate))
-	x509PublicKey := string(pem.EncodeToMemory(&blockPublic))
+	x509RsaPrivateKey := string(pem.EncodeToMemory(&blockPrivate))
+	X509RsaPublicKey := string(pem.EncodeToMemory(&blockPublic))
+	// fmt.Println(x509RsaPrivateKey)
 
-	return x509PrivateKey, x509PublicKey, nil
+	return x509RsaPrivateKey, X509RsaPublicKey, nil
 
 }
 

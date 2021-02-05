@@ -73,8 +73,7 @@ func (r *RSA) Verifying(signedMessage []byte, message []byte, fileName string) b
 }
 
 // SignatureAndVerifying 使用私钥签名，公钥验签
-func SignatureAndVerifying(message []byte) {
-	r := NewRSA(2048)
+func SignatureAndVerifying(message []byte, r *RSA) {
 	// 使用指定的私钥进行签名
 	signedMessage, _ := r.Signature(message, "./practice/cryptography/private.pem")
 	fmt.Printf("已签名的消息为: %x\n", signedMessage)
