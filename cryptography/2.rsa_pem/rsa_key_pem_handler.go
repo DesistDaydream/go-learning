@@ -6,29 +6,11 @@ import (
 	"crypto/sha256"
 	"crypto/x509"
 	"fmt"
-	"os"
 
 	"crypto/rsa"
 
 	"encoding/pem"
 )
-
-// GetKeyByte 读取密钥文件并转换为二进制流。该行为用于在 加密/解密，签名/验签 中。
-func GetKeyByte(fileName string) []byte {
-	// 1. 打开私钥文件, 并且读出文件内容
-	file, err := os.Open(fileName)
-	if err != nil {
-		panic(err)
-	}
-	defer file.Close()
-	fileInfo, err := file.Stat()
-	if err != nil {
-		panic(err)
-	}
-	fileByte := make([]byte, fileInfo.Size())
-	file.Read(fileByte)
-	return fileByte
-}
 
 // RsaKey 是公钥和私钥两个组成一组的密钥对，以及该密钥的二进制格式。
 type RsaKey struct {
