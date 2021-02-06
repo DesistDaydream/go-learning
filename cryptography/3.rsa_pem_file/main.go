@@ -3,8 +3,8 @@ package main
 import "fmt"
 
 func main() {
-	// 生成rsa的密钥对，并以 PEM 格式保存
-	r := NewRsaKey(2048)
+	// 生成rsa的密钥对, 并且保存到 PEM 格式的文件中
+	r := NewRsaKey(2048, "./cryptography/private.pem", "./cryptography/public.pem")
 
 	// 待加密的信息
 	messages := []byte("你好 DesistDaydream！...这是一串待加密的字符串，如果你能看到，那么说明功能实现了！")

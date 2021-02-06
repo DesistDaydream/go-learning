@@ -3,7 +3,7 @@ package main
 import "fmt"
 
 func main() {
-	// 生成rsa的密钥对, 并且保存到磁盘文件中
+	// 生成rsa的密钥对
 	r := NewRSA(4096)
 
 	// 该消息有两个作用：

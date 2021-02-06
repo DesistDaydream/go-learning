@@ -11,7 +11,7 @@ import (
 	"reflect"
 )
 
-var srcFile string = "../testFile/test.txt"
+var srcFile string = "./testFile/test.txt"
 
 // var srcFile string = `F:\Documents\GitHub\Golang\testFile\test.txt`
 
@@ -32,7 +32,9 @@ func main() {
 	fmt.Println("\n7.通过命令行参数把一个文件复制到另一个文件")
 	// CopyFile()
 	fmt.Println("\n8.逐行读取一个文件的内容并逐行输出的方法2")
-	ReadFile22()
+	// ReadFile22()
+	fmt.Println("\n9.最简单的读取文件并获取内容的方法")
+	ReadFile4()
 }
 
 func ReadFile() {
@@ -211,8 +213,28 @@ func ReadFile22() {
 	// https://golang.org/pkg/bufio/#Reader.ReadString
 	for scanner.Scan() {
 		fmt.Printf("The input was: %s\n", scanner.Text())
-		// 还可以通过append函数将每一行内容赋值给一个切片，以便后续使用		
+		// 还可以通过append函数将每一行内容赋值给一个切片，以便后续使用
 		slices = append(slices, scanner.Text())
 		fmt.Println(slices)
 	}
+}
+
+func ReadFile4() {
+	fileByte, _ := ioutil.ReadFile(srcFile)
+	fmt.Println("文件内容为：", string(fileByte))
+}
+
+func ReadFile5() {
+	file, err := os.Open(srcFile)
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+	fileInfo, err := file.Stat()
+	if err != nil {
+		panic(err)
+	}
+	fileByte := make([]byte, fileInfo.Size())
+	file.Read(fileByte)
+	fmt.Println(string(fileByte))
 }
