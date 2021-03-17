@@ -110,7 +110,7 @@ func (r *RsaKey) RsaPemSign(plaintext []byte) []byte {
 	fileByte, _ := ioutil.ReadFile("./cryptography/private.pem")
 	block, _ := pem.Decode(fileByte)
 	rsaPrivateKey, _ := x509.ParsePKCS1PrivateKey(block.Bytes)
-	// 使用私钥签名，必须要将明文hash后才可以签名，当验证时，同样需要对明文进行hash运算。签名于验签并不用于加密消息或消息传递，仅仅作为验证传递消息方的真实性。
+	// 使用私钥签名，必须要将明文hash后才可以签名，当验证时，同样需要对明文进行hash运算。签名与验签并不用于加密消息或消息传递，仅仅作为验证传递消息方的真实性。
 	signed, err := rsa.SignPKCS1v15(rand.Reader, rsaPrivateKey, crypto.SHA256, hashed[:])
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error from signing: %s\n", err)

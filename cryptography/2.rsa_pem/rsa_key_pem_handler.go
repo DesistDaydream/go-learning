@@ -109,7 +109,7 @@ func (r *RsaKey) RsaPemSign(plaintext []byte) []byte {
 	block, _ := pem.Decode(r.bytePrivateKey)
 	// 之前在编码时，使用了 x509 进行了编码，所以同样，需要使用 x509 解码以获得 *rsa.PublicKey 类型的公钥
 	rsaPrivateKey, _ := x509.ParsePKCS1PrivateKey(block.Bytes)
-	// 使用私钥签名，必须要将明文hash后才可以签名，当验证时，同样需要对明文进行hash运算。签名于验签并不用于加密消息或消息传递，仅仅作为验证传递消息方的真实性。
+	// 使用私钥签名，必须要将明文hash后才可以签名，当验证时，同样需要对明文进行hash运算。签名与验签并不用于加密消息或消息传递，仅仅作为验证传递消息方的真实性。
 	signed, err := rsa.SignPKCS1v15(rand.Reader, rsaPrivateKey, crypto.SHA256, hashed[:])
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error from signing: %s\n", err)

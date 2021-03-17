@@ -55,7 +55,7 @@ func (r *RsaKey) RSASign(plaintext []byte) []byte {
 	// 只有小消息可以直接签名； 因此，对消息的哈希进行签名，而不能对消息本身进行签名。
 	// 这要求哈希函数必须具有抗冲突性。 SHA-256是编写本文时(2016年)应使用的最低强度的哈希函数。
 	hashed := sha256.Sum256(plaintext)
-	// 使用私钥签名，必须要将明文hash后才可以签名，当验证时，同样需要对明文进行hash运算。签名于验签并不用于加密消息或消息传递，仅仅作为验证传递消息方的真实性。
+	// 使用私钥签名，必须要将明文hash后才可以签名，当验证时，同样需要对明文进行hash运算。签名与验签并不用于加密消息或消息传递，仅仅作为验证传递消息方的真实性。
 	signed, err := rsa.SignPKCS1v15(rand.Reader, r.rsaPrivateKey, crypto.SHA256, hashed[:])
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error from signing: %s\n", err)
