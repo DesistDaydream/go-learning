@@ -17,9 +17,9 @@ type RsaKey struct {
 }
 
 // NewRSA 生成密钥对
-func NewRSA(bits int) *RsaKey {
+func NewRSA(keyLength int) *RsaKey {
 	// 随机生成一个给定大小的 RSA 密钥对。可以使用 crypto 包中的 rand.Reader 来随机。
-	privateKey, _ := rsa.GenerateKey(rand.Reader, bits)
+	privateKey, _ := rsa.GenerateKey(rand.Reader, keyLength)
 	// 从私钥中，获取公钥
 	publicKey := privateKey.PublicKey
 	return &RsaKey{

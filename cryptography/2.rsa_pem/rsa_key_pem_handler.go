@@ -11,6 +11,7 @@ import (
 
 	"crypto/rsa"
 
+	"encoding/base64"
 	"encoding/pem"
 )
 
@@ -21,9 +22,9 @@ type RsaKey struct {
 }
 
 // NewRsaKey 生成密钥对
-func NewRsaKey(bits int) *RsaKey {
+func NewRsaKey(keyLength int) *RsaKey {
 	// 随机生成一个给定大小的 RSA 密钥对。可以使用 crypto 包中的 rand.Reader 来随机。
-	rsaPrivateKey, _ := rsa.GenerateKey(rand.Reader, bits)
+	rsaPrivateKey, _ := rsa.GenerateKey(rand.Reader, keyLength)
 	// 从私钥中，获取公钥
 	rsaPublicKey := rsaPrivateKey.PublicKey
 
@@ -115,7 +116,8 @@ func (r *RsaKey) RsaPemSign(plaintext []byte) []byte {
 		fmt.Fprintf(os.Stderr, "Error from signing: %s\n", err)
 		return nil
 	}
-	fmt.Printf("已签名的消息为: %x\n", signed)
+	fmt.Println(base64.StdEncoding.EncodeToString(r.bytePrivateKey))
+	fmt.Printf("已签名的消息为: %v\n", base64.StdEncoding.EncodeToString(signed))
 	return signed
 }
 
