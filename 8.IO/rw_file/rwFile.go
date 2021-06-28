@@ -3,38 +3,57 @@ package main
 import (
 	"bufio"
 	"compress/gzip"
+	"flag"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"os"
 	"reflect"
 )
 
-var srcFile string = "./testFile/test.txt"
+var srcFile string = "./test_file/test.txt"
 
 // var srcFile string = `F:\Documents\GitHub\Golang\testFile\test.txt`
+var useage string = `可用的值有：
+	readfile:读取一个文件的内容并输出
+	readfile2:逐行读取一个文件的内容并逐行输出的方法1
+	readfile22:逐行读取一个文件的内容并逐行输出的方法2
+	readfile3:行与列互换
+	samplereadfile:最简单的读取文件的方法
+	samplewritefile:最简单的写入文件的方法
+	rwfile:读取一个文件的内容并复制到一个新文件中
+	readcompress:读取压缩文件
+	writefile:写文件
+	copyfile:通过命令行参数把一个文件复制到另一个文件
+`
 
 func main() {
+	var action string
+	flag.StringVar(&action, "action", "", useage)
+	flag.Parse()
 
-	fmt.Println("1.读取一个文件的内容并输出")
-	// ReadFile()
-	fmt.Println("\n2.逐行读取一个文件的内容并逐行输出的方法1")
-	// ReadFile2()
-	fmt.Println("\n3.行与列互换")
-	// ReadFile3()
-	fmt.Println("\n4.读取一个文件的内容并复制到一个新文件中")
-	// RWFile()
-	fmt.Println("\n5.读取压缩文件")
-	// ReadCompress()
-	fmt.Println("\n6.写文件")
-	// WriteFile()
-	fmt.Println("\n7.通过命令行参数把一个文件复制到另一个文件")
-	// CopyFile()
-	fmt.Println("\n8.逐行读取一个文件的内容并逐行输出的方法2")
-	// ReadFile22()
-	fmt.Println("\n9.最简单的读取文件并获取内容的方法")
-	ReadFile4()
+	switch action {
+	case "readfile":
+		ReadFile()
+	case "readfile2":
+		ReadFile2()
+	case "readfile22":
+		ReadFile22()
+	case "readfile3":
+		ReadFile3()
+	case "samplereadfile":
+		SampleReadFile()
+	case "samplewritefile":
+		SampleWriteFile()
+	case "rwfile":
+		RWFile()
+	case "readcompress":
+		ReadCompress()
+	case "WrieFile":
+		WriteFile()
+	case "copyfile":
+		CopyFile()
+	}
 }
 
 func ReadFile() {
@@ -45,7 +64,7 @@ func ReadFile() {
 	// 步骤概述：获取文件描述符(简写为FD)，通过FD读取文件放到变量中，然后从变量中输出文件中的内容。
 	// 第一步:使用os包中的Open()函数来打开指定文件,返回值为该文件的FD
 	fd, err := os.Open(srcFile)
-	fmt.Println("FD为：", fd, "\nOpen函数的第二个返回值为：", err)
+	fmt.Println("打开文件的 FD 为：", fd.Fd())
 	// 下面几行不影响代码功能，可省略的代码，判断文件是否存在，如果不存在会提示
 	if err != nil {
 		log.Fatal(err)
@@ -116,16 +135,16 @@ func ReadFile3() {
 func RWFile() {
 	inputFile := srcFile
 	outputFile := "../testFile/test_copy.txt"
-	buf, err := ioutil.ReadFile(inputFile)
+	buf, err := os.ReadFile(inputFile)
 	// buf变量类型为[]uint8,也叫[]byte
-	fmt.Println(reflect.TypeOf(buf), "\n", buf, "\n")
+	fmt.Println(reflect.TypeOf(buf), "\n", buf)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "File Error: %s\n", err)
 		panic(err.Error())
 	}
 	fmt.Printf("%s\n", string(buf)) // 使用string()函数把buf变量的值转变成字符串让人类可读
 	// 使用WriteFile()函数把变buf变量中的内容复制到outputFile,若无文件则创建
-	ioutil.WriteFile(outputFile, buf, 0644) // oct, not hex
+	os.WriteFile(outputFile, buf, 0644) // oct, not hex
 }
 
 func ReadCompress() {
@@ -219,9 +238,15 @@ func ReadFile22() {
 	}
 }
 
-func ReadFile4() {
-	fileByte, _ := ioutil.ReadFile(srcFile)
+func SampleReadFile() {
+	fileByte, _ := os.ReadFile(srcFile)
 	fmt.Println("文件内容为：", string(fileByte))
+}
+
+func SampleWriteFile() {
+	os.WriteFile("./test_file/SampleWriteFile", []byte("Hello DesistDaydream"), 0666)
+	fileByte, _ := os.ReadFile("./test_file/SampleWriteFile")
+	fmt.Println("写入的文件为：", string(fileByte))
 }
 
 func ReadFile5() {
