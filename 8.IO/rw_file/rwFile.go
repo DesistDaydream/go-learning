@@ -15,16 +15,16 @@ var srcFile string = "./test_file/test.txt"
 
 // var srcFile string = `F:\Documents\GitHub\Golang\testFile\test.txt`
 var useage string = `可用的值有：
-	readfile:读取一个文件的内容并输出
-	readfile2:逐行读取一个文件的内容并逐行输出的方法1
-	readfile22:逐行读取一个文件的内容并逐行输出的方法2
-	readfile3:行与列互换
-	samplereadfile:最简单的读取文件的方法
-	samplewritefile:最简单的写入文件的方法
-	rwfile:读取一个文件的内容并复制到一个新文件中
-	readcompress:读取压缩文件
-	writefile:写文件
-	copyfile:通过命令行参数把一个文件复制到另一个文件
+samplereadfile:最简单的读取文件的方法
+samplewritefile:最简单的写入文件的方法
+readfile:读取一个文件的内容并输出
+readfile2:逐行读取一个文件的内容并逐行输出的方法1
+readfile22:逐行读取一个文件的内容并逐行输出的方法2
+readfile3:行与列互换
+rwfile:读取一个文件的内容并复制到一个新文件中
+readcompress:读取压缩文件
+writefilebuffer:使用缓冲写入文件。
+copyfile:通过命令行参数把一个文件复制到另一个文件
 `
 
 func main() {
@@ -33,6 +33,10 @@ func main() {
 	flag.Parse()
 
 	switch action {
+	case "samplereadfile":
+		SampleReadFile()
+	case "samplewritefile":
+		SampleWriteFile()
 	case "readfile":
 		ReadFile()
 	case "readfile2":
@@ -41,19 +45,26 @@ func main() {
 		ReadFile22()
 	case "readfile3":
 		ReadFile3()
-	case "samplereadfile":
-		SampleReadFile()
-	case "samplewritefile":
-		SampleWriteFile()
 	case "rwfile":
 		RWFile()
 	case "readcompress":
 		ReadCompress()
-	case "WrieFile":
-		WriteFile()
+	case "writefilebuffer":
+		WriteFileBuffer()
 	case "copyfile":
 		CopyFile()
 	}
+}
+
+func SampleReadFile() {
+	fileByte, _ := os.ReadFile(srcFile)
+	fmt.Println("文件内容为：", string(fileByte))
+}
+
+func SampleWriteFile() {
+	os.WriteFile("./test_file/SampleWriteFile", []byte("Hello DesistDaydream"), 0666)
+	fileByte, _ := os.ReadFile("./test_file/SampleWriteFile")
+	fmt.Println("写入的文件为：", string(fileByte))
 }
 
 func ReadFile() {
@@ -105,7 +116,31 @@ func ReadFile2() {
 	}
 }
 
-// readFile3函数用于行与列互相转换
+func ReadFile22() {
+	// var inputFile *os.File
+	// var inputReader *bufio.Reader
+	// var inputString
+	var slices []string
+	inputFile, inputError := os.Open(srcFile)
+	if inputError != nil {
+		fmt.Printf("文件不存在或出现问题")
+		return // 出错时退出这个函数
+	}
+	defer inputFile.Close() // 确保正常可以在函数结束前关闭打开的文件
+
+	// 使用读取器函数NewScanner()通过FD把文件内容缓存到一个变量中
+	scanner := bufio.NewScanner(inputFile)
+	// 第三步:使用bufio包中的Readstring方法作用在之前初始化的结构体变量上，输出换行符之前的内容，并用无限for循环逐行输出，直到最后一行
+	// https://golang.org/pkg/bufio/#Reader.ReadString
+	for scanner.Scan() {
+		fmt.Printf("The input was: %s\n", scanner.Text())
+		// 还可以通过append函数将每一行内容赋值给一个切片，以便后续使用
+		slices = append(slices, scanner.Text())
+		fmt.Println(slices)
+	}
+}
+
+// ReadFile3 函数用于行与列互相转换
 // 列的数量必须相同，否则切片变量为空
 func ReadFile3() {
 	file, err := os.Open(srcFile)
@@ -173,23 +208,42 @@ func ReadCompress() {
 	}
 }
 
-func WriteFile() {
-	// var outputWriter *bufio.Writer
-	// var outputFile *os.File
-	// var outputError os.Error
-	outputFile, outputError := os.OpenFile("../testFile/writeTest.txt", os.O_WRONLY|os.O_CREATE, 0666)
-	if outputError != nil {
-		fmt.Printf("An error occurred with file opening or creation\n")
-		return
+// WriteFileBuffer 如果您经常将少量数据写入文件，则会降低程序的性能。每次写入都是一个代价高昂的系统调用，如果您不需要立即更新文件，最好将这些小写入归为一个。
+// 为此，我们可以使用bufio.Writer结构。它的写入函数不会直接将数据保存到文件中，
+// 而是一直保存到下面的缓冲区已满（默认大小为 4096 字节）或Flush()调用该方法。所以一定要Flush()在写入完成后调用，将剩余的数据保存到文件中。
+func WriteFileBuffer() {
+	var lines = []string{
+		"Go",
+		"is",
+		"the",
+		"best",
+		"programming",
+		"language",
+		"in",
+		"the",
+		"world",
 	}
-	defer outputFile.Close()
-	// 使用NewWriter函数创建一个写入器(与某文件关联的缓冲区)
-	outputWriter := bufio.NewWriter(outputFile)
-	// 使用for循环，通过写入器写入字符串到缓冲区，缓冲区的内容被完全写入关联的文件中
-	for i := 0; i < 10; i++ {
-		outputWriter.WriteString("hello world!\n")
+	// create file
+	f, err := os.Create(srcFile)
+	if err != nil {
+		log.Fatal(err)
 	}
-	outputWriter.Flush()
+	defer f.Close()
+
+	// 实例化一个 buffer
+	buffer := bufio.NewWriter(f)
+
+	for _, line := range lines {
+		_, err := buffer.WriteString(line + "\n")
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	// 刷新已经缓冲的数据到文件中
+	if err := buffer.Flush(); err != nil {
+		log.Fatal(err)
+	}
 }
 
 func CopyFile() {
@@ -212,54 +266,4 @@ func CopyFile() {
 	defer dst.Close()
 	// 通过文件描述符把源文件内容拷贝到目标文件
 	io.Copy(dst, src)
-}
-
-func ReadFile22() {
-	// var inputFile *os.File
-	// var inputReader *bufio.Reader
-	// var inputString
-	var slices []string
-	inputFile, inputError := os.Open(srcFile)
-	if inputError != nil {
-		fmt.Printf("文件不存在或出现问题")
-		return // 出错时退出这个函数
-	}
-	defer inputFile.Close() // 确保正常可以在函数结束前关闭打开的文件
-
-	// 使用读取器函数NewScanner()通过FD把文件内容缓存到一个变量中
-	scanner := bufio.NewScanner(inputFile)
-	// 第三步:使用bufio包中的Readstring方法作用在之前初始化的结构体变量上，输出换行符之前的内容，并用无限for循环逐行输出，直到最后一行
-	// https://golang.org/pkg/bufio/#Reader.ReadString
-	for scanner.Scan() {
-		fmt.Printf("The input was: %s\n", scanner.Text())
-		// 还可以通过append函数将每一行内容赋值给一个切片，以便后续使用
-		slices = append(slices, scanner.Text())
-		fmt.Println(slices)
-	}
-}
-
-func SampleReadFile() {
-	fileByte, _ := os.ReadFile(srcFile)
-	fmt.Println("文件内容为：", string(fileByte))
-}
-
-func SampleWriteFile() {
-	os.WriteFile("./test_file/SampleWriteFile", []byte("Hello DesistDaydream"), 0666)
-	fileByte, _ := os.ReadFile("./test_file/SampleWriteFile")
-	fmt.Println("写入的文件为：", string(fileByte))
-}
-
-func ReadFile5() {
-	file, err := os.Open(srcFile)
-	if err != nil {
-		panic(err)
-	}
-	defer file.Close()
-	fileInfo, err := file.Stat()
-	if err != nil {
-		panic(err)
-	}
-	fileByte := make([]byte, fileInfo.Size())
-	file.Read(fileByte)
-	fmt.Println(string(fileByte))
 }
