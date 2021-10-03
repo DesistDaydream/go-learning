@@ -19,7 +19,7 @@ func sendData(ch chan string, done chan bool, wg sync.WaitGroup) {
 	wg.Done()
 }
 
-func getData(ch chan string, done chan bool, wg sync.WaitGroup) {
+func recvData(ch chan string, done chan bool, wg sync.WaitGroup) {
 I:
 	for {
 		select {
@@ -51,7 +51,7 @@ func main() {
 	// 把通道ch作为参数传递给两个协程函数
 	// 可以理解为把通道的两端分别连接到两个协程函数上
 	go sendData(ch, done, wg)
-	go getData(ch, done, wg)
+	go recvData(ch, done, wg)
 
 	// 如果不让 main() 等待，则无任何输出，或者报错 panic: send on closed channel。因为协程是并发运行，不用等代码运行完成就会执行后续代码。
 	// 如果后续代码执行完了，协程中的代码还没执行完成，就会没有任何输出。
