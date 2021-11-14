@@ -14,6 +14,8 @@ func readOnlyString() {
 	slicesCharacter := []byte(character)
 	slicesCharacter[1] = 'E'
 	fmt.Printf("%c\n", slicesCharacter)
+	// 不过，当深入了解了 slice 结构，并学会使用了 unsafe 包，可以让 slice 依然使用原来字符串指向的这段内存
+	// 这样，即便转换了类型，依然无法修改这段只读内存的内容。
 }
 
 func simpleString() {
