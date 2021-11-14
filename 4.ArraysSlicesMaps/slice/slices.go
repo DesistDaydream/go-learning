@@ -2,26 +2,8 @@ package main
 
 import "fmt"
 
-func main() {
-	fmt.Println("1.切片的基本用法")
-	// slices()
-
-	fmt.Println("\n2.切片的重组示例")
-	reslice()
-
-	fmt.Println("\n3.切片的追加append示例")
-	// append1()
-
-	fmt.Println("\n4.切片的复制copy示例")
-	// copy1()
-
-	fmt.Println("\n5.字符串、数组和切片的应用")
-	// sliceString()
-
-}
-
 // 切片的基本用法
-func slices() { 
+func slices() {
 	var arr1 = [7]int{2, 4, 6, 8, 10, 12, 14}
 	// 初始化切片slice1，从数组arr1中引用索引号为2,3,4的元素
 	var slice1 []int = arr1[2:5]
@@ -77,7 +59,7 @@ func append1() {
 func copy1() {
 	slice1 := []int{1, 2, 3}
 	slice2 := make([]int, 2)
-	fmt.Println(slice1 ,slice2)
+	fmt.Println(slice1, slice2)
 	copy(slice2, slice1)
 	fmt.Println(slice1, slice2)
 }
@@ -91,4 +73,22 @@ func sliceString() {
 	s2 := string(c) // s2 == "cello"
 	fmt.Println("变更后的数组c为：", c)
 	fmt.Println("变更后的字符串为:", s2)
+}
+
+func main() {
+	// 切片的基本用法
+	// slices()
+
+	// 切片的重组
+	reslice()
+
+	// 切片的追加 append
+	// append1()
+
+	// 切片的复制 copy
+	// copy1()
+
+	// 字符串、数组和切片的应用
+	// sliceString()
+
 }
