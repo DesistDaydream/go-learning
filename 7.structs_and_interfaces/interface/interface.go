@@ -26,7 +26,6 @@ type MyString2 string
 func (ms MyString2) ToDoSomthing() {
 	fmt.Println("我是让 MyString2 结构体实现 InterfaceDemo 这个接口的 ToDoSomthing 这个方法中，输出的内容")
 }
-
 func main() {
 	name1 := MyString1("我是 MyString1 类型声明的变量的值")
 	name2 := MyString2("我是 MyString2 类型声明的变量的值")
@@ -34,7 +33,6 @@ func main() {
 	var v InterfaceDemo
 	// 接口已声明未使用的时候，接口变量的类型为nil(空),值也为nil(空)，接口的类型会随着值的不同而又不同的类型
 	fmt.Printf("变量 name1 的类型为：%T, 变量 name2 的类型为：%T\n接口类型的变量 v 的类型为：%T; 值为：%v\n\n", name1, name2, v, v)
-
 	// 由于 MyString1 和 MyString2 类型实现了 VowelsFinder 接口
 	// 所以这些自定义类型的变量可以作为值，赋给接口类型的变量，且接口变量的类型变为实现该接口的自定义类型
 	// 可以看到，接口类型的变量 与 传统意义上的变量 并不太像。
@@ -45,7 +43,6 @@ func main() {
 	// 调用方法
 	v.ToDoSomthing()
 	fmt.Printf("自定义类型为:%v,接口类型为:%v\n\n", reflect.TypeOf(name1), reflect.TypeOf(v))
-
 	v = name2
 	// 调用方法
 	v.ToDoSomthing()
