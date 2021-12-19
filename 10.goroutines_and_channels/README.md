@@ -26,7 +26,7 @@ Go 协程是与其他函数或方法一起并发运行的函数或方法。
 
 main()函数算主协程，可以没有`go`关键字
 
-一个基本的协程代码示例：[goroutine.go](/10.GoroutinesAndChannels/goroutine.go)  
+一个基本的协程代码示例：[goroutine.go](/10.goroutines_and_channels/goroutine.go)  
 
 
 ## Channels通道  
@@ -42,8 +42,8 @@ channel的操作符：`<-`。这个操作符表示数据按照箭头的方向流
 1. `int2 = <- ch`。从通道流出(接收)。表示变量int2从通道ch中接收数据。i.e.ch中的数据会发送给int2  
 1. `<- ch`。单独调用通道的值，当前值会被丢弃。 
 
-一个基本的通道代码示例：[channel.go](/10.GoroutinesAndChannels/channel.go)  
-代码示例：[goroutineChannel.go](/10.GoroutinesAndChannels/goroutineChannel.go)展示了一个通道连通了两个协程，使得数据从一个协程进入通道，再从通道另一端出去到另一个协程的过程  
+一个基本的通道代码示例：[channel.go](/10.goroutines_and_channels/channel.go)  
+代码示例：[goroutineChannel.go](/10.goroutines_and_channels/goroutineChannel.go)展示了一个通道连通了两个协程，使得数据从一个协程进入通道，再从通道另一端出去到另一个协程的过程  
 
 比如聊天室功能中俩人聊天，两个goroutine就是两人的聊天窗口，channel就是连接两人的管道，直到一个人向channel发送消息前，channel都是阻塞的，当发送消息后，消息就会从channel的另一头流出，让另一个人收到  
 

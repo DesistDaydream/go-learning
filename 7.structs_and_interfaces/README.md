@@ -13,7 +13,7 @@
 * BaseType(基础类型)
 > 基础类型可以是另一个结构体,表示该结构体包含另一个结构体
 
-每个字段都有其对应的基础数据类型，在一个结构体中，FIELD名字必须是唯一的。代码示例：[struct.go](/7.Structs_Interfaces/struct/struct.go)
+每个字段都有其对应的基础数据类型，在一个结构体中，FIELD名字必须是唯一的。代码示例：[struct.go](/7.structs_and_interfaces/struct/struct.go)
 结构体的定义格式：
 ```go
 type StructID struct {
@@ -96,8 +96,8 @@ type File interface {
 可以给一个空接口类型的变量赋任何类型的值
 
 ## 接口的多态性
-代码示例1：[interface_formula.go](/7.Structs_Interfaces/interface/practice/interface_formula.go)其中接口变量的类型可以动态得随着不同的值而变化为对应的类型
-代码示例2：[interface_salary.go](/7.Structs_Interfaces/interface/practice/interface_salary.go)其中接口变量切片中的元素可以是任意类型；不像普通的切片，所有元素都是同一个类型
+代码示例1：[interface_formula.go](/7.structs_and_interfaces/interface/practice/interface_formula.go)其中接口变量的类型可以动态得随着不同的值而变化为对应的类型
+代码示例2：[interface_salary.go](/7.structs_and_interfaces/interface/practice/interface_salary.go)其中接口变量切片中的元素可以是任意类型；不像普通的切片，所有元素都是同一个类型
 
 ### Type Assertion(类型断言)
 **检测和转换接口变量的类型**  
