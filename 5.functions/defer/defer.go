@@ -1,15 +1,6 @@
 package main
 import "fmt"
 
-func main() {
-    fmt.Println("使用defer效果")
-    function10()
-    fmt.Println("\n未使用defer效果")
-    function11()
-    fmt.Println("\n其余defer实例")    
-    f()
-}
-
 func function10() {
     fmt.Printf("In function1 at the top\n")
     //带有defer关键字的函数调用会推迟到函数返回之前一刻才执行
@@ -34,4 +25,12 @@ func f() {
 	}
 }
 
-///defer语句实现代码
+// defer语句实现代码
+func main() {
+    fmt.Println("使用defer效果")
+    function10()
+    fmt.Println("\n未使用defer效果")
+    function11()
+    fmt.Println("\n其余defer实例")    
+    f()
+}
