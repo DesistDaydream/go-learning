@@ -2,12 +2,12 @@ package main
 
 import "fmt"
 
-func callByValue(ival int) {
-	ival = 0
+func callByValue(passedValue int) {
+	passedValue = 0
 }
 
-func callByReference(iptr *int) {
-	*iptr = 0
+func callByReference(passedReference *int) {
+	*passedReference = 0
 }
 
 func main() {
