@@ -1,6 +1,13 @@
 # 概述
 
-#
+# Maps映射
+map是**键值对**(key-value pairs)的无序集合。这种结构也称**关联数组**(associative array)、**字典**(dictionary)、**散列表/哈希表**(hash table)。这是一种快速寻找值的理想结构：给定key，对应的value可以迅速定位。代码示例：[maps.go](/4.arrays_slices_maps/maps.go)
+1. map的声明。格式：`var MapMapID map[KeyType]ValueType`
+2. map的初始化。格式：`MapID = make(map[KeyType]ValueType)`。也可以直接在声明时初始化`MapID ：= make(map[KeyType]ValueType)`
+3. map的使用。格式：`MapID[KEY] = VAL`或者`MapID := map[KeyType]ValType{KEY1:VAL1, KEY2:VAL2 ...,KEYn:VALn}`也可以每个键值单独使用一行，但是最后一行要有一个逗号
+   1. length长度。格式：`len(MapID)`。map的长度指的是键值对的个数，有几个键值对，长度就是几
+   2. key/value键值。格式：`MapID["KEY"]`。引用MapID的某个KEY，可以获取KEY对应的VAL。
+5. key/value的删除。格式：`delete(MapID, KEY)`。删除MapID这个map的KEY以及对应的VAL
 
 # Structs 结构体
 **Structs(结构体)** 是一种复合数据类型，当需要一个[自定义Type](/1.Type/README.md)，且这个 Type 由一系列的属性组成，每个属性都有自己的 **类型** 和 **值** 的时候，就需要使用 Structs，Structs 把数据聚集在一起，然后访问这些数据的时候，好像这些数据是一个独立实体的一部分。Structs 也是值类型，可以通过 `* new()` 函数创建。
