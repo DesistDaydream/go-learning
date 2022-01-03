@@ -2,13 +2,16 @@ package main
 
 import (
 	"fmt"
+	"reflect"
 )
 
 // map 的基本使用方式
 func mapsDemo() {
 	// 第一种 map 的使用方法
 	var x map[string]int
+	fmt.Println(reflect.TypeOf(x))
 	x = make(map[string]int)
+	fmt.Println(reflect.TypeOf(x))
 	x["key1"] = 10
 	x["key2"] = 11
 	fmt.Println(len(x), x["key1"], x["key2"])
