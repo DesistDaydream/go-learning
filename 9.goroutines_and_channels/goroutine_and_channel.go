@@ -44,7 +44,8 @@ func main() {
 	var wg sync.WaitGroup
 	// 为 WaitGroup 计数器 +2
 	wg.Add(2)
-	// ch通道用来传递数据；done通道用来传递任务是否完成的消息。
+
+	// ch 通道用来传递数据；done 通道用来传递任务是否完成的消息。
 	ch := make(chan string)
 	done := make(chan bool)
 
@@ -56,7 +57,13 @@ func main() {
 	// 如果不让 main() 等待，则无任何输出，或者报错 panic: send on closed channel。因为协程是并发运行，不用等代码运行完成就会执行后续代码。
 	// 如果后续代码执行完了，协程中的代码还没执行完成，就会没有任何输出。
 	// 如果后续代码中包含了关闭通道的操作，那么程序将会 panic，并报错 send on closed channel
-	// 可以使用time等待一秒，也可以使用 WaitGroup 让效果更好
+	// 可以使用time等待一秒
 	// time.Sleep(time.Second)
+	// 通常，我们使用 sync.WaitGroup 来让程序等待协程完成，就像前面几行代码一样，上面使用 time.Sleep() 仅仅就是进行一下说明。
+	// 平时我们会将 wg.Wait() 写在 var wg sync.WaitGroup 的下一行，并在语句前加上 defer。即：
+	// ```
+	// var wg sync.WaitGroup
+	// defer wg.Wait()
+	// ```
 	wg.Wait()
 }
