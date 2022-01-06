@@ -11,7 +11,7 @@ var data = `
 a: Easy!
 b:
   c: 2
-  d: 
+  d:
   - 3
   - 4
 `
@@ -34,7 +34,7 @@ func main() {
 	// 这种方式存储的 yaml 数据，单行 yaml 格式无法显示 key
 	t := T{}
 
-	// Unmarshal 具有打散、解包等含义。将参数2中的数据进行解码后，传给参数1。
+	// Unmarshal 具有打散、解包等含义。将参数1中的数据进行解码后，传给参数2。
 	// 官方文档称 Unmarshel 的行为 decode(解码) yaml 数据。
 	// 用白话说就是将多行 yaml 格式合并为1行 yaml 格式。
 	err := yaml.Unmarshal([]byte(data), &t)

@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
+	"os"
 
 	"gopkg.in/yaml.v2"
 )
@@ -25,7 +25,7 @@ type Config struct {
 
 func main() {
 	var setting Config
-	config, errRead := ioutil.ReadFile("./json_yaml/file/info.yaml")
+	config, errRead := os.ReadFile("./json_yaml/file/info.yaml")
 	if errRead != nil {
 		fmt.Print(errRead)
 	}
