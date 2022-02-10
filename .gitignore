@@ -3,3 +3,4 @@
 */*/.vscode/sftp.json
 practice/cryptography/private.pem
 practice/cryptography/public.pem
+*.gz

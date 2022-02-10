@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-func Tar(src, dst string) (err error) {
+func Archiving(src, dst string) (err error) {
 	// 创建文件
 	fw, err := os.Create(dst)
 	if err != nil {
@@ -32,7 +32,7 @@ func Tar(src, dst string) (err error) {
 	// 下面就该开始处理数据了，这里的思路就是递归处理目录及目录下的所有文件和目录
 	// 这里可以自己写个递归来处理，不过 Golang 提供了 filepath.Walk 函数，可以很方便的做这个事情
 	// 直接将这个函数的处理结果返回就行，需要传给它一个源文件或目录，它就可以自己去处理
-	// 我们就只需要去实现我们自己的 打包逻辑即可，不需要再去路径相关的事情
+	// 我们就只需要去实现我们自己的 打包逻辑即可，不需要再去做路径相关的事情
 	return filepath.Walk(src, func(fileName string, fi os.FileInfo, err error) error {
 		// 因为这个闭包会返回个 error ，所以先要处理一下这个
 		if err != nil {
@@ -82,15 +82,4 @@ func Tar(src, dst string) (err error) {
 
 		return nil
 	})
-}
-
-func main() {
-	// 需要打包的目录
-	var src = "3.control_structures"
-	// 打包后的文件名
-	var dst = "test_tar.tar.gz"
-
-	if err := Tar(src, dst); err != nil {
-		log.Fatalln(err)
-	}
 }
