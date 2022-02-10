@@ -11,14 +11,14 @@ import (
 
 func Extracting(dst, src string) (err error) {
 	// 打开准备解压的 tar 包
-	fr, err := os.Open(src)
+	file, err := os.Open(src)
 	if err != nil {
 		return
 	}
-	defer fr.Close()
+	defer file.Close()
 
 	// 将打开的文件先解压
-	gr, err := gzip.NewReader(fr)
+	gr, err := gzip.NewReader(file)
 	if err != nil {
 		return
 	}
