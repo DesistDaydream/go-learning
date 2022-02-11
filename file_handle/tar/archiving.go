@@ -23,24 +23,27 @@ func Archiving(src, dst string) (err error) {
 	gw := gzip.NewWriter(fw)
 	defer gw.Close()
 
-	// 创建 Tar.Writer 结构
+	// 实例化一个写入器，
 	tw := tar.NewWriter(gw)
-	// 如果需要启用 gzip 将上面代码注释，换成下面的
-
-	defer tw.Close()
+	// 检查写入器是否可以成功关闭
+	defer func() {
+		if err := tw.Close(); err != nil {
+			log.Fatal(err)
+		}
+	}()
 
 	// 下面就该开始处理数据了，这里的思路就是递归处理目录及目录下的所有文件和目录
 	// 这里可以自己写个递归来处理，不过 Golang 提供了 filepath.Walk 函数，可以很方便的做这个事情
 	// 直接将这个函数的处理结果返回就行，需要传给它一个源文件或目录，它就可以自己去处理
 	// 我们就只需要去实现我们自己的 打包逻辑即可，不需要再去做路径相关的事情
-	return filepath.Walk(src, func(fileName string, fi os.FileInfo, err error) error {
+	return filepath.Walk(src, func(fileName string, fileInfo os.FileInfo, err error) error {
 		// 因为这个闭包会返回个 error ，所以先要处理一下这个
 		if err != nil {
 			return err
 		}
 
 		// 这里就不需要我们自己再 os.Stat 了，它已经做好了，我们直接使用 fi 即可
-		hdr, err := tar.FileInfoHeader(fi, "")
+		hdr, err := tar.FileInfoHeader(fileInfo, "")
 		if err != nil {
 			return err
 		}
@@ -60,7 +63,7 @@ func Archiving(src, dst string) (err error) {
 
 		// 判断下文件是否是标准文件，如果不是就不处理了，
 		// 如： 目录，这里就只记录了文件信息，不会执行下面的 copy
-		if !fi.Mode().IsRegular() {
+		if !fileInfo.Mode().IsRegular() {
 			return nil
 		}
 
