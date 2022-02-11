@@ -10,24 +10,13 @@ import (
 	"strings"
 )
 
-func main() {
-	// 源档案（准备压缩的文件或目录）
-	var src = "log"
-	// 目标文件，压缩后的文件
-	var dst = "log.zip"
-
-	if err := Zip(dst, src); err != nil {
-		log.Fatalln(err)
-	}
-}
-
 func Zip(dst, src string) (err error) {
 	// 创建准备写入的文件
 	fw, err := os.Create(dst)
-	defer fw.Close()
 	if err != nil {
 		return err
 	}
+	defer fw.Close()
 
 	// 通过 fw 来创建 zip.Write
 	zw := zip.NewWriter(fw)
@@ -72,10 +61,10 @@ func Zip(dst, src string) (err error) {
 
 		// 打开要压缩的文件
 		fr, err := os.Open(path)
-		defer fr.Close()
 		if err != nil {
 			return
 		}
+		defer fr.Close()
 
 		// 将打开的文件 Copy 到 w
 		n, err := io.Copy(w, fr)

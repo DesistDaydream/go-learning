@@ -4,30 +4,18 @@ import (
 	"archive/zip"
 	"fmt"
 	"io"
-	"log"
 	"os"
 	"path/filepath"
 )
-
-func main() {
-	// 压缩包
-	var src = "log.zip"
-	// 解压后保存的位置，为空表示当前目录
-	var dst = ""
-
-	if err := UnZip(dst, src); err != nil {
-		log.Fatalln(err)
-	}
-}
 
 func UnZip(dst, src string) (err error) {
 	// 打开压缩文件，这个 zip 包有个方便的 ReadCloser 类型
 	// 这个里面有个方便的 OpenReader 函数，可以比 tar 的时候省去一个打开文件的步骤
 	zr, err := zip.OpenReader(src)
-	defer zr.Close()
 	if err != nil {
 		return
 	}
+	defer zr.Close()
 
 	// 如果解压后不是放在当前目录就按照保存目录去创建目录
 	if dst != "" {
