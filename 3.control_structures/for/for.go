@@ -4,27 +4,6 @@ import (
 	"fmt"
 )
 
-func main() {
-	// 基本结构示例
-	fmt.Println("1.基本for循环示例")
-	baseFor()
-	// 无限循环示例
-	fmt.Println("\n2.无限循环示例")
-	infiniteLoop()
-	//continueTest功能示例
-	fmt.Println("\n3.continue用法")
-	continueTest()
-	// break功能示例
-	fmt.Println("\n4.break用法")
-	breakTest()
-	// label与goto用法示例
-	fmt.Println("\n5.标签与goto的用法")
-	labelTest()
-	// for-range结构示例
-	fmt.Println("\n6.for-range结构的用法")
-	forRange()
-}
-
 func baseFor() {
 	// 基本for循环语句，初始化变量i的值为0，当i小于3时执行循环体，每执行一次i的值加1
 	for i := 0; i < 3; i++ {
@@ -37,7 +16,9 @@ func infiniteLoop() {
 	for {
 		fmt.Println(i)
 		i += 1
-		if i == 3 { return }
+		if i == 3 {
+			return
+		}
 	}
 }
 
@@ -73,7 +54,7 @@ LABEL1:
 	for i := 0; i <= 2; i++ {
 		for j := 0; j <= 5; j++ {
 			if j == 4 {
-				fmt.Println("\n")
+				fmt.Printf("\n")
 				continue LABEL1
 			}
 			fmt.Printf("%d,%d ", i, j)
@@ -109,4 +90,23 @@ func forRange() {
 	}
 }
 
-
+func main() {
+	// 基本结构示例
+	fmt.Println("1.基本for循环示例")
+	baseFor()
+	// 无限循环示例
+	fmt.Println("\n2.无限循环示例")
+	infiniteLoop()
+	//continueTest功能示例
+	fmt.Println("\n3.continue用法")
+	continueTest()
+	// break功能示例
+	fmt.Println("\n4.break用法")
+	breakTest()
+	// label与goto用法示例
+	fmt.Println("\n5.标签与goto的用法")
+	labelTest()
+	// for-range结构示例
+	fmt.Println("\n6.for-range结构的用法")
+	forRange()
+}
