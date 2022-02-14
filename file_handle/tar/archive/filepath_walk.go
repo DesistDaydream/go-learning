@@ -11,14 +11,12 @@ import (
 	"strings"
 )
 
-func filepathWalkArchiving(src string, dstFile *os.File) (err error) {
-	// 将 tar 包使用 gzip 压缩，其实添加压缩功能很简单，
-	// 只需要在 dstFile 和 writer 之前加上一层压缩就行了，和 Linux 的管道的感觉类似
-	gw := gzip.NewWriter(dstFile)
-	defer gw.Close()
+func filepathWalkArchiving(src string, dstFile *os.File, isGzip bool) (err error) {
+	gzipWriter := gzip.NewWriter(dstFile)
+	defer gzipWriter.Close()
 
 	// 实例化一个写入器，
-	tarWriter := tar.NewWriter(gw)
+	tarWriter := tar.NewWriter(gzipWriter)
 	// 检查写入器是否可以成功关闭
 	defer func() {
 		if err := tarWriter.Close(); err != nil {
@@ -43,7 +41,7 @@ func filepathWalkArchiving(src string, dstFile *os.File) (err error) {
 		}
 
 		fmt.Println("原来", hdr.Name)
-		fmt.Println(filePath)
+		fmt.Println("路径", filePath)
 
 		// 这里需要处理下 hdr 中的 Name，因为默认文件的名字是不带路径的，只有一个单纯的名字
 		// 打包之后所有文件就会堆在一起，这样就破坏了原本的目录结果
