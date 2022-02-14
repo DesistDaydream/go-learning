@@ -4,7 +4,6 @@ import (
 	"archive/tar"
 	"compress/gzip"
 	"io"
-	"log"
 	"os"
 )
 
@@ -18,13 +17,7 @@ func HelloWorld(srcFile io.Reader, dstFile string, isGzip bool) {
 	}
 
 	// 2. 获取文件头信息
-	hdr, err := tr.Next()
-	if err == io.EOF {
-		log.Fatal(err)
-	}
-	if err != nil {
-		log.Fatal(err)
-	}
+	hdr, _ := tr.Next()
 
 	// 根据文件头信息判断文件类型
 	switch hdr.Typeflag {
@@ -34,7 +27,7 @@ func HelloWorld(srcFile io.Reader, dstFile string, isGzip bool) {
 		// 如果是文件，就写入
 	}
 
-	// 注意：与归档类似，这里的将要提取的 srcFile 虽然是一个目录，但是在提取的过程中，只会将目录本身提取出来
+	// 注意：与归档类似，这里的将要提取的  srcFile 虽然是一个目录，但是在提取的过程中，只会将目录本身提取出来
 	// 也就是说，目录下的所有内容都不会自动处理，所以我们要自己递归目录，逐一将文件提取出来
 }
 
@@ -45,9 +38,11 @@ func main() {
 	var extractDst = "file_handle/tar_dir/"
 	var isGzip = true
 
+	// 打开准备提取的 tar 包
 	file, _ := os.Open(extractSrc)
+	defer file.Close()
 
 	HelloWorld(file, extractDst, isGzip)
 
-	// Extracting(extractSrc, extractDst)
+	// Extracting(file, extractDst, isGzip)
 }
