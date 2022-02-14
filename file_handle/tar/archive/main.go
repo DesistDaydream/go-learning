@@ -4,6 +4,7 @@ import (
 	"archive/tar"
 	"compress/gzip"
 	"io"
+	"log"
 	"os"
 )
 
@@ -14,11 +15,12 @@ func HelloWorld(srcFile string, dstFile io.Writer, isGzip bool) {
 	// 这里将 dstFile 连接到了 tw.w 属性
 	// 当我们将归档源写入 tw.w 属性，就相当于是写入到归档文件中了。在代码最后，就会调用 tw.Write(SrcFIieByte) 方法，将归档源写入到 tw.w 中，即写入到的 dstFile 中
 	tw := tar.NewWriter(dstFile)
+	// 如果想要使用 gzip 压缩 tar 归档文件，只需要在 dstFile 和 writer 之前加上一层压缩就行了，和 Linux 的管道的感觉类似
 	if isGzip {
-		// 将 tar 包使用 gzip 压缩，只需要在 dstFile 和 writer 之前加上一层压缩就行了，和 Linux 的管道的感觉类似
 		gzipWriter := gzip.NewWriter(dstFile)
 		// 如果不关闭会造成归档文件不完整，不完整的归档文件打开后会报错:`The archive is corrupt`
 		defer gzipWriter.Close()
+		// 这时实例化 tar 写入器时的参数，就是一个已实例化的 gzip 写入器
 		tw = tar.NewWriter(gzipWriter)
 	}
 	// 如果不关闭会造成归档文件不完整，不完整的归档文件打开后会报错:`The archive is corrupt`
@@ -26,9 +28,15 @@ func HelloWorld(srcFile string, dstFile io.Writer, isGzip bool) {
 
 	// 2. 将归档源的 Header 信息写入归档文件中
 	// 获取归档源信息
-	fileInfo, _ := os.Stat(srcFile)
+	fileInfo, err := os.Stat(srcFile)
+	if err != nil {
+		log.Fatal(err)
+	}
 	// 通过归档源的文件信息，生成用于填充 tar 的 Header
-	hdr, _ := tar.FileInfoHeader(fileInfo, "")
+	hdr, err := tar.FileInfoHeader(fileInfo, "")
+	if err != nil {
+		log.Fatal(err)
+	}
 	// 将 Header 写入归档文件中
 	tw.WriteHeader(hdr)
 
@@ -50,7 +58,7 @@ func main() {
 	// var archiveDstPath = "test_files/test_tar.tar"
 	var archiveDstPath = "file_handle/tar_dir/test_tar.tar.gz"
 	// 是否使用 Gzip 压缩 tar 归档文件
-	isGzip := true
+	var isGzip = true
 
 	// 创建归档目标文件，等待归档
 	file, _ := os.Create(archiveDstPath)
