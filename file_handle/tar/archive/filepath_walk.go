@@ -3,8 +3,8 @@ package main
 import (
 	"archive/tar"
 	"compress/gzip"
-	"fmt"
 	"io"
+	"io/fs"
 	"log"
 	"os"
 	"path/filepath"
@@ -28,30 +28,28 @@ func filepathWalkArchiving(src string, dstFile *os.File, isGzip bool) (err error
 	// 这里可以自己写个递归来处理，不过 Golang 提供了 filepath.Walk 函数，可以很方便的做这个事情
 	// 直接将这个函数的处理结果返回就行，需要传给它一个归档源，它就可以自己去处理
 	// 我们就只需要去实现我们自己的打包逻辑即可，不需要再去做路径相关的事情
-	return filepath.Walk(src, func(filePath string, fileInfo os.FileInfo, err error) error {
+	return filepath.WalkDir(src, func(filePath string, dirEntry fs.DirEntry, err error) error {
 		// 因为这个闭包会返回个 error ，所以先要处理一下这个
 		if err != nil {
 			return err
 		}
 
 		// 这里就不需要我们自己再 os.Stat 获取文件信息了了，filepath.Walk 已经做好了，我们直接使用 fileInfo 即可
+		fileInfo, _ := dirEntry.Info()
 		hdr, err := tar.FileInfoHeader(fileInfo, "")
 		if err != nil {
 			return err
 		}
 
-		fmt.Println("原来", hdr.Name)
-		fmt.Println("路径", filePath)
+		// 这里需要处理下 hdr.Name，因为默认文件名是不带路径的，只有一个单纯的名字。
+		// 这样打包之后所有文件就会堆在一起，这样就破坏了原本的目录结果，所以需要将文件名，替换为待路径的名称
+		// 例如： 将原本 hdr.Name 的 test_dir1 替换成 test_files/test_dir1
+		// 这个也很简单，filepath.Walk() 中的回调函数中的 filePath 参数给我们返回来的就是归档源的完整路径
+		// 这里的完整路径是相对的，取决于 src 提供的路径，这里面是相对于 scr 如果是目录的话，目录下的每一个文件，都是相对该目录的完整路径
+		// hdr.Name = filePath
 
-		// 这里需要处理下 hdr 中的 Name，因为默认文件的名字是不带路径的，只有一个单纯的名字
-		// 打包之后所有文件就会堆在一起，这样就破坏了原本的目录结果
-		// 例如： 将原本 hdr.Name 的 syslog 替换程 log/syslog
-		// 这个其实也很简单，回调函数的 filePath 字段给我们返回来的就是完整路径的 log/syslog
-		// strings.TrimPrefix 将 filePath 的最左侧的 / 去掉，
-		// 熟悉 Linux 的都知道为什么要去掉这个
+		// 有一点需要注意，对于 Linux 来说，不能单纯使用 filePath 替换 hdr.Name。如果 src 是绝对路径的话，需要去掉最左侧的 /
 		hdr.Name = strings.TrimPrefix(filePath, string(filepath.Separator))
-
-		fmt.Println("后来", hdr.Name)
 
 		// 写入文件信息
 		if err := tarWriter.WriteHeader(hdr); err != nil {
@@ -71,13 +69,13 @@ func filepathWalkArchiving(src string, dstFile *os.File, isGzip bool) (err error
 		}
 		defer file.Close()
 
-		// copy 文件数据到 tw
-		_, err = io.Copy(tarWriter, file)
+		// copy 文件数据到 tarWriter
+		n, err := io.Copy(tarWriter, file)
 		if err != nil {
 			return err
 		}
 
-		// log.Printf("成功打包 %s ，共写入了 %d 字节的数据\n", filePath, n)
+		log.Printf("成功打包 %s ，共写入了 %d 字节的数据\n", filePath, n)
 
 		return nil
 	})

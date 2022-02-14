@@ -36,6 +36,7 @@ func HelloWorld(srcFile string, dstFile io.Writer, isGzip bool) {
 	// 打开归档源，并将 归档源 写入归档文件中
 	srcFileByte, _ := os.ReadFile(srcFile)
 	tw.Write(srcFileByte)
+	// 这里还可以先 file,_ := os.Open(srcFile)，然后再用 io.Copy(tw,file) 将文件数据拷贝到 tw
 
 	// 注意：这里的 srcFile 虽然是一个目录，但是在归档的过程中，只会将目录本身写入归档文件
 	// 也就是说，目录下的所有内容都不会自动处理，所以我们要自己递归目录，逐一将文件写入归档文件
@@ -44,7 +45,7 @@ func HelloWorld(srcFile string, dstFile io.Writer, isGzip bool) {
 
 func main() {
 	// 归档源，即待归档的目录
-	var archiveSrcPath = "test_files"
+	var archiveSrcPath = "/mnt/d/Projects/DesistDaydream/go-learning/test_files"
 	// 归档目，即归档后生成的文件
 	// var archiveDstPath = "test_files/test_tar.tar"
 	var archiveDstPath = "file_handle/tar_dir/test_tar.tar.gz"
