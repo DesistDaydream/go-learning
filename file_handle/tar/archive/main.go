@@ -7,24 +7,21 @@ import (
 	"os"
 )
 
-var tw *tar.Writer
-
 func HelloWorld(srcFile string, dstFile io.Writer, isGzip bool) {
 	// 归档大体分为三步
 
 	// 1. 实例化一个 tar 写入器，写入器主要用来将数据写入归档文件中，即 file 变量
-	if !isGzip {
-		// 这里将 dstFile 连接到了 tw.w 属性
-		// 当我们将归档源写入 tw.w 属性，就相当于是写入到归档文件中了。在代码最后，就会调用 tw.Write(SrcFIieByte) 方法，将归档源写入到 tw.w 中，即写入到的 dstFile 中
-		tw = tar.NewWriter(dstFile)
-	} else {
+	// 这里将 dstFile 连接到了 tw.w 属性
+	// 当我们将归档源写入 tw.w 属性，就相当于是写入到归档文件中了。在代码最后，就会调用 tw.Write(SrcFIieByte) 方法，将归档源写入到 tw.w 中，即写入到的 dstFile 中
+	tw := tar.NewWriter(dstFile)
+	if isGzip {
 		// 将 tar 包使用 gzip 压缩，只需要在 dstFile 和 writer 之前加上一层压缩就行了，和 Linux 的管道的感觉类似
 		gzipWriter := gzip.NewWriter(dstFile)
+		// 如果不关闭会造成归档文件不完整，不完整的归档文件打开后会报错:`The archive is corrupt`
 		defer gzipWriter.Close()
-
 		tw = tar.NewWriter(gzipWriter)
 	}
-	// 如果不关闭会造成归档文件不完整，不完整的归档文件打开后会报错
+	// 如果不关闭会造成归档文件不完整，不完整的归档文件打开后会报错:`The archive is corrupt`
 	defer tw.Close()
 
 	// 2. 将归档源的 Header 信息写入归档文件中

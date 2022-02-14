@@ -46,8 +46,8 @@ func filepathWalkArchiving(src string, dstFile *os.File, isGzip bool) (err error
 		// 这里需要处理下 hdr 中的 Name，因为默认文件的名字是不带路径的，只有一个单纯的名字
 		// 打包之后所有文件就会堆在一起，这样就破坏了原本的目录结果
 		// 例如： 将原本 hdr.Name 的 syslog 替换程 log/syslog
-		// 这个其实也很简单，回调函数的 fileName 字段给我们返回来的就是完整路径的 log/syslog
-		// strings.TrimPrefix 将 fileName 的最左侧的 / 去掉，
+		// 这个其实也很简单，回调函数的 filePath 字段给我们返回来的就是完整路径的 log/syslog
+		// strings.TrimPrefix 将 filePath 的最左侧的 / 去掉，
 		// 熟悉 Linux 的都知道为什么要去掉这个
 		hdr.Name = strings.TrimPrefix(filePath, string(filepath.Separator))
 
