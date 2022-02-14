@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 )
 
-func Extracting(dst, src string) (err error) {
+func Extracting(src, dst string) (err error) {
 	// 打开准备解压的 tar 包
 	file, err := os.Open(src)
 	if err != nil {
