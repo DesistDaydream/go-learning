@@ -45,7 +45,7 @@ func HelloWorld(srcFile string, dstFile io.Writer, isGzip bool) {
 
 func main() {
 	// 归档源，即待归档的目录
-	var archiveSrcPath = "/mnt/d/Projects/DesistDaydream/go-learning/test_files"
+	var archiveSrcPath = "test_files"
 	// 归档目，即归档后生成的文件
 	// var archiveDstPath = "test_files/test_tar.tar"
 	var archiveDstPath = "file_handle/tar_dir/test_tar.tar.gz"
