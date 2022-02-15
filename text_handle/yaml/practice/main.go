@@ -25,7 +25,7 @@ type Config struct {
 
 func main() {
 	var setting Config
-	config, errRead := os.ReadFile("./json_yaml/file/info.yaml")
+	config, errRead := os.ReadFile("./text_handle/test_files/info.yaml")
 	if errRead != nil {
 		fmt.Print(errRead)
 	}
