@@ -42,9 +42,6 @@ func Combination(n, k int64) *big.Int {
 	nF := BigFactorial(big.NewInt(n))
 	kF := BigFactorial(big.NewInt(k))
 	nkF := BigFactorial(big.NewInt(n - k))
-	// log.Printf("%d 的阶乘是 %d\n", n, nF)
-	// log.Printf("%d 的阶乘是 %d\n", k, kF)
-	// log.Printf("%d 的阶乘是 %d\n", n-k, nkF)
 	return result.Div(result.Div(nF, kF), nkF)
 }
 
@@ -56,8 +53,10 @@ func main() {
 
 	log.Printf("从 %v 个元素中取 %v 个元素的组合数:%v", n, k, Combination(n, k))
 
-	fenzi := Combination(n-a, k).Int64() + Combination(n-b, k).Int64() - Combination(n-a-b, k).Int64()
+	fenzi := Combination(n-b, k).Int64() + Combination(n-a, k).Int64() - Combination(n-a-b, k).Int64()
 	fenmu := Combination(n, k).Int64()
+
+	log.Printf("\n分子：%v\n分母：%v", float64(fenzi), float64(fenmu))
 
 	result := float64(fenzi) / float64(fenmu)
 	log.Printf("%v", 1-result)
