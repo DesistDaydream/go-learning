@@ -51,8 +51,8 @@ func Combination(n, k int64) *big.Int {
 func main() {
 	var n int64 = 40
 	var k int64 = 5
-	var a int64 = 18
-	var b int64 = 17
+	var a int64 = 6
+	var b int64 = 7
 
 	log.Printf("从 %v 个元素中取 %v 个元素的组合数:%v", n, k, Combination(n, k))
 
