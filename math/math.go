@@ -35,7 +35,8 @@ func BigFactorial(n *big.Int) *big.Int {
 // 组合
 func Combination(n, k int64) *big.Int {
 	result := big.NewInt(0)
-	if n < k {
+	if n <= k {
+		log.Println(n, k)
 		return result
 	}
 	nF := BigFactorial(big.NewInt(n))
@@ -50,8 +51,8 @@ func Combination(n, k int64) *big.Int {
 func main() {
 	var n int64 = 40
 	var k int64 = 5
-	var a int64 = 20
-	var b int64 = 20
+	var a int64 = 18
+	var b int64 = 17
 
 	log.Printf("从 %v 个元素中取 %v 个元素的组合数:%v", n, k, Combination(n, k))
 
