@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/DesistDaydream/go-learning/4_arrays_and_slices/array"
 	"github.com/DesistDaydream/go-learning/math/combination"
 )
 
@@ -102,12 +103,12 @@ func ListCombinationKind(nums []string, indexs [][]int) [][]string {
 	return result
 }
 
-// 递归统计
+// 统计
 func ConditionCount(combination []string, condition []string) bool {
-	return isSubset(condition, combination)
+	return array.IsSubset(condition, combination)
 }
 
-// 正常统计
+// isElement 正常统计
 func isElement(combinations []string, condition string) bool {
 	for _, combination := range combinations {
 		if combination == condition {
@@ -115,26 +116,6 @@ func isElement(combinations []string, condition string) bool {
 		}
 	}
 	return false
-}
-
-// 判断一个数组是否是另一个数组的子集
-func isSubset(subset, superset []string) bool {
-	set := make(map[string]int)
-	for _, value := range superset {
-		set[value] += 1
-	}
-
-	for _, value := range subset {
-		if count, found := set[value]; !found {
-			return false
-		} else if count < 1 {
-			return false
-		} else {
-			set[value] = count - 1
-		}
-	}
-
-	return true
 }
 
 // 判断遍历所有组合数的结果是否正确
@@ -188,7 +169,7 @@ func main() {
 			TargetCombination++
 		}
 
-		// 下面的逻辑如何优化？
+		// 这种逻辑如何优化？
 		// if isElement(combination, hand[0]) && isElement(combination, hand[1]) {
 		// 	TargetCombination++
 		// }

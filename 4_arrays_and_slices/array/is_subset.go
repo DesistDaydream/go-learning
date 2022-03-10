@@ -1,10 +1,11 @@
-package main
+package array
 
 // 判断一个数组是否是另一个数组的子集
-func isSubset(subset, superset []string) bool {
+func IsSubset(subset, superset []string) bool {
 	set := make(map[string]int)
 	for _, value := range superset {
 		set[value] += 1
+		// fmt.Println(set)
 	}
 
 	for _, value := range subset {
