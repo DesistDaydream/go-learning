@@ -126,13 +126,10 @@ func main() {
 	for _, combinationKind := range combinationKinds {
 		for _, v1 := range combinationKind {
 			if v1 == "a" {
-				// fmt.Println("i1", i1)
 				for _, v2 := range combinationKind {
-					// fmt.Println("i2", i2)
 					if v2 == "b" {
 						resultCount++
 						// fmt.Printf("命中坐标:%v,%v.最上层index:%v\n", i1, i2, i)
-						// fmt.Println(r)
 						break
 					}
 				}
