@@ -70,4 +70,9 @@ func main() {
 
 	fmt.Println("\n3.测试多维数组")
 	multidim_array()
+
+	superset := []string{"0", "4", "1", "3", "2", "3"}
+	subset := []string{"1", "3", "2"}
+	index := isSubset(subset, superset)
+	fmt.Printf("命题: %v 是 %v 的子集.\n结论: %v\n", subset, superset, index)
 }

@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/DesistDaydream/go-learning/math/combination"
 )
@@ -103,83 +102,9 @@ func ListCombinationKind(nums []string, indexs [][]int) [][]string {
 	return result
 }
 
-func main() {
-	// 样本
-	deck := []string{"a", "a", "a", "a", "a", "a", "b", "b", "b", "b", "b", "b", "b", "c", "c", "c", "d", "d", "e", "f", "g", "h", "i", "g", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"}
-	hand := []string{"a", "b"}
-	// deck := []string{"a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "啊", "哦", "鱼"}
-	// deck := []string{"a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b"}
-	// deck := []string{"a", "b", "c", "d", "e", "f"}
-	// deck := []string{"a", "a", "b", "b", "c", "e"}
-
-	var n int = len(deck) // 样本中元素总数
-	var k int = 5         // 从样本中取出的元素数
-
-	timeStart := time.Now()
-	indexs := combinationIndexs(n, int(k))
-	// 组合种类的列表
-	combinations := ListCombinationKind(deck, indexs)
-	timeEnd := time.Now()
-
-	fmt.Println("原始组合总数:", len(combinations))
-	// fmt.Println("所有组合结果:", combinationKinds)
-	fmt.Println("时间消耗:", timeEnd.Sub(timeStart))
-
-	// 判断结果是否正确
-	rightCount := combination.Combination(n, k).Int64()
-	if int(rightCount) == len(combinations) {
-		fmt.Println("结果正确")
-	} else {
-		fmt.Println("结果错误，正确结果是：", rightCount)
-	}
-
-	// 获取 deck 中，至少有 1 个 a 且 1 个 b 的组合数
-	// for i, combination := range combinations {
-	// 	for i1, condition1 := range combination {
-	// 		if condition1 == "a" {
-	// 			for i2, condition2 := range combination {
-	// 				if condition2 == "b" {
-	// 					targetCombination++
-	// 					fmt.Printf("原始索引: %v, 条件1索引: %v, 条件2索引: %v\n", i, i1, i2)
-	// 					_, _, _ = i, i1, i2
-	// 					break
-	// 				}
-	// 			}
-	// 			// 若不退出，当数组中有多个 a 的时候，会匹配多次
-	// 			break
-	// 		}
-	// 	}
-	// }
-
-	for _, combination := range combinations {
-		ConditionCount(combination, hand)
-		if isElement(combination, hand[0]) && isElement(combination, hand[1]) {
-			TargetCombination++
-		}
-
-	}
-
-	fmt.Println("指定组合总数:", TargetCombination)
-	fmt.Println("取到指定组合的概率:", float64(TargetCombination)/float64(len(combinations)))
-}
-
-var TargetCombination int = 0 // 满足条件的组合数
-
 // 递归统计
-func ConditionCount(combinations []string, condition []string) bool {
-	for _, combination := range combinations {
-		if len(condition) == 0 {
-			return true
-		}
-
-		if combination == condition[0] {
-			if len(condition) == 1 {
-				TargetCombination++
-			}
-			return ConditionCount(combinations, condition[1:])
-		}
-	}
-	return false
+func ConditionCount(combination []string, condition []string) bool {
+	return isSubset(condition, combination)
 }
 
 // 正常统计
@@ -190,4 +115,85 @@ func isElement(combinations []string, condition string) bool {
 		}
 	}
 	return false
+}
+
+// 判断一个数组是否是另一个数组的子集
+func isSubset(subset, superset []string) bool {
+	set := make(map[string]int)
+	for _, value := range superset {
+		set[value] += 1
+	}
+
+	for _, value := range subset {
+		if count, found := set[value]; !found {
+			return false
+		} else if count < 1 {
+			return false
+		} else {
+			set[value] = count - 1
+		}
+	}
+
+	return true
+}
+
+// 判断遍历所有组合数的结果是否正确
+func checkResult(n, k int, combinations [][]string) {
+	rightCount := combination.Combination(n, k).Int64()
+	if int(rightCount) == len(combinations) {
+		fmt.Println("结果正确")
+	} else {
+		fmt.Println("结果错误，正确结果是：", rightCount)
+	}
+
+}
+
+func main() {
+	// 样本
+	deck := []string{"a", "a", "a", "a", "a", "a", "b", "b", "b", "b", "b", "b", "b", "c", "c", "c", "d", "d", "e", "f", "g", "h", "i", "g", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"}
+	hand := []string{"a", "b", "a"}
+	// deck := []string{"a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "啊", "哦", "鱼"}
+	// deck := []string{"a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b"}
+	// deck := []string{"a", "b", "c", "d", "e", "f"}
+	// deck := []string{"a", "a", "b", "b", "c", "e"}
+
+	var n int = len(deck)         // 样本中元素总数
+	var k int = 5                 // 从样本中取出的元素数
+	var TargetCombination int = 0 // 满足条件的组合数
+
+	// 遍历样本，获取组合种类的列表
+	combinations := ListCombinationKind(deck, combinationIndexs(n, int(k)))
+
+	fmt.Println("原始组合总数:", len(combinations))
+	// fmt.Println("原始组合列表:", combinations)
+	checkResult(n, k, combinations)
+
+	// 获取 deck 中，至少有 1 个 a 且 1 个 b 的组合数
+	for _, combination := range combinations {
+		// 下面的代码可以简化成递归处理
+		// for _, element1 := range combination {
+		// 	if element1 == "a" {
+		// 		for _, element2 := range combination {
+		// 			if element2 == "b" {
+		// 				TargetCombination++
+		// 				break
+		// 			}
+		// 		}
+		// 		// 若不退出，当数组中有多个 a 的时候，会匹配多次
+		// 		break
+		// 	}
+		// }
+
+		if ConditionCount(combination, hand) {
+			TargetCombination++
+		}
+
+		// 下面的逻辑如何优化？
+		// if isElement(combination, hand[0]) && isElement(combination, hand[1]) {
+		// 	TargetCombination++
+		// }
+	}
+
+	fmt.Println("指定组合总数:", TargetCombination)
+	fmt.Println("取到指定组合的概率:", float64(TargetCombination)/float64(len(combinations)))
 }
