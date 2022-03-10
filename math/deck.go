@@ -108,26 +108,39 @@ func ListCombinationKind(nums []string, indexs [][]int) [][]string {
 */
 func main() {
 	// 样本
-	// deck := []string{"a", "a", "a", "a", "a", "a", "b", "b", "b", "b", "b", "b", "b", "c", "d", "e", "f", "g", "h", "i", "g", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "啊", "哦", "鱼"}
+	deck := []string{"a", "a", "a", "a", "a", "a", "b", "b", "b", "b", "b", "b", "b", "c", "d", "e", "f", "g", "h", "i", "g", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "啊", "哦", "鱼"}
 	// deck := []string{"a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "啊", "哦", "鱼"}
+	// deck := []string{"a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b"}
 	// deck := []string{"a", "b", "c", "d", "e", "f"}
-	deck := []string{"a", "a", "b", "b", "e", "f"}
+	// deck := []string{"a", "a", "b", "b", "e", "f"}
+
+	// 数组长度
+	var n int = len(deck)
 	// 取出元素个数
 	var k int = 5
 
-	// 统计满足需求的目标组合总数
-	var targetCombination int = 0
-
 	timeStart := time.Now()
-	n := len(deck)
 	indexs := combinationIndexs(n, int(k))
-
 	// 组合种类的列表
 	combinationKinds := ListCombinationKind(deck, indexs)
 	timeEnd := time.Now()
 
 	fmt.Println("原始组合总数:", len(combinationKinds))
 	// fmt.Println("所有组合结果:", combinationKinds)
+	fmt.Println("时间消耗:", timeEnd.Sub(timeStart))
+
+	// 判断结果是否正确
+	rightCount := combination.Combination(n, k).Int64()
+	if int(rightCount) == len(combinationKinds) {
+		fmt.Println("结果正确")
+	} else {
+		fmt.Println("结果错误，正确结果是：", rightCount)
+	}
+
+	var (
+		// 满足条件的组合数
+		targetCombination int = 0
+	)
 
 	// 获取 deck 中，至少有 1 个 a 且 1 个 b 的组合数
 	for i, combinationKind := range combinationKinds {
@@ -136,7 +149,7 @@ func main() {
 				for i2, condition2 := range combinationKind {
 					if condition2 == "b" {
 						targetCombination++
-						fmt.Printf("原始索引: %v, 条件1索引: %v, 条件2索引: %v\n", i, i1, i2)
+						// fmt.Printf("原始索引: %v, 条件1索引: %v, 条件2索引: %v\n", i, i1, i2)
 						_ = i
 						_ = i1
 						_ = i2
@@ -146,18 +159,19 @@ func main() {
 				// 若不退出，当数组中有多个 a 的时候，会匹配多次
 				break
 			}
+
 		}
 	}
 
 	fmt.Println("指定组合总数:", targetCombination)
 	fmt.Println("取到指定组合的概率:", float64(targetCombination)/float64(len(combinationKinds)))
-	fmt.Println("时间消耗:", timeEnd.Sub(timeStart))
+}
 
-	//结果是否正确
-	rightCount := combination.Combination(n, k).Int64()
-	if int(rightCount) == len(combinationKinds) {
-		fmt.Println("结果正确")
-	} else {
-		fmt.Println("结果错误，正确结果是：", rightCount)
+func ConditionCount(combinationKind []string, condition ...string) {
+	var index int = 0
+	for _, combination := range combinationKind {
+		if condition[index] == combination {
+			fmt.Println("")
+		}
 	}
 }
