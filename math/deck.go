@@ -103,26 +103,17 @@ func ListCombinationKind(nums []string, indexs [][]int) [][]string {
 	return result
 }
 
-var (
-	// 满足条件的组合数
-	targetCombination int = 0
-)
-
-/*
-【排列组合问题：n个数中取k个】
-*/
 func main() {
 	// 样本
 	deck := []string{"a", "a", "a", "a", "a", "a", "b", "b", "b", "b", "b", "b", "b", "c", "c", "c", "d", "d", "e", "f", "g", "h", "i", "g", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"}
+	hand := []string{"a", "b"}
 	// deck := []string{"a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "啊", "哦", "鱼"}
 	// deck := []string{"a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b"}
 	// deck := []string{"a", "b", "c", "d", "e", "f"}
-	// deck := []string{"a", "a", "b", "b", "e", "f"}
+	// deck := []string{"a", "a", "b", "b", "c", "e"}
 
-	// 数组长度
-	var n int = len(deck)
-	// 取出元素个数
-	var k int = 5
+	var n int = len(deck) // 样本中元素总数
+	var k int = 5         // 从样本中取出的元素数
 
 	timeStart := time.Now()
 	indexs := combinationIndexs(n, int(k))
@@ -159,26 +150,43 @@ func main() {
 	// 		}
 	// 	}
 	// }
-	hand := []string{"a", "b", "c", "d", "e"}
-	for _, combinationKind := range combinations {
-		ConditionCount(combinationKind, hand)
+
+	for _, combination := range combinations {
+		ConditionCount(combination, hand)
+		if isElement(combination, hand[0]) && isElement(combination, hand[1]) {
+			TargetCombination++
+		}
+
 	}
 
-	fmt.Println("指定组合总数:", targetCombination)
-	fmt.Println("取到指定组合的概率:", float64(targetCombination)/float64(len(combinations)))
+	fmt.Println("指定组合总数:", TargetCombination)
+	fmt.Println("取到指定组合的概率:", float64(TargetCombination)/float64(len(combinations)))
 }
 
+var TargetCombination int = 0 // 满足条件的组合数
+
+// 递归统计
 func ConditionCount(combinations []string, condition []string) bool {
 	for _, combination := range combinations {
 		if len(condition) == 0 {
 			return true
 		}
 
-		if condition[0] == combination {
+		if combination == condition[0] {
 			if len(condition) == 1 {
-				targetCombination++
+				TargetCombination++
 			}
 			return ConditionCount(combinations, condition[1:])
+		}
+	}
+	return false
+}
+
+// 正常统计
+func isElement(combinations []string, condition string) bool {
+	for _, combination := range combinations {
+		if combination == condition {
+			return true
 		}
 	}
 	return false

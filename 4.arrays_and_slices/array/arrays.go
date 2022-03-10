@@ -2,17 +2,6 @@ package main
 
 import "fmt"
 
-func main() {
-	fmt.Println("1.测试for循环对数组的赋值以及引用输出")
-	arrays()
-	
-	fmt.Println("\n2.测试数组的初始化")
-	arrInit()
-
-	fmt.Println("\n3.测试多维数组")
-	multidim_array()
-}
-
 //数组的基本使用
 func arrays() {
 	//数组的声明。声明一个名为arr1，长度为5，类型为int的数组
@@ -70,4 +59,15 @@ func multidim_array() {
 	}
 
 	fmt.Println(screen)
+}
+
+func main() {
+	fmt.Println("1.测试for循环对数组的赋值以及引用输出")
+	arrays()
+
+	fmt.Println("\n2.测试数组的初始化")
+	arrInit()
+
+	fmt.Println("\n3.测试多维数组")
+	multidim_array()
 }
