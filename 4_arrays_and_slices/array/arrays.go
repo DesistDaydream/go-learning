@@ -3,7 +3,7 @@ package array
 import "fmt"
 
 //数组的基本使用
-func arrays() {
+func Arrays() {
 	//数组的声明。声明一个名为arr1，长度为5，类型为int的数组
 	var arr1 [5]int
 	//数组的赋值。使用for形式轮流对每个元素进行赋值
@@ -22,7 +22,7 @@ func arrays() {
 }
 
 //数组的初始化
-func arrInit() {
+func ArrInit() {
 	// 正常对数组中每个元素进行赋值
 	// var arrAge = [5]int{18, 20, 15, 22, 16}
 
@@ -43,7 +43,7 @@ func arrInit() {
 	}
 }
 
-func multidim_array() {
+func MultidimArray() {
 	const (
 		WIDTH  = 2
 		HEIGHT = 3

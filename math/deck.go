@@ -137,6 +137,7 @@ func main() {
 	// deck := []string{"a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b"}
 	// deck := []string{"a", "b", "c", "d", "e", "f"}
 	// deck := []string{"a", "a", "b", "b", "c", "e"}
+	// 总体思路：列出 deck 样本中所有组合，对比每一个组合是否是 hand 的超集(即筛选出 hand 是 某些组合子集的组合)。将筛选出来的组合除以 deck 的总组合数，得出满足 hand 条件的组合比例
 
 	var n int = len(deck)         // 样本中元素总数
 	var k int = 5                 // 从样本中取出的元素数
@@ -152,18 +153,18 @@ func main() {
 	// 获取 deck 中，至少有 1 个 a 且 1 个 b 的组合数
 	for _, combination := range combinations {
 		// 下面的代码可以简化成递归处理
-		// for _, element1 := range combination {
-		// 	if element1 == "a" {
-		// 		for _, element2 := range combination {
-		// 			if element2 == "b" {
-		// 				TargetCombination++
-		// 				break
-		// 			}
-		// 		}
-		// 		// 若不退出，当数组中有多个 a 的时候，会匹配多次
-		// 		break
-		// 	}
-		// }
+		for _, element1 := range combination {
+			if element1 == "a" {
+				for _, element2 := range combination {
+					if element2 == "b" {
+						TargetCombination++
+						break
+					}
+				}
+				// 若不退出，当数组中有多个 a 的时候，会匹配多次
+				break
+			}
+		}
 
 		if ConditionCount(combination, hand) {
 			TargetCombination++

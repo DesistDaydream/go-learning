@@ -5,16 +5,22 @@ import (
 	"testing"
 )
 
-func TestMain(m *testing.M) {
+func TestArrays(t *testing.T) {
 	fmt.Println("1.测试for循环对数组的赋值以及引用输出")
-	arrays()
+	Arrays()
+}
 
-	fmt.Println("\n2.测试数组的初始化")
-	arrInit()
+func TestArrInit(t *testing.T) {
+	fmt.Println("2.测试数组的初始化")
+	ArrInit()
+}
 
-	fmt.Println("\n3.测试多维数组")
-	multidim_array()
+func TestMultidimArray(t *testing.T) {
+	fmt.Println("3.测试多维数组")
+	MultidimArray()
+}
 
+func TestIsSubset(t *testing.T) {
 	superset := []string{"z", "d", "a", "c", "b", "c"}
 	subset1 := []string{"a", "c", "b"}
 	subset2 := []string{"a", "c", "c"}
