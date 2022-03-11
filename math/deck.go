@@ -153,18 +153,18 @@ func main() {
 	// 获取 deck 中，至少有 1 个 a 且 1 个 b 的组合数
 	for _, combination := range combinations {
 		// 下面的代码可以简化成递归处理
-		for _, element1 := range combination {
-			if element1 == "a" {
-				for _, element2 := range combination {
-					if element2 == "b" {
-						TargetCombination++
-						break
-					}
-				}
-				// 若不退出，当数组中有多个 a 的时候，会匹配多次
-				break
-			}
-		}
+		// for _, element1 := range combination {
+		// 	if element1 == "a" {
+		// 		for _, element2 := range combination {
+		// 			if element2 == "b" {
+		// 				TargetCombination++
+		// 				break
+		// 			}
+		// 		}
+		// 		// 若不退出，当数组中有多个 a 的时候，会匹配多次
+		// 		break
+		// 	}
+		// }
 
 		if ConditionCount(combination, hand) {
 			TargetCombination++
