@@ -1,7 +1,5 @@
 package array
 
-import "fmt"
-
 // 判断一个数组是否是另一个数组的子集
 func IsSubset(subset, superset []string) bool {
 	// 超集的 Map。
@@ -13,8 +11,6 @@ func IsSubset(subset, superset []string) bool {
 
 	// 遍历子集
 	for _, subsetElement := range subset {
-		fmt.Println(supersetMap)
-		fmt.Println(supersetMap[subsetElement])
 		// 将子集中元素作为 超集Map 的键，**逐一**判断子集中每个元素的个数是否与超集中同一元素的个数是否相等
 		// 任何一个元素没有找到都返回假
 		// 任何一个元素的个数小于1都返回假
