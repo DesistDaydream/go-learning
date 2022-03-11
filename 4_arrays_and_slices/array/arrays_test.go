@@ -22,10 +22,10 @@ func TestMultidimArray(t *testing.T) {
 
 func TestIsSubset(t *testing.T) {
 	superset := []string{"z", "d", "a", "c", "b", "c"}
-	subset1 := []string{"a", "c", "b"}
-	subset2 := []string{"a", "c", "c"}
-	result1 := IsSubset(subset1, superset)
+	// subset1 := []string{"a", "c", "b"}
+	subset2 := []string{"a", "a"}
+	// result1 := IsSubset(subset1, superset)
 	result2 := IsSubset(subset2, superset)
-	fmt.Printf("命题: %v 是 %v 的子集.\n结论: %v\n", subset1, superset, result1)
+	// fmt.Printf("命题: %v 是 %v 的子集.\n结论: %v\n", subset1, superset, result1)
 	fmt.Printf("命题: %v 是 %v 的子集.\n结论: %v\n", subset2, superset, result2)
 }
