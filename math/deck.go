@@ -132,12 +132,12 @@ func checkResult(n, k int, combinations [][]string) {
 func main() {
 	// 样本
 	deck := []string{"a", "a", "a", "a", "a", "a", "b", "b", "b", "b", "b", "b", "b", "c", "c", "c", "d", "d", "e", "f", "g", "h", "i", "g", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"}
-	hand := []string{"a", "b", "a"}
+	hand := []string{"a", "b"}
 	// deck := []string{"a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "啊", "哦", "鱼"}
 	// deck := []string{"a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b"}
 	// deck := []string{"a", "b", "c", "d", "e", "f"}
 	// deck := []string{"a", "a", "b", "b", "c", "e"}
-	// 总体思路：列出 deck 样本中所有组合，对比每一个组合是否是 hand 的超集(即筛选出 hand 是 某些组合子集的组合)。将筛选出来的组合除以 deck 的总组合数，得出满足 hand 条件的组合比例
+	// 总体思路：列出 deck 样本中所有组合，取出其中是 hand 的超集的组合(即筛选出 hand 是哪些组合的子集)。将筛选出来的组合除以 deck 的总组合数，得出满足 hand 条件的组合比例
 
 	var n int = len(deck)         // 样本中元素总数
 	var k int = 5                 // 从样本中取出的元素数
