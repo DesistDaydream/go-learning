@@ -19,9 +19,9 @@ func IsSubset(subset, superset []string) bool {
 		} else if count < 1 {
 			return false
 		} else {
-			// 若子集中元素的个数大于 1，则每次判断，都要将超集中同样大于 1 的元素的数量减 1
+			// 若子集中 X 元素的个数大于 1，则每次判断，都要将对应超集 X 元素的数量减 1
 			// 这样可以防止，当数组中具有相同元素的时候，会导致的误判。
-			// 如果不进行数量判断，则会出现如下错误：
+			// 如果不进行该操作，当子集中 X 元素的个数大于 1 的时候，则会出现如下错误：
 			// 命题: [a a] 是 [z d a c b c] 的子集.
 			// 结论: true
 			supersetMap[subsetElement] = count - 1
