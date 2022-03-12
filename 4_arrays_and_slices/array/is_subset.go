@@ -24,6 +24,7 @@ func IsSubset(subset, superset []string) bool {
 			// 如果不进行该操作，当子集中 X 元素的个数大于 1 的时候，则会出现如下错误：
 			// 命题: [a a] 是 [z d a c b c] 的子集.
 			// 结论: true
+			// 因为在两个数组中第一次判断 a 之后，长数组中 a 的数量没有减 1，那么下一次判断段数组中第二个 a 时，就会认为也存在在长数组中。
 			supersetMap[subsetElement] = count - 1
 		}
 	}
