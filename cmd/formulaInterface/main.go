@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/DesistDaydream/go-learning/practice/formulaInterface/formula"
-	"github.com/DesistDaydream/go-learning/practice/formulaInterface/formulaInterface"
+	"github.com/DesistDaydream/go-learning/cmd/formulaInterface/formula"
+	"github.com/DesistDaydream/go-learning/cmd/formulaInterface/formulaInterface"
 )
 
 // main 中的函数调用相当于模拟其他 package 调用本 package 的情景

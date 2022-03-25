@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 
-	"github.com/DesistDaydream/go-learning/4_arrays_and_slices/array"
-	"github.com/DesistDaydream/go-learning/math/combination"
+	"github.com/DesistDaydream/go-learning/pkg/4_arrays_and_slices/array"
+	"github.com/DesistDaydream/go-learning/pkg/math/combination"
 )
 
 //组合算法(从nums中取出m个数)
@@ -109,14 +109,14 @@ func ConditionCount(combination []string, condition []string) bool {
 }
 
 // isElement 正常统计
-func isElement(combinations []string, condition string) bool {
-	for _, combination := range combinations {
-		if combination == condition {
-			return true
-		}
-	}
-	return false
-}
+// func isElement(combinations []string, condition string) bool {
+// 	for _, combination := range combinations {
+// 		if combination == condition {
+// 			return true
+// 		}
+// 	}
+// 	return false
+// }
 
 // 判断遍历所有组合数的结果是否正确
 func checkResult(n, k int, combinations [][]string) {

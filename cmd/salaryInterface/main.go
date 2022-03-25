@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/DesistDaydream/go-learning/practice/salaryInterface/salary"
-	"github.com/DesistDaydream/go-learning/practice/salaryInterface/salaryInterface"
+	"github.com/DesistDaydream/go-learning/cmd/salaryInterface/salary"
+	"github.com/DesistDaydream/go-learning/cmd/salaryInterface/salaryInterface"
 )
 
 func main() {
