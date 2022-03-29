@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/DesistDaydream/go-learning/pkg/4_arrays_and_slices/array"
+	"github.com/DesistDaydream/go-learning/pkg/4_array_and_slice/array"
 	"github.com/DesistDaydream/go-learning/pkg/math/combination"
 )
 
