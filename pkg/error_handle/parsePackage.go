@@ -1,8 +1,9 @@
 package main
 
 import (
-	parse "./parse"
 	"fmt"
+
+	parse "github.com/DesistDaydream/go-learning/pkg/error_handle/parse"
 )
 
 func main() {
