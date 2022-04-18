@@ -6,3 +6,4 @@ practice/cryptography/public.pem
 *.gz
 *.tar
 file_handle/tar_dir/*
+*.db
