@@ -15,4 +15,6 @@ func GMin[T constraints.Ordered](x, y T) T {
 
 func main() {
 	fmt.Println(GMin(1, 2))
+	fmt.Println(GMin("a", "b"))
+	fmt.Println(GMin(3.14, 3.141592653589793))
 }
