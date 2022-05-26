@@ -59,6 +59,7 @@ func main() {
 	// 如果后续代码中包含了关闭通道的操作，那么程序将会 panic，并报错 send on closed channel
 	// 可以使用time等待一秒
 	// time.Sleep(time.Second)
+	//
 	// 通常，我们使用 sync.WaitGroup 来让程序等待协程完成，就像前面几行代码一样，上面使用 time.Sleep() 仅仅就是进行一下说明。
 	// 平时我们会将 wg.Wait() 写在 var wg sync.WaitGroup 的下一行，并在语句前加上 defer。即：
 	// ```
