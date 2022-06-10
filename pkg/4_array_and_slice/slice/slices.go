@@ -3,7 +3,7 @@ package main
 import "fmt"
 
 // 切片的基本用法
-func slices() {
+func GoSlice() {
 	var arr1 = [7]int{2, 4, 6, 8, 10, 12, 14}
 	// 初始化切片slice1，从数组arr1中引用索引号为2,3,4的元素
 	var slice1 []int = arr1[2:5]
@@ -31,8 +31,8 @@ func slices() {
 	// slice1 = slice1[0:7 ] // panic: runtime error: slice bound out of range
 }
 
-// 切片重组(reslice)
-func reslice() {
+// 切片重组(SliceReslice)
+func SliceReslice() {
 	slice1 := make([]int, 0, 10)
 	//读取这个切片, cap(slice1)指的是slice1的容量，容量为10
 	//每一次循环，切片slice1的长度就+1
@@ -49,14 +49,14 @@ func reslice() {
 }
 
 //切片的追加(append)
-func append1() {
+func SliceAppend() {
 	slice1 := []int{1, 2, 3}
 	slice2 := append(slice1, 4, 5)
 	fmt.Println(slice1, slice2)
 }
 
 // 切片的复制
-func copy1() {
+func SliceCopy() {
 	slice1 := []int{1, 2, 3}
 	slice2 := make([]int, 2)
 	fmt.Println(slice1, slice2)
@@ -71,24 +71,6 @@ func sliceString() {
 	fmt.Println("使用byte函数把字符变量的所有字符转变成byte", c)
 	c[0] = 'c'
 	s2 := string(c) // s2 == "cello"
-	fmt.Println("变更后的数组c为：", c)
-	fmt.Println("变更后的字符串为:", s2)
-}
-
-func main() {
-	// 切片的基本用法
-	// slices()
-
-	// 切片的重组
-	reslice()
-
-	// 切片的追加 append
-	// append1()
-
-	// 切片的复制 copy
-	// copy1()
-
-	// 字符串、数组和切片的应用
-	// sliceString()
-
+	fmt.Println("变更后的数组c为: ", c)
+	fmt.Println("变更后的字符串为: ", s2)
 }
