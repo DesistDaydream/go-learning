@@ -19,13 +19,13 @@ func TestUnitTests(t *testing.T) {
 		// TODO: 在这里写具体的测试用例，也就是执行 UnitTests() 时想要传递的参数和想要获取到的返回值
 		// 这是一个 struct 类型的数组，注意书写格式。
 		{
-			name: "在这里填写测试想要传递的参数以及想要获取到的返回值",
+			name: "这是第一条测试在下面填写测试想要传递的参数以及想要获取到的返回值",
 			args: args{"unittests"},
 			want: true,
 		},
 		{
 			name: "这里是第二条测试用例中需要用到的信息",
-			args: args{"这个参数会导致本次测试失败"},
+			args: args{"这里的参数会导致返回值为 false,进而会导致本次测试失败"},
 			want: true,
 		},
 	}
