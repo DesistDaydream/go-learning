@@ -39,7 +39,7 @@ func TestSampleWriteFile(t *testing.T) {
 		args args
 	}{
 		{
-			name: "最简单的读取文件的方法",
+			name: "最简单的写入文件的方法",
 			args: args{
 				dstFile: DstFile,
 			},
