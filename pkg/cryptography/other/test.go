@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/DesistDaydream/go-library/pkg/cryptography/other/helpers"
+	"github.com/DesistDaydream/go-learning/pkg/cryptography/other/helpers"
 )
 
 func main() {
