@@ -15,7 +15,6 @@ var srcFile string = "./test_file/test.txt"
 
 // var srcFile string = `F:\Documents\GitHub\Golang\testFile\test.txt`
 var useage string = `可用的值有：
-samplereadfile:最简单的读取文件的方法
 samplewritefile:最简单的写入文件的方法
 readfile:读取一个文件的内容并输出
 readfile2:逐行读取一个文件的内容并逐行输出的方法1
@@ -33,10 +32,6 @@ func main() {
 	flag.Parse()
 
 	switch action {
-	case "samplereadfile":
-		SampleReadFile()
-	case "samplewritefile":
-		SampleWriteFile()
 	case "readfile":
 		ReadFile()
 	case "readfile2":
@@ -56,15 +51,15 @@ func main() {
 	}
 }
 
-func SampleReadFile() {
+func SampleReadFile(srcFile string) {
 	fileByte, _ := os.ReadFile(srcFile)
 	fmt.Println("文件内容为：", string(fileByte))
 }
 
-func SampleWriteFile() {
-	os.WriteFile("./test_file/SampleWriteFile", []byte("Hello DesistDaydream"), 0666)
-	fileByte, _ := os.ReadFile("./test_file/SampleWriteFile")
-	fmt.Println("写入的文件为：", string(fileByte))
+func SampleWriteFile(dstFile string) {
+	os.WriteFile(dstFile, []byte("Hello DesistDaydream"), 0666)
+	fileByte, _ := os.ReadFile(dstFile)
+	fmt.Printf("写入 %v 文件的内容：%v", dstFile, string(fileByte))
 }
 
 func ReadFile() {
