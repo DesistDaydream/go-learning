@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestIncorrectUsageOfForrangeAndPointer(t *testing.T) {
+func TestForRange与指针的错误用法(t *testing.T) {
 	tests := []struct {
 		name string
 	}{
@@ -20,7 +20,7 @@ func TestIncorrectUsageOfForrangeAndPointer(t *testing.T) {
 	}
 }
 
-func TestCorrectUsageOfForrangeAndPointer(t *testing.T) {
+func TestForRange与指针的正确用法一(t *testing.T) {
 	tests := []struct {
 		name string
 	}{
@@ -34,7 +34,7 @@ func TestCorrectUsageOfForrangeAndPointer(t *testing.T) {
 	}
 }
 
-func TestCorrectUsageOfForAndPointer(t *testing.T) {
+func TestFor与指针的正确用法(t *testing.T) {
 	tests := []struct {
 		name string
 	}{

@@ -9,7 +9,7 @@ var (
 	a int
 )
 
-func BasePointer() {
+func main() {
 	a = 5
 	// 输出a的值与a的地址值
 	fmt.Printf("变量a的值为:%v\t变量a的指针所指向的地址值为：%v\n", a, &a)
@@ -31,28 +31,4 @@ func BasePointer() {
 	p = &a
 	fmt.Printf("变量p的类型为：%v\n", reflect.TypeOf(p))
 	fmt.Printf("变量p的值为：%v\n变量a的值为%v\n变量p的指针地址为：%v\n变量a的指针地址为：%v\n", p, a, &p, &a)
-}
-
-func zeroval(ival int) {
-	ival = 0
-}
-
-func zeroptr(iptr *int) {
-	*iptr = 0
-}
-
-func main() {
-	BasePointer()
-
-	// Go 通过指针，允许程序通过`引用传递`来传递值和数据结构
-	i := 1
-	fmt.Println("initial:", i)
-
-	// 通过值传递，在函数内修改不会影响原始值
-	zeroval(i)
-	fmt.Println("zeroval:", i)
-
-	// 通过引用传递，在函数内修改会影响原始值
-	zeroptr(&i)
-	fmt.Println("zeroptr:", i)
 }

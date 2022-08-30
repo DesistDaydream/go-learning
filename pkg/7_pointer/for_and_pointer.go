@@ -3,7 +3,7 @@ package main
 import "fmt"
 
 type Users struct {
-	Users []*User
+	Users []User
 }
 type User struct {
 	Name string
@@ -30,16 +30,14 @@ func IncorrectUsageOfForrangeAndPointer() {
 // 正确用法一
 func CorrectUsageOfForrangeAndPointer() {
 	usersList := Users{
-		Users: []*User{
+		Users: []User{
 			{Name: "aa", Age: 1},
 			{Name: "bb", Age: 1},
 		},
 	}
 
-	var newUser []*User
-	for _, u := range usersList.Users {
-		newUser = append(newUser, u)
-	}
+	var newUser []User
+	newUser = append(newUser, usersList.Users...)
 
 	for _, nu := range newUser {
 		fmt.Printf("%+v\n", nu.Name)
