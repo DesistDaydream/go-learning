@@ -38,17 +38,20 @@ func main() {
 	// 通过 & 符号取得变量 a 的内存地址，即指向 a 的指针
 	fmt.Println("变量 a 的内存地址，即指针为：", &normalVar)
 
-	// 声明一个指针类型的变量
-	// TODO: 使用 var 和 new() 有什么区别？ 使用 var 的话，没法 *ptr="a" 这么用，但是用 new() 就可以
-	var ptr *string // 这是一个字符串指针类型的变量
-	// ptr := new(string)
-	fmt.Println("刚刚声明的指针没有任何内存地址，默认值为 nil：", ptr)
+	// 声明一个指针类型(字符串指针类型)的变量，两种方式：
+	var ptrVar *string
+	fmt.Println("指针的声明方式一。通过 var 关键字声明的指针，没有任何内存地址，默认值为 nil：", ptrVar)
+	ptrNew := new(string)
+	fmt.Println("指针的声明方式二。通过 new() 函数声明的指针，系统会为该变量分配内存地址，而不是 nil：", ptrNew)
 
 	// 指针赋值
 	// 错误示例：不可以使用 *int 类型给 *string 类型赋值，虽然都是内存地址，但是不可以这么做
 	// ptr = &normalVar
 	// 正确示例:
 	newPtr := strconv.Itoa(normalVar)
-	ptr = &newPtr
-	fmt.Println("为指针类型变量赋予一个内存地址后，获取该内存地址内保存的值：", *ptr)
+	ptrVar = &newPtr // 由于此时 ptr 为 nil，并不具有内存地址，所以不能通过解引用的方式赋值
+	fmt.Println("指针的赋值方式一。为指针类型变量赋予一个内存地址后，获取该内存地址内保存的值：", *ptrVar)
+
+	*ptrNew = newPtr // 由于此时 ptrNew 具有内存地址，所以可以直接通过解引用的方式为 ptrNew 内存地址空间内赋予值
+	fmt.Println("指针的赋值方式二。通过解引用的方式，直接将值放到指针所指向的内存地址内部：", *ptrNew)
 }
