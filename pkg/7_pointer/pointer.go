@@ -8,7 +8,7 @@ import (
 func BasePointer() {
 	normalVar := 5
 	// 通过 & 符号取得变量 a 的内存地址，即指向 a 的指针
-	fmt.Println("变量 a 的内存地址，即指针为：", &normalVar)
+	fmt.Println("变量 normalVar 的内存地址，即指针为：", &normalVar)
 
 	// 声明一个指针类型(字符串指针类型)的变量，两种方式：
 	var ptrVar *string
@@ -40,6 +40,6 @@ func Instantiation() {
 }
 
 func main() {
-	// BasePointer()
-	Instantiation()
+	BasePointer()
+	// Instantiation()
 }
