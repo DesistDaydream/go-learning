@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 )
 
@@ -63,10 +62,6 @@ func StringHandlingTwo() {
 	fmt.Println(strings.Join(splitedStr, "*"))
 	// 判断s是否以he开头,判断s是否以ld结尾
 	fmt.Println(strings.HasPrefix(s, "he"), strings.HasSuffix(s, "ld"))
-	// 将int类型转换为string类型
-	fmt.Println(strconv.Itoa(20))
-	// 将string类型转换为int类型
-	fmt.Println(strconv.Atoi("10"))
 }
 
 func main() {
