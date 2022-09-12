@@ -55,7 +55,7 @@ type Doc struct {
 func main() {
 	var a DocsList
 
-	fileByte, err := os.ReadFile("./text_handle/test_files/test.json")
+	fileByte, err := os.ReadFile("test_files/json/test.json")
 	if err != nil {
 		panic(err)
 	}
