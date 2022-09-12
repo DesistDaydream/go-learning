@@ -16,7 +16,7 @@ type Message struct {
 // Marshl 将其他格式的数据转换为 JSON 数据
 func Marshl() {
 	// 实例化一个结构体数据
-	m := Message{"DesistDaydream", "Hello", 1294706395881547000}
+	m := &Message{"DesistDaydream", "Hello", 1294706395881547000}
 	// 将结构体数据编码为 JSON 格式的数据
 	b, _ := json.Marshal(m)
 
