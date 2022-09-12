@@ -41,6 +41,7 @@ func Unmarshl() {
 	if err != nil {
 		log.Fatalln(err)
 	}
+
 	fmt.Println(m.Name, m.Body, m.Time)
 }
 
