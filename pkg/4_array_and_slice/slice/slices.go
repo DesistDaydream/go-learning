@@ -48,11 +48,23 @@ func SliceReslice() {
 	}
 }
 
-//切片的追加(append)
+// 切片的追加(append)
 func SliceAppend() {
-	slice1 := []int{1, 2, 3}
-	slice2 := append(slice1, 4, 5)
-	fmt.Println(slice1, slice2)
+	slice := []int{1, 2, 3}
+
+	// 为 slice 追加元素，以生成另一个 slice
+	antherSlice := append(slice, 4, 5)
+	fmt.Printf("原始 slice：%v\n", slice)
+	fmt.Printf("通过将元素追加到原始 slice 以生成的新 slice：%v\n", antherSlice)
+
+	// 为 slice 追加另一个 slice
+	antherSliceTwo := append(slice, antherSlice...)
+	fmt.Printf("通过将另一个 slice 追加到原始 slice 以生成的新 slice：%v\n", antherSliceTwo)
+
+	// 这是一种特殊情况，将字符串追加到字节切片是合法的
+	antherSliceThree := append([]byte("hello "), "world"...)
+	fmt.Println(string(antherSliceThree))
+
 }
 
 // 切片的复制
