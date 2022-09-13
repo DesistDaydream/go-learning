@@ -10,7 +10,7 @@ type User struct {
 	Name        string
 	Role        string
 	Age         int32
-	EmployeCode int64 `copier:"EmployeNum"` // specify field name
+	EmployeCode int64 `copier:"EmployeNum"` // 指定字段名。
 
 	// Explicitly ignored in the destination struct.
 	Salary int
@@ -23,17 +23,17 @@ func (user *User) DoubleAge() int32 {
 // Tags in the destination Struct provide instructions to copier.Copy to ignore
 // or enforce copying and to panic or return an error if a field was not copied.
 type Employee struct {
-	// Tell copier.Copy to panic if this field is not copied.
+	// 这个 Tag 告诉 copier，如果字段没有被复制，则 panic
 	Name string `copier:"must"`
 
-	// Tell copier.Copy to return an error if this field is not copied.
+	// 这个 Tag 告诉 copier，如果字段没有被复制，则返回一个错误
 	Age int32 `copier:"must,nopanic"`
 
-	// Tell copier.Copy to explicitly ignore copying this field.
+	// 这个 Tag 告诉 copier，忽略该字段，即复制时不复制该字段的值
 	Salary int `copier:"-"`
 
 	DoubleAge int32
-	EmployeId int64 `copier:"EmployeNum"` // specify field name
+	EmployeId int64 `copier:"EmployeNum"` // 指定字段名。
 	SuperRole string
 }
 
@@ -51,6 +51,8 @@ func main() {
 		employees = []Employee{}
 	)
 
+	// 一、struct 拷贝到 struct
+	// 将第二个参数的值拷贝到第一个参数中
 	copier.Copy(&employee, &user)
 
 	fmt.Printf("%#v \n", employee)
@@ -63,7 +65,7 @@ func main() {
 	//    SuperRole: "Super Admin", // Copy to method
 	// }
 
-	// Copy struct to slice
+	// 二、struct 拷贝到 slice
 	copier.Copy(&employees, &user)
 
 	fmt.Printf("%#v \n", employees)
@@ -71,7 +73,7 @@ func main() {
 	//   {Name: "Jinzhu", Age: 18, Salary:0, DoubleAge: 36, EmployeId: 0, SuperRole: "Super Admin"}
 	// }
 
-	// Copy slice to slice
+	// 三、slice 拷贝到 slice
 	employees = []Employee{}
 	copier.Copy(&employees, &users)
 
@@ -81,7 +83,7 @@ func main() {
 	//   {Name: "jinzhu 2", Age: 30, Salary:0, DoubleAge: 60, EmployeId: 0, SuperRole: "Super Dev"},
 	// }
 
-	// Copy map to map
+	// 四、map 拷贝到 map
 	map1 := map[int]int{3: 6, 4: 8}
 	map2 := map[int32]int8{}
 	copier.Copy(&map2, map1)
