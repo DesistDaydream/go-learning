@@ -6,24 +6,41 @@ import (
 )
 
 func BasePointer() {
-	normalVar := 5
+	var normalVar int
 	// 通过 & 符号取得变量 a 的内存地址，即指向 a 的指针
 	fmt.Println("变量 normalVar 的内存地址，即指针为：", &normalVar)
+	normalVar = 5
 
 	// 声明一个指针类型(字符串指针类型)的变量，两种方式：
-	var ptrVar *string
+	var ptrVar *int
 	fmt.Println("通过 var 关键字声明的指针变量的值，默认为 nil：", ptrVar)
 	fmt.Println("但是这个指针变量本身是存在内存地址的：", &ptrVar)
 	// 由于此时 ptr 为 nil，并不具有内存地址，所以不能通过解引用的方式为指针所指向的内存地址中添加值。毕竟现在还没有内存地址了
 	// *ptrVar = "pointer string"
 
+	// ########
+	// 从上面可以看到 int 和 *int 是两个完全不同的类型
+	// ########
+
 	// 指针变量的赋值。
 	// 给指针类型的变量赋值，赋予的是内存地址，不是字符串、整数之类的。内存地址类似于这样：0xc000014088
+	ptrVar = &normalVar
+	fmt.Println("为指针变量赋予一个内存地址后，即可以通过该变量获取到内存地址中保存的值：", *ptrVar)
+}
+
+func Assign() {
+	var normalVar int = 5
+
+	// 声明一个指针类型(字符串指针类型)的变量，两种方式：
+	var ptrVar *string
+
+	// 错误示例：不可以使用 *int 类型给 *string 类型赋值，虽然指针变量的值都是内存地址，但是不可以这么做
+	// ptr = &normalVar
+	// 正确示例
 	newPtrVar := strconv.Itoa(normalVar)
 	ptrVar = &newPtrVar
 	fmt.Println("为指针变量赋予一个内存地址后，即可以通过该变量获取到内存地址中保存的值：", *ptrVar)
-	// 错误示例：不可以使用 *int 类型给 *string 类型赋值，虽然指针变量的值都是内存地址，但是不可以这么做
-	// ptr = &normalVar
+
 }
 
 func Instantiation() {
@@ -42,4 +59,5 @@ func Instantiation() {
 func main() {
 	BasePointer()
 	// Instantiation()
+	// Assign()
 }

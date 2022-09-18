@@ -41,7 +41,7 @@ func (employee *Employee) Role(role string) {
 	employee.SuperRole = "Super " + role
 }
 
-func main() {
+func StructCopy() {
 	// 我们经常会遇上需要将一个结构体中的值拷贝到另一个相似的结构体中的情况
 	// 此时可以使用一个第三方库来简化操作
 	var (
