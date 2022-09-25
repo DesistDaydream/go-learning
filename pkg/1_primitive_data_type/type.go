@@ -58,13 +58,24 @@ func typeTransformation() {
 	ptr := (*stringValue)(&str2)
 	fmt.Println(ptr)
 
+}
+
+func stringIntFloat() {
+	strInt := "1"
+	strFloat := "1.234"
 	// 将string类型转换为int类型
-	int1, _ := strconv.Atoi(str)
+	int1, _ := strconv.Atoi(strInt)
 
 	// 将int类型转换为string类型
 	str3 := strconv.Itoa(int1)
 
+	// string 转 float32 和 float64
+	float32One, _ := strconv.ParseFloat(strFloat, 32)
+	float64One, _ := strconv.ParseFloat(strFloat, 64)
+
 	fmt.Println(str3)
+	fmt.Println(float32One)
+	fmt.Println(float64One)
 }
 
 func main() {
@@ -72,5 +83,6 @@ func main() {
 	// dataType()
 
 	// 数据类型转换
-	typeTransformation()
+	// typeTransformation()
+	stringIntFloat()
 }
