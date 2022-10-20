@@ -65,7 +65,8 @@ func Reflect() {
 	t := reflect.TypeOf(intVar)
 	// 获取一个变量的值。返回 Value{} 结构体，该结构体也有很多方法用以获取该变量“值”的相关信息。
 	v := reflect.ValueOf(intVar)
-
+	// 注意：t 与 v 下的方法并不适用于所有类型，比如 Field() 方法只作用于 Struct 类型，如果变量类型不是 Struct，调用该方法时将会 Panic
+	// ！！！但是由于反射的机制，在我们编写代码时，是无法知道将要调用方法的实例是什么类型，只有运行起来之后才会知道，这点要万分注意！！！
 	fmt.Println("类型: ", t)
 	fmt.Println("值: ", v)
 }
