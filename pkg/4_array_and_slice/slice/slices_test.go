@@ -12,7 +12,7 @@ func TestGoSlice(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			GoSlice()
+			SliceDemon()
 		})
 	}
 }
@@ -64,7 +64,21 @@ func Test_sliceString(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			sliceString()
+			SliceString()
+		})
+	}
+}
+
+func TestSliceDelete(t *testing.T) {
+	tests := []struct {
+		name string
+	}{
+		// TODO: Add test cases.
+		{name: "切片的删除"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			SliceDelete()
 		})
 	}
 }

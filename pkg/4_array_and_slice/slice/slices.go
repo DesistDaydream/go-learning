@@ -3,7 +3,7 @@ package main
 import "fmt"
 
 // 切片的基本用法
-func GoSlice() {
+func SliceDemon() {
 	var arr1 = [7]int{2, 4, 6, 8, 10, 12, 14}
 	// 初始化切片slice1，从数组arr1中引用索引号为2,3,4的元素
 	var slice1 []int = arr1[2:5]
@@ -64,7 +64,6 @@ func SliceAppend() {
 	// 这是一种特殊情况，将字符串追加到字节切片是合法的
 	antherSliceThree := append([]byte("hello "), "world"...)
 	fmt.Println(string(antherSliceThree))
-
 }
 
 // 切片的复制
@@ -77,7 +76,7 @@ func SliceCopy() {
 }
 
 // 字符串、数组和切片的应用
-func sliceString() {
+func SliceString() {
 	s := "hello"
 	c := []byte(s)
 	fmt.Println("使用byte函数把字符变量的所有字符转变成byte", c)
