@@ -6,6 +6,8 @@ import (
 )
 
 func StringHandlingOne() {
+	s := "hello,world"
+
 	fmt.Println(
 		// 判断test字符串是否包含es，结果为"true"
 		strings.Contains("test", "es"), "\n",
@@ -36,7 +38,7 @@ func StringHandlingOne() {
 		// 字符串替换，将aaaa字符串中的a替换成b，只替换前两个，结果为"bbaa"
 		strings.Replace("aaaa", "a", "b", 2), "\n",
 
-		// []string{"a","b","c","d","e"}
+		// 切割字符串。结果为：[]string{"a","b","c","d","e"}
 		strings.Split("a-b-c-d-e", "-"), "\n",
 
 		//修改字符串大小写，将指定的字符串中的大写全部变成小写，"test"
@@ -44,27 +46,19 @@ func StringHandlingOne() {
 
 		//修改字符串大小写，将指定的字符串中的大写全部变成大写，"TEST"
 		strings.ToUpper("Test"),
+
+		// 判断s是否以he开头,判断s是否以ld结尾
+		strings.HasPrefix(s, "he"), strings.HasSuffix(s, "ld"),
 	)
 }
 
-func StringHandlingTwo() {
-	s := "hello world"
-	// 判断变量s是否包含字符hello
-	fmt.Println(strings.Contains(s, "hello"))
-	// 输出o在变量s的索引号
-	fmt.Println(strings.Index(s, "o"))
-
-	ss := "1#2#345"
-	// 切割字符串
-	splitedStr := strings.Split(ss, "#")
-	fmt.Println(splitedStr)
-	// 合并字符串
-	fmt.Println(strings.Join(splitedStr, "*"))
-	// 判断s是否以he开头,判断s是否以ld结尾
-	fmt.Println(strings.HasPrefix(s, "he"), strings.HasSuffix(s, "ld"))
+// 数字转为字母
+func NumToLetter() {
+	i := 27
+	fmt.Printf("%d 转换为 %v\n", i, string('A'-1+i))
 }
 
 func main() {
-	StringHandlingOne()
-	StringHandlingTwo()
+	// StringHandlingOne()
+	NumToLetter()
 }
