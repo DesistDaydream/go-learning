@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
-	"os/exec"
 	"os"
+	"os/exec"
 )
 
 func main() {
 	fmt.Printf("1. 使用os.StartProcess函数运行外部命令\n")
-	// runCommandWithStartProcess()
+	runCommandWithStartProcess()
 	fmt.Printf("2.使用exec.Command函数运行外部命令\n")
 	runCommandWithCommand()
 }
@@ -38,7 +38,7 @@ func runCommandWithStartProcess() {
 func runCommandWithCommand() {
 	// exec.Command()函数返回一个类型为*exec.Cmd的结构体指针
 	// 该指针用于使用给出的参数执行第一个参数指定的程序
-	cmd := exec.Command("mkdir","-p","1/2/3")
+	cmd := exec.Command("mkdir", "-p", "1/2/3")
 	// 让Run()方法作用在上面变量上，执行变量中的命令，并阻塞直到完成
 	err := cmd.Run()
 	if err != nil {
