@@ -69,6 +69,7 @@ func Test_sliceString(t *testing.T) {
 	}
 }
 
+// 删除切片中的元素
 func TestSliceDelete(t *testing.T) {
 	tests := []struct {
 		name string
@@ -81,4 +82,8 @@ func TestSliceDelete(t *testing.T) {
 			SliceDelete()
 		})
 	}
+}
+
+func TestSliceDeleteSpecifiedEle(t *testing.T) {
+	SliceDeleteSpecifiedEle()
 }

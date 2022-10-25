@@ -5,6 +5,7 @@ import "fmt"
 // 切片的删除
 func SliceDelete() {
 	slice := []int{1, 2, 3, 4, 5, 6, 7}
+	fmt.Println("初始切片", slice)
 	// 通过移动数据指针以删除开头的 X 个元素
 	fmt.Println("删除前1个元素", slice[1:])
 	fmt.Println("删除前3个元素", slice[3:])
@@ -18,4 +19,17 @@ func SliceDelete() {
 	// 通过移动数据指针以删除末尾的 X 个元素
 	fmt.Println("删除后1个元素", slice[:len(slice)-1])
 	fmt.Println("删除后3个元素", slice[:len(slice)-3])
+}
+
+// 删除指定的元素
+func SliceDeleteSpecifiedEle() {
+	slice := []int{1, 2, 3, 4, 5, 6, 7}
+
+	needDelEle := 2
+
+	fmt.Println(slice[:needDelEle], slice[needDelEle+1:])
+
+	newSlice := append(slice[:needDelEle], slice[needDelEle+1:]...)
+
+	fmt.Println(newSlice)
 }
