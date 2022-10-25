@@ -55,7 +55,7 @@ func StringHandlingOne() {
 // 数字转为字母
 func NumToLetter() {
 	i := 27
-	fmt.Printf("%d 转换为 %v\n", i, string('A'-1+i))
+	fmt.Printf("%d 转换为 %q\n", i, rune('A'-1+i))
 }
 
 func main() {
