@@ -19,13 +19,18 @@ func newStructDemo() *structDemo {
 
 func structDemoFunction() {
 	// **结构体的声明**，声明一个名为 sd 的 structDemo 类型的变量
-	var sd *structDemo
-	fmt.Printf("%p\n", sd)
+	var sd structDemo
+	fmt.Printf("%p\n", &sd)
+	// 如果直接声明一个结构体指针，在下面为结构体字段赋值的时候将会报错：panic: runtime error: invalid memory address or nil pointer dereference。
+	// 因为结构体指针的值为 nil。
+	// 若在一个函数中，我们想要返回一个结构体指针，则声明结构体变量后，返回其地址即可，比如：return &sd
+	// var sd *structDemo
+	// fmt.Printf("%p\n", sd)
 
 	// **结构体的实例化**
 	// 可以使用 new() 函数进行实例化
 	// sd := new(structDemo)
-	// 当然，最常见的是自己定义一个函数用以实例化结构体，类似于自己实现一个功能更全面的 new 函数
+	// 当然，最常见的是自己定义一个函数用以实例化结构体，类似于自己实现一个功能更全面的 new() 函数
 	// sd := newStructDemo()
 
 	// **结构体的引用与赋值**
@@ -34,7 +39,7 @@ func structDemoFunction() {
 	sd.fieldOneForInt = 10
 	sd.fieldTwoForFloat32 = 15.5
 	sd.fieldThreeForString = "Chris"
-	// 也可以直接使用下面的初始化方式，对结构体进行初始化赋值，这种赋值方式是按照字段从上到下的顺序进行赋值
+	// 也可以直接使用下面的初始化方式，并为结构体进行初始化赋值，这种赋值方式是按照字段从上到下的顺序进行赋值
 	// sd := &structDemo{10, 15.5, "Chris"}
 
 	fmt.Printf("The int is: %d\n", sd.fieldOneForInt)
@@ -45,5 +50,4 @@ func structDemoFunction() {
 
 func main() {
 	structDemoFunction()
-
 }
