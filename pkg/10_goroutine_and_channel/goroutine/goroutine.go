@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"sync"
 	"time"
 )
@@ -24,7 +25,7 @@ func hello(m string) {
 	}
 }
 
-func timeSleepGotourine() {
+func timeSleepGorourine() {
 	// 调用了 go hello() 之后，程序控制没有等待 hello 协程结束，
 	// 立即返回到了代码下一行，打印 main function。
 	// 接着由于没有其他可执行的代码，Go 主协程终止，
@@ -41,7 +42,7 @@ func timeSleepGotourine() {
 	fmt.Println("main function")
 }
 
-func waitGroupGotoutine() {
+func waitGroupGoroutine() {
 	// 为 WaitGroup 计数器 +1
 	wg.Add(1)
 
@@ -53,9 +54,26 @@ func waitGroupGotoutine() {
 	fmt.Println("main function")
 }
 
+// 该操作执行一段时间后将会报错：
+// panic: too many concurrent operations on a single file or socket (max 1048575)
+func maxGoroutine() {
+	var wg sync.WaitGroup
+	for i := 0; i < math.MaxInt32; i++ {
+		wg.Add(1)
+		go func(i int) {
+			defer wg.Done()
+			fmt.Printf("并发数量：%d\n", i)
+			time.Sleep(time.Second)
+		}(i)
+	}
+	wg.Wait()
+}
+
 func main() {
 	// 通过睡眠，让 main() 等待协程完成
-	timeSleepGotourine()
+	timeSleepGorourine()
 	// 通过 WaitGroup，让 main() 等待协程完成
-	waitGroupGotoutine()
+	waitGroupGoroutine()
+	// 最大协程
+	maxGoroutine()
 }
