@@ -13,18 +13,7 @@ type Message struct {
 	Time int64
 }
 
-// Marshl 将其他格式的数据转换为 JSON 数据
-// 白话：结构体数据转为字符串数据
-func Marshl() {
-	// 实例化一个结构体数据
-	m := &Message{"DesistDaydream", "Hello", 1294706395881547000}
-	// 将结构体数据编码为 JSON 格式的数据
-	b, _ := json.Marshal(m)
-
-	fmt.Println(string(b))
-}
-
-// Unmarshl 将 JSON 数据转换为其他格式的数据
+// Unmarshl 将 JSON 数据解码为 Go 程序可以理解的数据类型（比如 struct、slice 等等）
 // 字符串数据转为结构体数据
 func Unmarshl() {
 	// 这是 JSON 格式的数据
@@ -47,7 +36,19 @@ func Unmarshl() {
 	fmt.Println(m.Name, m.Body, m.Time)
 }
 
+// Marshl 将 Go 程序可以理解的数据类型（比如 struct、slice 等等）编码为 JSON 数据
+// 结构体数据转为字符串数据
+func Marshl() {
+	// 实例化一个结构体数据
+	m := &Message{"DesistDaydream", "Hello", 1294706395881547000}
+
+	// 将结构体数据编码为 JSON 格式的数据
+	b, _ := json.Marshal(m)
+
+	fmt.Println(string(b))
+}
+
 func main() {
-	Marshl()
 	Unmarshl()
+	Marshl()
 }
