@@ -14,6 +14,7 @@ type Message struct {
 }
 
 // Marshl 将其他格式的数据转换为 JSON 数据
+// 白话：结构体数据转为字符串数据
 func Marshl() {
 	// 实例化一个结构体数据
 	m := &Message{"DesistDaydream", "Hello", 1294706395881547000}
@@ -24,6 +25,7 @@ func Marshl() {
 }
 
 // Unmarshl 将 JSON 数据转换为其他格式的数据
+// 字符串数据转为结构体数据
 func Unmarshl() {
 	// 这是 JSON 格式的数据
 	jsonStr := `
@@ -34,7 +36,7 @@ func Unmarshl() {
 	}`
 	// 声明一个变量，用来存放 JSON 解码后的数据
 	// 注意：若要将 JSON 的数据保存到 struct 中，则需要保证在 struct 中的每个字段，都对应 JSON 数据中的每个 key
-	var m *Message
+	var m Message
 
 	// 将 JSON 格式的数据解码为结构体数据
 	err := json.Unmarshal([]byte(jsonStr), &m)
