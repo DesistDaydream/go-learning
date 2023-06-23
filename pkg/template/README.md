@@ -1,13 +1,17 @@
 # Go Template 标准库
+
 Go 原生支持的模板分为两种
+
 1. [text](https://pkg.go.dev/text/template)
 2. [html](https://pkg.go.dev/html/template)
 
-参考文章：  
-[Go template 用法详解](https://www.cnblogs.com/f-ck-need-u/p/10053124.html)  
-[深入剖析 Go template](https://www.cnblogs.com/f-ck-need-u/p/10035768.html)  
+参考文章：
+
+[Go template 用法详解](https://www.cnblogs.com/f-ck-need-u/p/10053124.html)
+[深入剖析 Go template](https://www.cnblogs.com/f-ck-need-u/p/10035768.html)
 
 # text/template 库
+
 template库 实现了数据驱动的用于生成文本输出的模板。
 
 如果要生成HTML格式的输出，参见html/template包，该包提供了和本包相同的接口，但会自动将输出转化为安全的HTML格式输出，可以抵抗一些网络攻击。
@@ -19,7 +23,8 @@ template库 实现了数据驱动的用于生成文本输出的模板。
 经解析生成模板后，一个模板可以安全的并发执行。
 
 下面是一个简单的例子，可以打印"17 of wool"。
-```
+
+```go
 type Inventory struct {
 	Material string
 	Count    uint
@@ -30,6 +35,7 @@ if err != nil { panic(err) }
 err = tmpl.Execute(os.Stdout, sweaters)
 if err != nil { panic(err) }
 ```
+
 更复杂的例子在下面。
 
 ## Actions
