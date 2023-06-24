@@ -45,7 +45,7 @@ func main() {
 	// text/tabwriter 包示例
 	tabwriterDemo()
 
-	// 注意：若数据变成中文，则表格将会错位，
+	// 注意：若数据变成中文，则表格将会错位，除非只有最后一列是中文，
 	// 这是因为 text/tabwriter 库是按照 UTF-8 编码的文本单元来处理输入的数据的，而中文字符在 UTF-8 编码中占用的字节数不一定相同，所以对齐的时候可能会出现偏差。
 	// 如果要解决这个问题，可以使用第三方库，如 github.com/olekukonko/tablewriter，它可以支持中文字符的对齐。
 	tablewriterDemo()
