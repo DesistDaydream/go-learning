@@ -43,7 +43,7 @@ func dataType() {
 }
 
 // 数据类型转换
-func typeTransformation() {
+func typeConversions() {
 	// string 转 []byte
 	str := "hello"
 	bytes := []byte(str)
@@ -60,13 +60,18 @@ func typeTransformation() {
 
 }
 
+// 使用 strconv 标准库来实现字符串类型与其他基本数据类型之间的类型转换。
+// strconv 全称是 string q
 func stringIntFloat() {
 	strInt := "1"
 	strFloat := "1.234"
-	// 将string类型转换为int类型
-	int1, _ := strconv.Atoi(strInt)
 
-	// 将int类型转换为string类型
+	// Atoi() 与 Itoa() 方法是最常用的转换
+	// Atoi() 相当于 ParseInt(s, 10, 0)
+	// Itoa() 相当于 FormatInt(int64(i), 10)
+	// 将 string 类型转换为 int 类型
+	int1, _ := strconv.Atoi(strInt)
+	// 将 int 类型转换为string类型
 	str3 := strconv.Itoa(int1)
 
 	// string 转 float32 和 float64
@@ -76,6 +81,11 @@ func stringIntFloat() {
 	fmt.Println(str3)
 	fmt.Println(float32One)
 	fmt.Println(float64One)
+
+	// 其他基础类型转字符串类型
+	var int64Str int64 = 20
+	// int64 转 string
+	fmt.Println(strconv.FormatInt(int64Str, 10))
 }
 
 func main() {
@@ -83,6 +93,6 @@ func main() {
 	// dataType()
 
 	// 数据类型转换
-	// typeTransformation()
+	// typeConversions()
 	stringIntFloat()
 }
