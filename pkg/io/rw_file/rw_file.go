@@ -11,7 +11,7 @@ import (
 	"reflect"
 )
 
-var srcFile string = "./test_file/test.txt"
+var srcFile string = "./test_files/test.txt"
 
 // var srcFile string = `F:\Documents\GitHub\Golang\testFile\test.txt`
 var useage string = `可用的值有：
