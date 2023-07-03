@@ -23,7 +23,7 @@ func SliceDelete() {
 
 // 删除指定的元素
 func SliceDeleteSpecifiedEle() {
-	slice := []int{1, 2, 3, 4, 5, 6, 7}
+	slice := []string{"a", "b", "c", "d", "e", "f", "g"}
 
 	needDelEle := 2
 
