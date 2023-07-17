@@ -4,14 +4,14 @@ import (
 	"fmt"
 )
 
-func baseFor() {
+func baseDemo() {
 	// 基本for循环语句，初始化变量i的值为0，当i小于3时执行循环体，每执行一次i的值加1
 	for i := 0; i < 3; i++ {
 		fmt.Printf("%d ", i)
 	}
 }
 
-func infiniteLoop() {
+func infiniteLoopDemo() {
 	i := 0
 	for {
 		fmt.Println(i)
@@ -22,7 +22,7 @@ func infiniteLoop() {
 	}
 }
 
-func continueTest() {
+func continueDemo() {
 	//continue用于忽略循环体内的continue关键字的后续代码块，而直接进入下一次循环的过程
 	//continue只能被用于for循环中
 	for i := 0; i < 10; i++ {
@@ -34,7 +34,7 @@ func continueTest() {
 	}
 }
 
-func breakTest() {
+func breakDemo() {
 	//break用于退出当前循环体，并继续执行后续代码,且只会退出最内层的循环
 	//break可以用在多种结构体中
 	for i := 0; i < 2; i++ {
@@ -47,7 +47,7 @@ func breakTest() {
 	}
 }
 
-func labelTest() {
+func labelDemo() {
 	//标签，在标签名出现的地方，直接跳到标签定义时的位置继续执行代码
 	//如果是`break LABEL1`的话，则会连最外层循环也退出,仅输出一行
 LABEL1:
@@ -73,7 +73,7 @@ HERE:
 	goto HERE
 }
 
-func forRange() {
+func forRangeDemo() {
 	seasons := []string{"Spring", "Summer", "Autumn", "Winter"}
 	//For-Range结构应用于数组和切片，index为索引，season为该索引位置元素的值
 	for index1, season := range seasons {
@@ -93,20 +93,20 @@ func forRange() {
 func main() {
 	// 基本结构示例
 	fmt.Println("1.基本for循环示例")
-	baseFor()
+	baseDemo()
 	// 无限循环示例
 	fmt.Println("\n2.无限循环示例")
-	infiniteLoop()
+	infiniteLoopDemo()
 	//continueTest功能示例
 	fmt.Println("\n3.continue用法")
-	continueTest()
+	continueDemo()
 	// break功能示例
 	fmt.Println("\n4.break用法")
-	breakTest()
+	breakDemo()
 	// label与goto用法示例
 	fmt.Println("\n5.标签与goto的用法")
-	labelTest()
+	labelDemo()
 	// for-range结构示例
 	fmt.Println("\n6.for-range结构的用法")
-	forRange()
+	forRangeDemo()
 }
