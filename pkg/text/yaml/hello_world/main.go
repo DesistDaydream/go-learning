@@ -8,7 +8,7 @@ import (
 )
 
 var data = `
-a: Easy!
+a: "Easy!"
 b:
   c: 2
   d:
