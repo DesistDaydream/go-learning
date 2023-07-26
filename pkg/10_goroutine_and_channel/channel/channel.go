@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 )
 
 func correct() {
@@ -39,13 +40,31 @@ func buffer() {
 	fmt.Println(<-messages)
 }
 
+func forChannel() {
+	// 数据接受者总是面临这样的问题：何时停止等待数据？还会有更多的数据么，还是所有内容都完成了？我应该继续等待还是该做别的了？
+	// 对于该问题，一个可选的方式是，持续的访问数据源并检查channel是否已经关闭，但是这并不是高效的解决方式。
+	// Go 提供了 range 关键字，将其使用在 channel 上时，会自动等待 channel 的动作一直到 channel 被关闭
+
+	// 这里使用 time 库创建一个可以持续生产数据的 Channel，每隔 1s 发送一次
+	ticker := time.NewTicker(1 * time.Second)
+	// 使用 for range 关键字持续从通道中消费
+	for range ticker.C {
+		fmt.Println("test")
+		// 可以设计达到某些条件后关闭发送数据的通道。当然，也可以不关闭，这就相当于做了一个定时器，周期执行某些代码。
+		// ticker.Stop()
+		// break
+	}
+
+}
+
 func main() {
 	fmt.Println("1.通道正确的示例")
 	// correct()
 	fmt.Println("2.通道会导致死锁的示例")
 	// error()
 	fmt.Println("3.通道缓冲")
-	buffer()
+	// buffer()
+	forChannel()
 
 }
 
