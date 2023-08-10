@@ -70,12 +70,13 @@ func main() {
 	aesCrypto := NewAesCrypto(stdKey)
 
 	log.Println("------------------ ECB模式 --------------------")
-	encryptedECB := aesCrypto.AesEncryptECB(origData, stdKey)
+	encryptedECB := aesCrypto.AesEncryptECB(origData)
 	log.Println("加密结果(hex)：", hex.EncodeToString(encryptedECB))
 	log.Println("加密结果(base64)：", base64.StdEncoding.EncodeToString(encryptedECB))
-	decryptedECB := aesCrypto.AesDecryptECB(encryptedECB, stdKey)
+	decryptedECB := aesCrypto.AesDecryptECB(encryptedECB)
 	log.Println("解密结果：", string(decryptedECB))
 
+	// 后面两个模式为了测试目的，并没有使用自己编写的通用实例化逻辑 NewAesCrypto，而是各自都调用了 aes.NewCipher 方法
 	log.Println("------------------ CBC模式 --------------------")
 	// 没有使用标准密钥，当密钥长度不符合 AES 标准时，将会 panic
 	encryptedCBC := AesEncryptCBC(origData, key)
@@ -97,7 +98,7 @@ func main() {
 // go 标准库中，不提供 ECB 模式的加密/解密逻辑，需要自己从头实现
 
 // ECB 模式加密
-func (aesCrypto *AesCrypto) AesEncryptECB(origData []byte, key []byte) (encrypted []byte) {
+func (aesCrypto *AesCrypto) AesEncryptECB(origData []byte) (encrypted []byte) {
 	length := (len(origData) + aes.BlockSize) / aes.BlockSize
 	plain := make([]byte, length*aes.BlockSize)
 	copy(plain, origData)
@@ -115,7 +116,7 @@ func (aesCrypto *AesCrypto) AesEncryptECB(origData []byte, key []byte) (encrypte
 }
 
 // ECB 模式解密
-func (aesCrypto *AesCrypto) AesDecryptECB(encrypted []byte, key []byte) (decrypted []byte) {
+func (aesCrypto *AesCrypto) AesDecryptECB(encrypted []byte) (decrypted []byte) {
 	decrypted = make([]byte, len(encrypted))
 	//
 	for bs, be := 0, aesCrypto.block.BlockSize(); bs < len(encrypted); bs, be = bs+aesCrypto.block.BlockSize(), be+aesCrypto.block.BlockSize() {
@@ -131,6 +132,8 @@ func (aesCrypto *AesCrypto) AesDecryptECB(encrypted []byte, key []byte) (decrypt
 }
 
 // =================== CBC ======================
+
+// CBC 模式加密
 func AesEncryptCBC(origData []byte, key []byte) (encrypted []byte) {
 	block, _ := aes.NewCipher(key)
 	blockSize := block.BlockSize()                              // 获取块的长度
@@ -141,6 +144,7 @@ func AesEncryptCBC(origData []byte, key []byte) (encrypted []byte) {
 	return encrypted
 }
 
+// CBC 模式解密
 func AesDecryptCBC(encrypted []byte, key []byte) (decrypted []byte) {
 	block, _ := aes.NewCipher(key)
 	blockSize := block.BlockSize()                              // 获取块的长度
@@ -164,6 +168,8 @@ func pkcs5UnPadding(origData []byte) []byte {
 }
 
 // =================== CFB ======================
+
+// CFB 模式加密
 func AesEncryptCFB(origData []byte, key []byte) (encrypted []byte) {
 	block, err := aes.NewCipher(key)
 	if err != nil {
@@ -179,6 +185,7 @@ func AesEncryptCFB(origData []byte, key []byte) (encrypted []byte) {
 	return encrypted
 }
 
+// CFB 模式解密
 func AesDecryptCFB(encrypted []byte, key []byte) (decrypted []byte) {
 	block, _ := aes.NewCipher(key)
 	if len(encrypted) < aes.BlockSize {
