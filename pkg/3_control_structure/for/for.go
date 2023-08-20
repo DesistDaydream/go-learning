@@ -97,16 +97,16 @@ func main() {
 	// 无限循环示例
 	fmt.Println("\n2.无限循环示例")
 	infiniteLoopDemo()
-	//continueTest功能示例
+	//continueTest 功能示例
 	fmt.Println("\n3.continue用法")
 	continueDemo()
-	// break功能示例
+	// break 功能示例
 	fmt.Println("\n4.break用法")
 	breakDemo()
-	// label与goto用法示例
+	// label 与 goto 用法示例
 	fmt.Println("\n5.标签与goto的用法")
 	labelDemo()
-	// for-range结构示例
+	// for-range 结构示例
 	fmt.Println("\n6.for-range结构的用法")
 	forRangeDemo()
 }
