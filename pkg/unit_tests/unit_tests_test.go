@@ -3,7 +3,7 @@ package main
 import "testing"
 
 func TestUnitTests(t *testing.T) {
-	// 这是是测试时需要传递给 UnitTests() 的参数
+	// 这是测试时需要传递给 UnitTests() 的参数
 	type args struct {
 		needArgs string
 	}
