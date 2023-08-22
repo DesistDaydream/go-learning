@@ -23,7 +23,7 @@ func main() {
 	}
 
 	// 0x1B 是 16 进制表示、\033 是 8 进制表示
-	fmt.Printf("%c[33;1m黄色字体加粗%c[0m\n", 0x1B, 0x1B)
-	fmt.Printf("%c[33;4m黄色字体下划线%c[0m\n", 0x1B, 0x1B)
-	fmt.Printf("%c[42;30;1m绿色背景黑色字体下划线%c[0m\n", 0x1B, 0x1B)
+	fmt.Printf("%c[33;1m 黄色字体加粗 %c[0m\n", 0x1B, 0x1B)
+	fmt.Printf("%c[33;4m 黄色字体下划线 %c[0m\n", 0x1B, 0x1B)
+	fmt.Printf("%c[42;30;1m 绿色背景黑色字体加粗 %c[0m\n", 0x1B, 0x1B)
 }
