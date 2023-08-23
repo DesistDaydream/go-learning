@@ -14,7 +14,7 @@ var people = Human{Name: "zhangsan"}
 // ANSI 演示
 func AnsiDemo() {
 	for i := 0; i < 10; i++ {
-		// [K 用于清除光标到行位的内容；\r 用于将光标移动到行首。通过这种控制器，让终端可以始终只显示一行。
+		// [K 用于清除光标到行尾的内容；\r 用于将光标移动到行首。通过这种控制器，让终端可以始终只显示一行。
 		fmt.Printf("\033[2K \r 第 %v 页 \033[0m", i)
 		time.Sleep(100 * time.Millisecond)
 	}
