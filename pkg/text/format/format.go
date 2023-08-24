@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 	"time"
 )
 
@@ -28,21 +29,21 @@ func AnsiDemo() {
 	fmt.Printf("%c[42;30;1m 绿色背景黑色字体加粗 %c[0m\n", 0x1b, 0x1b)
 }
 
-func colorDemo(){
+func colorDemo() {
 	flag := 0
-    str := "KURISU "
-    for r := 255; r >= 0; r -= 2 {
-        for g, b := 0, 255; g < 255 && b >= 1; g += 1 {
-            if flag >= len(str) {
-                flag = 0
-            }
-            a := str[flag]
-            flag++
-            fmt.Printf("\x1b[48;2;%s;%s;%sm\x1b[38m%s\x1b[0m", strconv.Itoa(r), strconv.Itoa(g), strconv.Itoa(b), string(a))
-            b -= 1
-        }
-        fmt.Printf("\x1bE")
-    }
+	str := "KURISU "
+	for r := 255; r >= 0; r -= 2 {
+		for g, b := 0, 255; g < 255 && b >= 1; g += 1 {
+			if flag >= len(str) {
+				flag = 0
+			}
+			a := str[flag]
+			flag++
+			fmt.Printf("\x1b[48;2;%s;%s;%sm\x1b[38m%s\x1b[0m", strconv.Itoa(r), strconv.Itoa(g), strconv.Itoa(b), string(a))
+			b -= 1
+		}
+		fmt.Printf("\x1bE")
+	}
 }
 
 func main() {
