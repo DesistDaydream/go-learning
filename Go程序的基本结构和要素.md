@@ -1,38 +1,38 @@
-# Go 编程语言规范  
-[官方文档](https://golang.org/ref/spec)  
+# Go 编程语言规范
+[官方文档](https://golang.org/ref/spec)
 
-# Go 编程语言关键字(Keywords)  
-[官方文档](https://golang.org/ref/spec#Keywords)  
+# Go 编程语言关键字(Keywords)
+[官方文档](https://golang.org/ref/spec#Keywords)
 Go语言非常简单，只有25个`关键字(Keywords)`可以使用，记住这25个关键字，就掌握了最基本的Go语言用法。这些关键字是 go 语言保留的，不能用作标识符
-`关键字`在编程语言中是指该语言的一个功能，比如下文面的 var，就是指声明一个变量，func 就是定义一个函数等等。  
+`关键字`在编程语言中是指该语言的一个功能，比如下文面的 var，就是指声明一个变量，func 就是定义一个函数等等。
 `Note: if-else 算两个关键字所以在这里一共只写了24个。`
-1. [break] 控制结构  
-2. [case] 控制结构  
-3. [chan](/10.goroutines_and_channels/channel.go) 用于channel通讯  
-4. [const] 语言基础里面的常量申明  
-5. [continue] 控制结构  
-6. [default] 控制结构  
-7. [defer](/5.Functions/defer.go) 用于在函数退出之前执行某语句的功能  
-8. [fallthrough] 控制结构  
-9. [for] 控制结构  
-10. [func](/5.Functions/README.md) 用于定义函数和方法  
-11. [go](/10.goroutines_and_channels/goroutine.go) 用于并发  
-12. [goto] 控制结构  
-13. [if-else](/3.control_structures/if-else.go) 控制结构  
-14. [import] 用于定义该文件引用某个包  
-15. [interface](/7.structs_and_interfaces/interface.go) 用于定义接口  
-16. [map](/4.arrays_slices_maps/maps.go) 用于声明map类型数据  
-17. [package] 用于定义该文件所属的包  
-18. [range] 用于读取slice、map、channel数据  
-19. [return](/5.Functions/return.go) 用于从函数返回。有时候也用来直接跳出当前函数，回到主程序继续执行  
-20. [select] 用于选择不同类型的通讯  
-21. [struct](/7.structs_and_interfaces/struct.go) 用于定义抽象数据类型  
-22. [switch] 控制结构  
-23. [type] 用于声明自定义类型  
-24. [var] 语言基础里面的变量申明   
+1. [break] 控制结构
+2. [case] 控制结构
+3. [chan](/10.goroutines_and_channels/channel.go) 用于channel通讯
+4. [const] 语言基础里面的常量申明
+5. [continue] 控制结构
+6. [default] 控制结构
+7. [defer](/5.Functions/defer.go) 用于在函数退出之前执行某语句的功能
+8. [fallthrough] 控制结构
+9. [for] 控制结构
+10. [func](/5.Functions/README.md) 用于定义函数和方法
+11. [go](/10.goroutines_and_channels/goroutine.go) 用于并发
+12. [goto] 控制结构
+13. [if-else](/3.control_structures/if-else.go) 控制结构
+14. [import] 用于定义该文件引用某个包
+15. [interface](/7.structs_and_interfaces/interface.go) 用于定义接口
+16. [map](/4.arrays_slices_maps/maps.go) 用于声明map类型数据
+17. [package] 用于定义该文件所属的包
+18. [range] 用于读取slice、map、channel数据
+19. [return](/5.Functions/return.go) 用于从函数返回。有时候也用来直接跳出当前函数，回到主程序继续执行
+20. [select] 用于选择不同类型的通讯
+21. [struct](/7.structs_and_interfaces/struct.go) 用于定义抽象数据类型
+22. [switch] 控制结构
+23. [type] 用于声明自定义类型
+24. [var] 语言基础里面的变量申明
 
 # Go程序的基本结构和要素
-代码示例：[hello_world.go](/hello_world.go)  
+代码示例：[hello_world.go](/hello_world.go)
 ```
 package main
 
@@ -44,9 +44,9 @@ func main() {
 ```
 
 ## 如何阅读Go语言的代码
-Go程序的代码从上到下，从左到右阅读，在上例中的代码第一行`package main`称为**package declaration包的声明**。每个Go程序必须以包的声明作为开头第一行。  
+Go程序的代码从上到下，从左到右阅读，在上例中的代码第一行`package main`称为**package declaration包的声明**。每个Go程序必须以包的声明作为开头第一行。
 
-一个大的程序是由很多小的基础构件组成的。变量保存值，简单的加法和减法运算被组合成较复杂的表达式。基础数据类型被聚合为数组或结构体等更复杂的数据类型。然后使用if和for之类的控制语句来组织和控制表达式的执行流程。然后多个语句被组织到一个个函数中，以便代码的隔离和复用。函数以源文件和包的方式被组织。   
+一个大的程序是由很多小的基础构件组成的。变量保存值，简单的加法和减法运算被组合成较复杂的表达式。基础数据类型被聚合为数组或结构体等更复杂的数据类型。然后使用if和for之类的控制语句来组织和控制表达式的执行流程。然后多个语句被组织到一个个函数中，以便代码的隔离和复用。函数以源文件和包的方式被组织。
 
 ### 包的概念、导入与可见性
 
@@ -148,7 +148,7 @@ func main() {
 }
 ```
 
-**注意事项** 
+**注意事项**
 
 如果你导入了一个包却没有使用它，则会在构建程序时引发错误，如 `imported and not used: os`，这正是遵循了 Go 的格言：“没有不必要的代码！“。
 
@@ -166,7 +166,7 @@ func functionName()
 
 你可以在括号 `()` 中写入 0 个或多个函数的参数（使用逗号 `,` 分隔），每个参数的名称后面必须紧跟着该参数的类型。
 
-main 函数是每一个可执行程序所必须包含的，一般来说都是在启动后第一个执行的函数（如果有 init() 函数则会先执行该函数）。如果你的 main 包的源代码没有包含 main 函数，则会引发构建错误 `undefined: main.main`。main 函数既没有参数，也没有返回类型（与 C 家族中的其它语言恰好相反）。如果你不小心为 main 函数添加了参数或者返回类型，将会引发构建错误： 
+main 函数是每一个可执行程序所必须包含的，一般来说都是在启动后第一个执行的函数（如果有 init() 函数则会先执行该函数）。如果你的 main 包的源代码没有包含 main 函数，则会引发构建错误 `undefined: main.main`。main 函数既没有参数，也没有返回类型（与 C 家族中的其它语言恰好相反）。如果你不小心为 main 函数添加了参数或者返回类型，将会引发构建错误：
 
    func main must have no arguments and no return values results.
 
@@ -225,7 +225,7 @@ fmt.Println（"hello, world"）
 
 ## 注释
 
-示例  
+示例
 ```go
 package main
 
@@ -343,7 +343,7 @@ type (
 - 如果当前包是 main 包，则定义 main 函数。
 - 然后定义其余的函数，首先是类型的方法，接着是按照 main 函数中先后调用的顺序来定义相关函数，如果有很多函数，则可以按照字母顺序来进行排序。
 
-示例  
+示例
 ```go
 package main
 
@@ -393,7 +393,7 @@ valueOfTypeB = typeB(valueOfTypeA)
 
 **类型 B 的值 = 类型 B(类型 A 的值)**
 
-示例： 
+示例：
 
 ```go
 a := 5.0

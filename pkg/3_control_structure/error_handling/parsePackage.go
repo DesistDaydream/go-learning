@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	parse "github.com/DesistDaydream/go-learning/pkg/11_error_handling/parse"
+	parse "github.com/DesistDaydream/go-learning/pkg/3_control_structure/error_handling/parse"
 )
 
 func main() {

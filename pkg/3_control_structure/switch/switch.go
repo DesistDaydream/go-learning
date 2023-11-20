@@ -6,11 +6,11 @@ import (
 )
 
 func main() {
-	switch1()
-	switch2()
+	switch_1()
+	switch_2()
 }
 
-func switch1() {
+func switch_1() {
 	i := 2
 	fmt.Print("Write ", i, " as ")
 	switch i {
@@ -51,7 +51,7 @@ func switch1() {
 	whatAmI("hey")
 }
 
-func switch2() {
+func switch_2() {
 	i := 3
 	//给定一个变量，当switch中分支的变量i满足某个条件时则执行代码块
 	switch i {
