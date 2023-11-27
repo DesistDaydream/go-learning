@@ -9,7 +9,9 @@ import "fmt"
 // comparable 可以改为 any，表示 T 可以是任意类型
 func Index[T comparable](s []T, x T) int {
 	for i, v := range s {
-		// 这里的 v 和 x 都是 T 类型，且 T 类型具有可以比较的约束，因此这里可以使用 ==
+		// 这里的 v 和 x 都是 T 类型
+		// 而具体的 T 的类型由上层调用来决定，也就是**类型参数**
+		// 若上层传递的参数是 string，则 s 和 x 也是 string；若上层传递的是 int，则 s 和 x 也是 int。
 		if v == x {
 			return i
 		}
@@ -20,9 +22,9 @@ func Index[T comparable](s []T, x T) int {
 func main() {
 	// Index() 函数适用于 int 类型的切片
 	si := []int{10, 20, 15, -10}
-	fmt.Println(Index(si, 15))
+	fmt.Println(Index[int](si, 15))
 
 	//  Index() 函数同样也使用于 string 类型的切片
 	ss := []string{"foo", "bar", "baz"}
-	fmt.Println(Index(ss, "hello"))
+	fmt.Println(Index[string](ss, "hello"))
 }
