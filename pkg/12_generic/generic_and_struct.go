@@ -25,7 +25,7 @@ type StructGeneric interface {
 }
 
 func GenData[T StructGeneric](s T) string {
-	// 如何获取结构体中的 Name 属性？
+	// TODO: 如何获取结构体中的 Name 属性？
 	// return s.Name
 	return ""
 }

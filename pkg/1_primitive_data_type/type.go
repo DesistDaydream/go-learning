@@ -57,7 +57,6 @@ func typeConversions() {
 	type stringValue string
 	ptr := (*stringValue)(&str2)
 	fmt.Println(ptr)
-
 }
 
 // 使用 strconv 标准库来实现字符串类型与其他基本数据类型之间的类型转换。
@@ -88,11 +87,14 @@ func stringIntFloat() {
 	fmt.Println(strconv.FormatInt(int64Str, 10))
 }
 
-func main() {
-	// 数据类型检查
-	// dataType()
+// 数据类型转换，字符串转Unicode，Unicode转字符串
+func unicode() {
+	sText := "断念梦"
+	// 字符串转 Unicode
+	textQuoted := strconv.QuoteToASCII(sText)
+	fmt.Println(textQuoted)
 
-	// 数据类型转换
-	// typeConversions()
-	stringIntFloat()
+	// Unicode 转字符串
+	str, _ := strconv.Unquote(textQuoted)
+	fmt.Println(str)
 }
