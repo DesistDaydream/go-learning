@@ -21,6 +21,8 @@ func Index[T comparable](s []T, x T) int {
 
 func main() {
 	// Index() 函数适用于 int 类型的切片
+	// 可以像这样 `Index[int](si, 15)` 传递参数告诉 `Index()` 当前应该使用哪种类型类型执行其中的代码，这里的 `[int]` 就是告诉 Index 的 T 应该是 int 类型，
+	// 其调用相当于 `func Index[T comparable](s []T, x T) int {}` 变成了 `func Index(s []int, x int) int {}`
 	si := []int{10, 20, 15, -10}
 	fmt.Println(Index[int](si, 15))
 
