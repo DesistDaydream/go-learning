@@ -38,8 +38,13 @@ func StringHandlingOne() {
 		// 字符串替换，将aaaa字符串中的a替换成b，只替换前两个，结果为"bbaa"
 		strings.Replace("aaaa", "a", "b", 2), "\n",
 
-		// 切割字符串。结果为：[]string{"a","b","c","d","e"}
-		strings.Split("a-b-c-d-e", "-"), "\n",
+		// 切割字符串。结果为: [a b c d e   ]
+		// 注意，这种切割方式若整体字符串前后有空白字符，则这些空白字符将会保留，并不会自动去掉首/尾的空白字符。
+		strings.Split("a-b-c-d-e-  ", "-"), "\n",
+
+		// 切割字符串。结果为:  [test test test]
+		// 这种切割方式仅适用于字符串之间是一个或多个空白字符的场景。但是可以自动去掉整体字符串前后的空白字符，算是比较常用的简单切割方式，不用人为做更多处理。
+		strings.Fields("test test test   "), "\n",
 
 		//修改字符串大小写，将指定的字符串中的大写全部变成小写，"test"
 		strings.ToLower("TeST"), "\n",
@@ -59,6 +64,6 @@ func NumToLetter() {
 }
 
 func main() {
-	// StringHandlingOne()
-	NumToLetter()
+	StringHandlingOne()
+	// NumToLetter()
 }
