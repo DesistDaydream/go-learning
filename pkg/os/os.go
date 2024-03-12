@@ -6,13 +6,18 @@ import (
 	"os/exec"
 )
 
-func main() {
-	fmt.Printf("1. 使用os.StartProcess函数运行外部命令\n")
-	runCommandWithStartProcess()
-	fmt.Printf("2.使用exec.Command函数运行外部命令\n")
-	runCommandWithCommand()
+// 运行命令演示
+func runCommandDemo() {
+	cmd := exec.Command("ls", "-lah")
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		fmt.Printf("命令执行错误%v", err)
+		return
+	}
+	fmt.Printf("%s", out)
 }
 
+// 使用 os.StartProcess 函数运行外部命令
 func runCommandWithStartProcess() {
 	//Environ()会返回当前环境的环境变量，格式为键值对切片
 	env := os.Environ()
@@ -35,6 +40,7 @@ func runCommandWithStartProcess() {
 	fmt.Printf("这个进程的ID是：%v", pid)
 }
 
+// 使用 exec.Command 函数运行外部命令
 func runCommandWithCommand() {
 	// exec.Command()函数返回一个类型为*exec.Cmd的结构体指针
 	// 该指针用于使用给出的参数执行第一个参数指定的程序
