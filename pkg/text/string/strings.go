@@ -54,6 +54,9 @@ func StringHandlingOne() {
 
 		// 判断s是否以he开头,判断s是否以ld结尾
 		strings.HasPrefix(s, "he"), strings.HasSuffix(s, "ld"),
+
+		// 去掉首尾空白。包括前一个换行符和结尾换行符也会去掉
+		strings.TrimSpace(" 首尾空白 \n"),
 	)
 }
 
