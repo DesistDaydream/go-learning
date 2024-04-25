@@ -7,7 +7,7 @@ import (
 var SrcFile string = "../../../test_files/test.txt"
 var DstFile string = "../../../test_files/sample_write_file.txt"
 
-func TestSampleReadFile(t *testing.T) {
+func TestReadFileDemo(t *testing.T) {
 	type args struct {
 		srcFile string
 	}
@@ -25,12 +25,12 @@ func TestSampleReadFile(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			SampleReadFile(SrcFile)
+			ReadFileDemo(SrcFile)
 		})
 	}
 }
 
-func TestSampleWriteFile(t *testing.T) {
+func TestWriteFileDemo(t *testing.T) {
 	type args struct {
 		dstFile string
 	}
@@ -47,7 +47,7 @@ func TestSampleWriteFile(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			SampleWriteFile(tt.args.dstFile)
+			WriteFileDemo(tt.args.dstFile)
 		})
 	}
 }

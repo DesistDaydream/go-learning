@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"bufio"
+	"fmt"
 	"os"
 )
 
@@ -12,6 +12,7 @@ func main() {
 	fmt.Println("\n2.使用读取器来获取用户的输入")
 	// ReaderTest()
 }
+
 func ScanlnTest() {
 	var (
 		firstName, lastName, s string

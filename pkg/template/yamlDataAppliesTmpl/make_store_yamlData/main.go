@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"text/template"
@@ -15,7 +14,7 @@ func main() {
 	t := template.Must(template.ParseFiles("./template/yamlDataAppliesTmpl/template/yaml.tmpl"))
 
 	// ReadFile 读取 yaml 文件内容，并将内容放入 config 中
-	config, errRead := ioutil.ReadFile("./template/yamlDataAppliesTmpl/template/info.yaml")
+	config, errRead := os.ReadFile("./template/yamlDataAppliesTmpl/template/info.yaml")
 	if errRead != nil {
 		fmt.Print(errRead)
 	}

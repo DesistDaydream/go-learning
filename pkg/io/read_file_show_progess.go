@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"time"
 )
@@ -19,7 +18,7 @@ func readFile() {
 	rateCh := make(chan int64)
 	defer close(rateCh)
 
-	file, err := os.Open("./test_files/read_file_show_progess.jpg")
+	file, err := os.Open("../../test_files/read_file_show_progess.jpg")
 	if err != nil {
 		fmt.Println(err.Error())
 		return
@@ -50,9 +49,5 @@ func readFile() {
 		}()
 	}
 
-	ioutil.WriteFile("./test_file/read_file_show_progess_result.jpg", resultFileByte, 0600)
-}
-
-func main() {
-	readFile()
+	os.WriteFile("./test_file/read_file_show_progess_result.jpg", resultFileByte, 0600)
 }

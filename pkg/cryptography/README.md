@@ -71,7 +71,7 @@
 	})
 ```
 
-加密/解密，签名/验签 则需要多一些解码相关的内容  
+加密/解密，签名/验签 则需要多一些解码相关的内容
 加密与验签
 ```go
 	// 由于这次要通过 PEM 格式编码的公钥进行加密或验签，所以需要先解码 PEM 格式，再将解码后的数据转换为 *rsa.PublicKey 类型
@@ -111,17 +111,17 @@
 		Bytes: bytePublicKey,
 	})
 	// 这里就可以看到平时看到的带页眉页脚的 PEM 格式的编码后的密钥内容了。
-	privateKeyFileBuf, _ := ioutil.ReadFile(privateKeyFile)
+	privateKeyFileBuf, _ := os.ReadFile(privateKeyFile)
 	fmt.Printf("======== PEM 格式私钥内容：========\n%s", string(privateKeyFileBuf))
-	publicKeyFileBuf, _ := ioutil.ReadFile(publicKeyFile)
+	publicKeyFileBuf, _ := os.ReadFile(publicKeyFile)
 	fmt.Printf("======== PEM 格式公钥内容：========\n%s", string(publicKeyFileBuf))
 ```
 
-加密/解密，签名/验签 则需要多一些解码相关的内容  
+加密/解密，签名/验签 则需要多一些解码相关的内容
 加密与验签
 ```go
 	// 由于这次要通过 PEM 格式编码的公钥进行加密，所以需要先解码 PEM 格式，再将解码后的数据转换为 *rsa.PublicKey 类型
-	fileByte, _ := ioutil.ReadFile("./cryptography/public.pem") // 获取 PEM 格式文件的二进制类型
+	fileByte, _ := os.ReadFile("./cryptography/public.pem") // 获取 PEM 格式文件的二进制类型
 	block, _ := pem.Decode(fileByte)
 	// 之前在编码时，使用了 x509 进行了编码，所以同样，需要使用 x509 解码以获得 *rsa.PublicKey 类型的公钥
 	rsaPublicKey, _ := x509.ParsePKCS1PublicKey(block.Bytes)
@@ -130,7 +130,7 @@
 解密与签名
 ```go
 	// 由于这次要通过 PEM 格式编码的公钥进行解密或签名，所以需要先解码 PEM 格式，再将解码后的数据转换为 *rsa.PrivateKey 类型
-	fileByte, _ := ioutil.ReadFile("./cryptography/private.pem") // 获取 PEM 格式文件的二进制类型
+	fileByte, _ := os.ReadFile("./cryptography/private.pem") // 获取 PEM 格式文件的二进制类型
 	block, _ := pem.Decode(fileByte)
 	// 之前在编码时，使用了 x509 进行了编码，所以同样，需要使用 x509 解码以获得 *rsa.PrivateKey 类型的公钥
 	rsaPrivateKey, _ := x509.ParsePKCS1PrivateKey(block.Bytes)

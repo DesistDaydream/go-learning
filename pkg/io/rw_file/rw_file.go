@@ -14,34 +14,21 @@ import (
 var srcFile string = "./test_files/test.txt"
 
 // var srcFile string = `F:\Documents\GitHub\Golang\testFile\test.txt`
-var useage string = `可用的值有：
-samplewritefile:最简单的写入文件的方法
-readfile:读取一个文件的内容并输出
-readfile2:逐行读取一个文件的内容并逐行输出的方法1
-readfile22:逐行读取一个文件的内容并逐行输出的方法2
-readfile3:行与列互换
-rwfile:读取一个文件的内容并复制到一个新文件中
-readcompress:读取压缩文件
-writefilebuffer:使用缓冲写入文件。
-copyfile:通过命令行参数把一个文件复制到另一个文件
-`
 
 func main() {
 	var action string
-	flag.StringVar(&action, "action", "", useage)
+	flag.StringVar(&action, "action", "", "")
 	flag.Parse()
 
 	switch action {
 	case "readfile":
-		ReadFile()
+		ReadFileWithByte()
 	case "readfile2":
-		ReadFile2()
+		ReadFileWithBufioReader()
 	case "readfile22":
-		ReadFile22()
+		ReadFileWithBufioScanner()
 	case "readfile3":
-		ReadFile3()
-	case "rwfile":
-		RWFile()
+		ReadFileConvertRowsAndColumns()
 	case "readcompress":
 		ReadCompress()
 	case "writefilebuffer":
@@ -51,117 +38,20 @@ func main() {
 	}
 }
 
-func SampleReadFile(srcFile string) {
+// 最基本的读取读取的方式
+func ReadFileDemo(srcFile string) {
 	fileByte, _ := os.ReadFile(srcFile)
 	fmt.Println("文件内容为：", string(fileByte))
 }
 
-func SampleWriteFile(dstFile string) {
+// 最基本的文件写入的方式
+func WriteFileDemo(dstFile string) {
 	os.WriteFile(dstFile, []byte("Hello DesistDaydream"), 0666)
 	fileByte, _ := os.ReadFile(dstFile)
 	fmt.Printf("写入 %v 文件的内容：%v", dstFile, string(fileByte))
 }
 
-func ReadFile() {
-	// 以下变量声明仅用来查看其类。因为下面的代码的变量在初始化的时候直接声明加赋值了，没法显式得看出变量的类型
-	// var fd *os.File
-	// var data []uint8	//uint8与byte类型一样
-
-	// 步骤概述：获取文件描述符(简写为FD)，通过FD读取文件放到变量中，然后从变量中输出文件中的内容。
-	// 第一步:使用os包中的Open()函数来打开指定文件,返回值为该文件的FD
-	fd, err := os.Open(srcFile)
-	fmt.Println("打开文件的 FD 为：", fd.Fd())
-	// 下面几行不影响代码功能，可省略的代码，判断文件是否存在，如果不存在会提示
-	if err != nil {
-		log.Fatal(err)
-	}
-	// 第二步，初始化一个切片变量，使用Read方法，读取Read方法作用的fd变量里的内容，并赋值给括号内的data变量，返回值为指定变量的字节数
-	// Read函数详见https://golang.org/pkg/os/#File.Read
-	data := make([]byte, 168)
-	count, err := fd.Read(data)
-	if err != nil {
-		log.Fatal(err)
-	}
-	// 第三步，使用string函数把byte类型的数据转换成字符型，以便数据可以让人类看懂
-	fmt.Printf("比特计数为：%d\n文件内容为：\n%s", count, string(data))
-}
-
-func ReadFile2() {
-	// var inputFile *os.File
-	// var inputReader *bufio.Reader
-	// var inputString
-	inputFile, inputError := os.Open(srcFile)
-	if inputError != nil {
-		fmt.Printf("文件不存在或出现问题")
-		return // 出错时退出这个函数
-	}
-	defer inputFile.Close() // 确保正常可以在函数结束前关闭打开的文件
-
-	// 使用读取器函数NewReader()通过FD把文件内容缓存到一个变量中
-	// https://golang.org/pkg/bufio/#NewReader
-	inputReader := bufio.NewReader(inputFile)
-	// 第三步:使用bufio包中的Readstring方法作用在之前初始化的结构体变量上，输出换行符之前的内容，并用无限for循环逐行输出，直到最后一行
-	// https://golang.org/pkg/bufio/#Reader.ReadString
-	for {
-		inputString, readerError := inputReader.ReadString('\n')
-		if readerError == io.EOF {
-			return
-		}
-		fmt.Printf("The input was: %s", inputString)
-	}
-}
-
-func ReadFile22() {
-	// var inputFile *os.File
-	// var inputReader *bufio.Reader
-	// var inputString
-	var slices []string
-	inputFile, inputError := os.Open(srcFile)
-	if inputError != nil {
-		fmt.Printf("文件不存在或出现问题")
-		return // 出错时退出这个函数
-	}
-	defer inputFile.Close() // 确保正常可以在函数结束前关闭打开的文件
-
-	// 使用读取器函数NewScanner()通过FD把文件内容缓存到一个变量中
-	scanner := bufio.NewScanner(inputFile)
-	// 第三步:使用bufio包中的Readstring方法作用在之前初始化的结构体变量上，输出换行符之前的内容，并用无限for循环逐行输出，直到最后一行
-	// https://golang.org/pkg/bufio/#Reader.ReadString
-	for scanner.Scan() {
-		fmt.Printf("The input was: %s\n", scanner.Text())
-		// 还可以通过append函数将每一行内容赋值给一个切片，以便后续使用
-		slices = append(slices, scanner.Text())
-		fmt.Println(slices)
-	}
-}
-
-// ReadFile3 函数用于行与列互相转换
-// 列的数量必须相同，否则切片变量为空
-func ReadFile3() {
-	file, err := os.Open(srcFile)
-	if err != nil {
-		panic(err)
-	}
-	defer file.Close()
-
-	var col1, col2, col3 []string
-	for {
-		var v1, v2, v3 string
-		_, err := fmt.Fscanln(file, &v1, &v2, &v3)
-		// scans until newline
-		if err != nil {
-			break
-		}
-		col1 = append(col1, v1)
-		col2 = append(col2, v2)
-		col3 = append(col3, v3)
-	}
-
-	fmt.Println(col1)
-	fmt.Println(col2)
-	fmt.Println(col3)
-}
-
+// 最基本的文件读取与文件写入的结合示例
 func RWFile() {
 	inputFile := srcFile
 	outputFile := "../testFile/test_copy.txt"
@@ -175,6 +65,98 @@ func RWFile() {
 	fmt.Printf("%s\n", string(buf)) // 使用string()函数把buf变量的值转变成字符串让人类可读
 	// 使用WriteFile()函数把变buf变量中的内容复制到outputFile,若无文件则创建
 	os.WriteFile(outputFile, buf, 0644) // oct, not hex
+}
+
+// 利用 []byte 处理通过 os.Open 打开的文件内容
+func ReadFileWithByte() {
+	// 步骤概述：获取文件描述符(简写为FD)，通过FD读取文件放到变量中，然后从变量中输出文件中的内容。
+	// 第一步:使用os包中的Open()函数来打开指定文件,返回值为该文件的FD
+	fileDescriptor, err := os.Open(srcFile)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer fileDescriptor.Close()
+	fmt.Println("打开文件的 FD 为：", fileDescriptor.Fd())
+	// 第二步，初始化一个切片变量，使用Read方法，读取Read方法作用的fd变量里的内容，并赋值给括号内的data变量，返回值为指定变量的字节数
+	// Read函数详见https://golang.org/pkg/os/#File.Read
+	data := make([]byte, 168)
+	count, err := fileDescriptor.Read(data)
+	if err != nil {
+		log.Fatal(err)
+	}
+	// 第三步，使用string函数把byte类型的数据转换成字符型，以便数据可以让人类看懂
+	fmt.Printf("比特计数为：%d\n文件内容为：\n%s", count, string(data))
+}
+
+// 利用 bufio.Reader 处理通过 os.Open 打开的文件内容
+func ReadFileWithBufioReader() {
+	// os.File 结构体实现了 io.Reader 接口，可以作为 bufio.NewReader() 函数的参数
+	// 注意，很多用于处理 I/O、读写文件 的函数一般都使用 io.Reader 和 io.Writer 接口作为参数，
+	// 所以 os.Open 实例化的 File 结构体可以当作很多用来处理 I/O 的函数的参数
+	fileDescriptor, err := os.Open(srcFile)
+	if err != nil {
+		log.Fatalln("文件不存在或出现问题")
+	}
+	defer fileDescriptor.Close()
+
+	// 使用读取器函数 NewReader() 通过 FD 把文件内容缓存到一个变量中
+	// https://golang.org/pkg/bufio/#NewReader
+	inputReader := bufio.NewReader(fileDescriptor)
+	// 使用 bufio 包中的 Readstring 方法作用在之前初始化的结构体变量上，输出换行符之前的内容，并用无限 for 循环逐行输出，直到最后一行
+	// https://golang.org/pkg/bufio/#Reader.ReadString
+	for {
+		inputString, readerError := inputReader.ReadString('\n')
+		if readerError == io.EOF {
+			return
+		}
+		fmt.Printf("The input was: %s", inputString)
+	}
+}
+
+// 利用 bufio.NewScanner 处理通过 os.Open 打开的文件内容
+func ReadFileWithBufioScanner() {
+	fileDescriptor, err := os.Open(srcFile)
+	if err != nil {
+		log.Fatalln("文件不存在或出现问题")
+	}
+	defer fileDescriptor.Close()
+
+	// 使用 FD 实例化一个 *bufio.Scanner，通过 Scanner 处理以 ScanLines 定义的分隔符的每部分内容
+	// ScanLines 默认是换行符，也就是说，通过 Scanner 的方法都是逐行处理文件内容的。
+	// 就像 Scanner 名字似的，扫描仪，扫描仪在扫描文件的时候，也是一行一行扫描的
+	scanner := bufio.NewScanner(fileDescriptor)
+	// 通过循环逐行处理文件
+	for scanner.Scan() {
+		// scanner.Text() 返回每行的字符数据
+		fmt.Printf("The input was: %s\n", scanner.Text())
+	}
+}
+
+// ReadFileConvertRowsAndColumns 函数用于行与列互相转换
+// 列的数量必须相同，否则切片变量为空
+func ReadFileConvertRowsAndColumns() {
+	fileDescriptor, err := os.Open(srcFile)
+	if err != nil {
+		panic(err)
+	}
+	defer fileDescriptor.Close()
+
+	var col1, col2, col3 []string
+	for {
+		var v1, v2, v3 string
+		_, err := fmt.Fscanln(fileDescriptor, &v1, &v2, &v3)
+		// scans until newline
+		if err != nil {
+			break
+		}
+		col1 = append(col1, v1)
+		col2 = append(col2, v2)
+		col3 = append(col3, v3)
+	}
+
+	fmt.Println(col1)
+	fmt.Println(col2)
+	fmt.Println(col3)
 }
 
 func ReadCompress() {

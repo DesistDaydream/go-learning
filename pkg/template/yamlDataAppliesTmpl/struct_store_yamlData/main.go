@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"text/template"
@@ -16,14 +15,14 @@ type User struct {
 	Addr string `yaml:"addr"`
 }
 
-//Nginx nginx  配置
+// Nginx nginx  配置
 type Nginx struct {
 	Port    int    `yaml:"port"`
 	LogPath string `yaml:"logPath"`
 	Path    string `yaml:"path"`
 }
 
-//YamlInfo yaml文件信息
+// YamlInfo yaml文件信息
 type YamlInfo struct {
 	Name  string `yaml:"name"`
 	User  []User `yaml:"user"`
@@ -35,7 +34,7 @@ func main() {
 	t := template.Must(template.ParseFiles("./template/yamlDataAppliesTmpl/template/struct_store_yamlData.tmpl"))
 
 	// 读取 yaml 文件内容，并将内容放入 config 中后
-	config, errRead := ioutil.ReadFile("./template/yamlDataAppliesTmpl/template/info.yaml")
+	config, errRead := os.ReadFile("./template/yamlDataAppliesTmpl/template/info.yaml")
 	if errRead != nil {
 		fmt.Print(errRead)
 	}

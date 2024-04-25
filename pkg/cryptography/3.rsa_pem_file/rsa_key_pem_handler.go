@@ -6,7 +6,6 @@ import (
 	"crypto/sha256"
 	"crypto/x509"
 	"fmt"
-	"io/ioutil"
 	"os"
 
 	"crypto/rsa"
@@ -16,7 +15,7 @@ import (
 
 // GetKeyByteFromFile 读取密钥文件并转换为二进制流。该行为用于在 加密/解密，签名/验签 中。
 func GetKeyByteFromFile(fileName string) []byte {
-	fileByte, _ := ioutil.ReadFile(fileName)
+	fileByte, _ := os.ReadFile(fileName)
 	return fileByte
 }
 
@@ -56,9 +55,9 @@ func NewRsaKey(keyLength int, privateKeyFile string, publicKeyFile string) *RsaK
 		Bytes: bytePublicKey,
 	})
 	// 这里就可以看到平时看到的带页眉页脚的 PEM 格式的编码后的密钥内容了。
-	privateKeyFileBuf, _ := ioutil.ReadFile(privateKeyFile)
+	privateKeyFileBuf, _ := os.ReadFile(privateKeyFile)
 	fmt.Printf("======== PEM 格式私钥内容：========\n%s", string(privateKeyFileBuf))
-	publicKeyFileBuf, _ := ioutil.ReadFile(publicKeyFile)
+	publicKeyFileBuf, _ := os.ReadFile(publicKeyFile)
 	fmt.Printf("======== PEM 格式公钥内容：========\n%s", string(publicKeyFileBuf))
 	// =====================================================
 	// ======== 比创建基本 RSA 密钥对多出来的行为，结束 =======
@@ -73,7 +72,7 @@ func NewRsaKey(keyLength int, privateKeyFile string, publicKeyFile string) *RsaK
 // RsaPemEncrypt 使用 RSA 算法，加密指定明文，其中私钥是 PEM 编码后的格式
 func (r *RsaKey) RsaPemEncrypt(plaintext []byte) []byte {
 	// 由于这次要通过 PEM 格式编码的公钥进行加密，所以需要先解码 PEM 格式，再将解码后的数据转换为 *rsa.PublicKey 类型
-	fileByte, _ := ioutil.ReadFile("./cryptography/public.pem") // 获取 PEM 格式文件的二进制类型
+	fileByte, _ := os.ReadFile("./cryptography/public.pem") // 获取 PEM 格式文件的二进制类型
 	block, _ := pem.Decode(fileByte)
 	// 之前在编码时，使用了 x509 进行了编码，所以同样，需要使用 x509 解码以获得 *rsa.PublicKey 类型的公钥
 	rsaPublicKey, _ := x509.ParsePKCS1PublicKey(block.Bytes)
@@ -89,7 +88,7 @@ func (r *RsaKey) RsaPemEncrypt(plaintext []byte) []byte {
 // RsaPemDecrypt 使用 RSA 算法，解密指定密文，其中公钥是 PEM 编码后的格式
 func (r *RsaKey) RsaPemDecrypt(ciphertext []byte) []byte {
 	// 由于这次要通过 PEM 格式编码的公钥进行解密或签名，所以需要先解码 PEM 格式，再将解码后的数据转换为 *rsa.PrivateKey 类型
-	fileByte, _ := ioutil.ReadFile("./cryptography/private.pem") // 获取 PEM 格式文件的二进制类型
+	fileByte, _ := os.ReadFile("./cryptography/private.pem") // 获取 PEM 格式文件的二进制类型
 	block, _ := pem.Decode(fileByte)
 	// 之前在编码时，使用了 x509 进行了编码，所以同样，需要使用 x509 解码以获得 *rsa.PrivateKey 类型的公钥
 	rsaPrivateKey, _ := x509.ParsePKCS1PrivateKey(block.Bytes)
@@ -107,7 +106,7 @@ func (r *RsaKey) RsaPemSign(plaintext []byte) []byte {
 	// 只有小消息可以直接签名； 因此，对消息的哈希进行签名，而不能对消息本身进行签名。
 	// 这要求哈希函数必须具有抗冲突性。 SHA-256是编写本文时(2016年)应使用的最低强度的哈希函数。
 	hashed := sha256.Sum256(plaintext)
-	fileByte, _ := ioutil.ReadFile("./cryptography/private.pem")
+	fileByte, _ := os.ReadFile("./cryptography/private.pem")
 	block, _ := pem.Decode(fileByte)
 	rsaPrivateKey, _ := x509.ParsePKCS1PrivateKey(block.Bytes)
 	// 使用私钥签名，必须要将明文hash后才可以签名，当验证时，同样需要对明文进行hash运算。签名与验签并不用于加密消息或消息传递，仅仅作为验证传递消息方的真实性。
@@ -124,7 +123,7 @@ func (r *RsaKey) RsaPemSign(plaintext []byte) []byte {
 func (r *RsaKey) RsaPemVerify(plaintext []byte, signed []byte) bool {
 	// 与签名一样，只可以对 hash 后的消息进行验证。
 	hashed := sha256.Sum256(plaintext)
-	fileByte, _ := ioutil.ReadFile("./cryptography/public.pem")
+	fileByte, _ := os.ReadFile("./cryptography/public.pem")
 	block, _ := pem.Decode(fileByte)
 	rsaPublicKey, _ := x509.ParsePKCS1PublicKey(block.Bytes)
 	// 使用公钥、已签名的信息，验证签名的真实性
