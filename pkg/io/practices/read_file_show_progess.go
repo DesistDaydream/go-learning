@@ -18,7 +18,7 @@ func readFile() {
 	rateCh := make(chan int64)
 	defer close(rateCh)
 
-	file, err := os.Open("../../test_files/read_file_show_progess.jpg")
+	file, err := os.Open("../../../test_files/read_file_show_progess.jpg")
 	if err != nil {
 		fmt.Println(err.Error())
 		return
