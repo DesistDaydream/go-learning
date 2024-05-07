@@ -43,7 +43,7 @@ func IOReadDemo() {
 	useReader(file)
 
 	// HTTP 响应体本身就是 io.ReadCloser，实现了 io.Reader，顺带实现了 io.Closer
-	resp, _ := http.Get("http://member.bilibili.com/arcopen/fn/data/user/stat")
+	resp, _ := http.Get("https://example.com/")
 	useReader(resp.Body)
 
 	// net.Conn 实现了 io.Reader
