@@ -10,7 +10,7 @@ type NeedReflectStruct struct {
 	Age  int    `json:"age"`
 }
 
-func ReflectAndStruct() {
+func StructAndReflect() {
 	s := &NeedReflectStruct{
 		Name: "DesistDaydream",
 		Age:  10,
@@ -54,27 +54,38 @@ func ReflectAndStruct() {
 
 	// SetXXX() 方法可以让我们修改变量的值
 	// 这里我们通过 FieldByName() 找到名为 Name 的字段，然后使用 SetString() 修改 Name 字段的值
-	v.FieldByName("Name").SetString("新名字")
+	field := v.FieldByName("Name")
+	field.SetString("新名字")
 	fmt.Println(s)
-
 }
 
-func Reflect() {
-	var intVar int
-	// 获取一个变量的类型。返回 Type{} 接口，该接口有很多方法用以获取该变量“类型”的相关信息。
-	t := reflect.TypeOf(intVar)
-	// 获取一个变量的值。返回 Value{} 结构体，该结构体也有很多方法用以获取该变量“值”的相关信息。
-	v := reflect.ValueOf(intVar)
-	// 注意：t 与 v 下的方法并不适用于所有类型，比如 Field() 方法只作用于 Struct 类型，如果变量类型不是 Struct，调用该方法时将会 Panic
-	// ！！！但是由于反射的机制，在我们编写代码时，是无法知道将要调用方法的实例是什么类型，只有运行起来之后才会知道，这点要万分注意！！！
-	fmt.Println("类型: ", t)
-	fmt.Println("值: ", v)
-
-	// 如果执行如下代码，将会报错：panic: reflect: Field of non-struct type int
-	// t.Field(0)
+type NestingStruct struct {
+	Type              string
+	NeedReflectStruct NeedReflectStruct
 }
 
-func main() {
-	Reflect()
-	// ReflectAndStruct()
+// TODO: 添加结构体嵌套时，如何使用反射的示例。需要使用一种递归函数，递归处理 struct 中的 struct。
+func NestingStructAndReflect() {
+	a := NestingStruct{
+		Type: "person",
+		NeedReflectStruct: NeedReflectStruct{
+			Name: "DesistDaydream",
+			Age:  15,
+		},
+	}
+	recursion(reflect.ValueOf(&a).Elem())
+}
+
+// 递归函数，递归处理 struct 中的 struct
+func recursion(structData reflect.Value) {
+	structType := structData.Type()
+	for i := 0; i < structType.NumField(); i++ {
+		fieldType := structType.Field(i)
+		fieldValue := structData.Field(i)
+		if fieldType.Type.Kind() == reflect.Struct {
+			recursion(fieldValue)
+		} else {
+			fmt.Printf("字段名：%v，字段值：%v\n", fieldType.Name, fieldValue.Interface())
+		}
+	}
 }
