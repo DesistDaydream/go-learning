@@ -1,0 +1,9 @@
+{{- /* and */}}
+
+{{- /* print */}}
+{{- /* 与 fmt.Sprint 逻辑一样 */}}
+{{ print . }}
+
+{{- /* urlquery */}}
+{{- /* 将 urlquery 的参数进行 URL 编码 */}}
+{{ print "https://www.baidu.com/?" (urlquery "test=1&test2=2") }}
