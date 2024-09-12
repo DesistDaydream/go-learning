@@ -49,6 +49,9 @@ func Marshl() {
 }
 
 func main() {
-	Unmarshl()
+	// 编码和解码的对象是相对于原始字符串的 JSON 数据。所以
+	// 编码就是将其他数据编码成 JSON 数据
+	// 解码就是将 JSON 数据解码为其他数据
 	Marshl()
+	Unmarshl()
 }

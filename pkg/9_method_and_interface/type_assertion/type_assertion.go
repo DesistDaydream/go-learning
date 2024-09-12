@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"math"
 )
 
 type Square struct {
@@ -13,46 +12,39 @@ type Circle struct {
 	radius float32
 }
 
-func (sq *Square) Area() float32 {
-	return sq.side * sq.side
-}
-
-func (ci *Circle) Area() float32 {
-	return ci.radius * ci.radius * math.Pi
-}
-
-type Shaper interface {
-	Area() float32
-}
-
-func main() {
-	var areaIntf Shaper
-	sq1 := new(Square)
-	sq1.side = 5
-
-	areaIntf = sq1
-
-	// 类型Square是接口areaIntf的类型吗？
+// 类型断言
+// 类型断言用于从接口类型的变量，获取该变量实际的类型（也可以说是检查该变量的类型）
+// 类型断言的语法为：value, ok := element.(T)
+// 其中，value 是转换后的值，ok 是一个布尔值，表示是否转换成功；element 是接口类型的变量，T 是目标类型
+// 这个语法的意思是，如果 element 的类型是 T (e.g. string、int、etc.)，那么就返回 element 的值且返回值的类型为 T，也就是说 类型断言的语法为：value 的类型是 T
+func typeAssertion(areaIntf interface{}) {
+	// areaIntf 是 Square 类型吗？
+	// 由于 areaIntf 是一个 interface 类型，所以现在还不知道areaIntf 此时的具体类型
 	if t, ok := areaIntf.(*Square); ok {
-		fmt.Printf("The type of areaIntf is: %T\n", t)
+		fmt.Printf("areaIntf 的类型是: %T\n", t)
 	}
+	// areaIntf 是 Circle 类型吗？
 	if u, ok := areaIntf.(*Circle); ok {
-		fmt.Printf("The type of areaIntf is: %T\n", u)
+		fmt.Printf("areaIntf 的类型是: %T\n", u)
 	} else {
-		fmt.Println("areaIntf does not contain a variable of type Circle")
+		fmt.Println("areaIntf 不是 Circle 类型")
 	}
 
-/*
-	// 使用switch进行判断，type为关键字，判断接口变量的类型
+	// 类型开关
+	// 使用 switch 进行判断，type 为关键字，判断接口变量的类型
 	switch t := areaIntf.(type) {
 	case *Square:
-		fmt.Printf("Type Square %T with value %v\n", t, t)
+		fmt.Printf("Square 类型为: %T; 值为: %v\n", t, t)
 	case *Circle:
-		fmt.Printf("Type Circle %T with value %v\n", t, t)
-	case nil:
-		fmt.Printf("nil value: nothing to check?\n")
+		fmt.Printf("Circle 类型为: %T; 值为: %v\n", t, t)
 	default:
 		fmt.Printf("Unexpected type %T\n", t)
 	}
-*/
+}
+
+func main() {
+	sq1 := new(Square)
+	sq1.side = 5
+
+	typeAssertion(sq1)
 }

@@ -1,8 +1,8 @@
 package main
 
 import (
-	usbdevice "github.com/DesistDaydream/go-learning/cmd/usb_interface/usb_device"
-	usbinterface "github.com/DesistDaydream/go-learning/cmd/usb_interface/usb_interface"
+	usbdevice "github.com/DesistDaydream/go-learning/cmd/interface_best-practices/usb_device"
+	usbinterface "github.com/DesistDaydream/go-learning/cmd/interface_best-practices/usb_interface"
 )
 
 func main() {
