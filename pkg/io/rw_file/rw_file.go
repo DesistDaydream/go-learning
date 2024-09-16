@@ -9,6 +9,8 @@ import (
 	"log"
 	"os"
 	"reflect"
+
+	"github.com/DesistDaydream/go-learning/pkg/io/buffered_io"
 )
 
 var srcFile string = "./test_files/test.txt"
@@ -16,6 +18,7 @@ var srcFile string = "./test_files/test.txt"
 // var srcFile string = `F:\Documents\GitHub\Golang\testFile\test.txt`
 
 func main() {
+	var inputSource string = "./test_files/test.txt"
 	var action string
 	flag.StringVar(&action, "action", "", "")
 	flag.Parse()
@@ -23,12 +26,12 @@ func main() {
 	switch action {
 	case "readfile":
 		ReadFileWithByte()
-	case "readfile2":
-		ReadFileWithBufioReader()
-	case "readfile22":
-		ReadFileWithBufioScanner()
-	case "readfile3":
-		ReadFileConvertRowsAndColumns()
+	case "bufioSacnner":
+		file, _ := os.Open(inputSource)
+		buffered_io.BufioScanner(file)
+	case "bufioReader":
+		file, _ := os.Open(inputSource)
+		buffered_io.BufioReader(file)
 	case "readcompress":
 		ReadCompress()
 	case "writefilebuffer":
@@ -88,79 +91,9 @@ func ReadFileWithByte() {
 	fmt.Printf("比特计数为：%d\n文件内容为：\n%s", count, string(data))
 }
 
-// 利用 bufio.Reader 处理通过 os.Open 打开的文件内容
-func ReadFileWithBufioReader() {
-	// os.File 结构体实现了 io.Reader 接口，可以作为 bufio.NewReader() 函数的参数
-	// 注意，很多用于处理 I/O、读写文件 的函数一般都使用 io.Reader 和 io.Writer 接口作为参数，
-	// 所以 os.Open 实例化的 File 结构体可以当作很多用来处理 I/O 的函数的参数
-	fileDescriptor, err := os.Open(srcFile)
-	if err != nil {
-		log.Fatalln("文件不存在或出现问题")
-	}
-	defer fileDescriptor.Close()
-
-	// 使用读取器函数 NewReader() 通过 FD 把文件内容缓存到一个变量中
-	// https://golang.org/pkg/bufio/#NewReader
-	inputReader := bufio.NewReader(fileDescriptor)
-	// 使用 bufio 包中的 Readstring 方法作用在之前初始化的结构体变量上，输出换行符之前的内容，并用无限 for 循环逐行输出，直到最后一行
-	// https://golang.org/pkg/bufio/#Reader.ReadString
-	for {
-		inputString, readerError := inputReader.ReadString('\n')
-		if readerError == io.EOF {
-			return
-		}
-		fmt.Printf("The input was: %s", inputString)
-	}
-}
-
-// 利用 bufio.NewScanner 处理通过 os.Open 打开的文件内容
-func ReadFileWithBufioScanner() {
-	fileDescriptor, err := os.Open(srcFile)
-	if err != nil {
-		log.Fatalln("文件不存在或出现问题")
-	}
-	defer fileDescriptor.Close()
-
-	// 使用 FD 实例化一个 *bufio.Scanner，通过 Scanner 处理以 ScanLines 定义的分隔符的每部分内容
-	// ScanLines 默认是换行符，也就是说，通过 Scanner 的方法都是逐行处理文件内容的。
-	// 就像 Scanner 名字似的，扫描仪，扫描仪在扫描文件的时候，也是一行一行扫描的
-	scanner := bufio.NewScanner(fileDescriptor)
-	// 通过循环逐行处理文件
-	for scanner.Scan() {
-		// scanner.Text() 返回每行的字符数据
-		fmt.Printf("The input was: %s\n", scanner.Text())
-	}
-}
-
-// ReadFileConvertRowsAndColumns 函数用于行与列互相转换
-// 列的数量必须相同，否则切片变量为空
-func ReadFileConvertRowsAndColumns() {
-	fileDescriptor, err := os.Open(srcFile)
-	if err != nil {
-		panic(err)
-	}
-	defer fileDescriptor.Close()
-
-	var col1, col2, col3 []string
-	for {
-		var v1, v2, v3 string
-		_, err := fmt.Fscanln(fileDescriptor, &v1, &v2, &v3)
-		// scans until newline
-		if err != nil {
-			break
-		}
-		col1 = append(col1, v1)
-		col2 = append(col2, v2)
-		col3 = append(col3, v3)
-	}
-
-	fmt.Println(col1)
-	fmt.Println(col2)
-	fmt.Println(col3)
-}
-
+// 读取压缩文件
 func ReadCompress() {
-	fName := "MyFile.gz"
+	fName := "test_files/test.txt.gz"
 	var r *bufio.Reader
 	fi, err := os.Open(fName)
 	if err != nil {
@@ -178,16 +111,20 @@ func ReadCompress() {
 	for {
 		line, err := r.ReadString('\n')
 		if err != nil {
-			fmt.Println("Done reading file")
+			if err == io.EOF {
+				fmt.Println("文件读取完成")
+				break
+			}
+			fmt.Println("读取文件异常: ", err)
 			os.Exit(0)
 		}
 		fmt.Println(line)
 	}
 }
 
-// WriteFileBuffer 如果您经常将少量数据写入文件，则会降低程序的性能。每次写入都是一个代价高昂的系统调用，如果您不需要立即更新文件，最好将这些小写入归为一个。
-// 为此，我们可以使用bufio.Writer结构。它的写入函数不会直接将数据保存到文件中，
-// 而是一直保存到下面的缓冲区已满（默认大小为 4096 字节）或Flush()调用该方法。所以一定要Flush()在写入完成后调用，将剩余的数据保存到文件中。
+// 如果经常将少量数据写入文件，则会降低程序的性能。每次写入都是一个代价高昂的系统调用，如果不需要立即更新文件，最好将这些小写入归为一个。
+// 为此，我们可以使用 bufio.Writer 结构。它的写入函数不会直接将数据保存到文件中，
+// 而是一直保存到下面的缓冲区已满（默认大小为 4096 字节）或调用 Flush() 方法。所以一定要在写入完成后调用 Flush()，将剩余的数据保存到文件中。
 func WriteFileBuffer() {
 	var lines = []string{
 		"Go",

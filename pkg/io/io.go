@@ -9,6 +9,7 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"reflect"
 	"strings"
 	"time"
 
@@ -22,8 +23,8 @@ var inputSource string = "./test_files/test.txt"
 // 注意: 要想理解 io，一定要先理解 Go 中的 Interface 概念
 
 // io.Reader、io.Writer 是 io 包中的接口，用于处理 I/O 操作。
-// 所有实现了 io.Reader 接口的类型都可以作为输入源，例如文件、网络连接、etc.
-// 所有实现了 io.Writer 接口的类型都可以作为输出目标，例如文件、网络连接、etc.
+// 所有实现了 io.Reader 接口的类型都可以作为输入源，例如 打开的文件、建立的网络连接、etc.
+// 所有实现了 io.Writer 接口的类型都可以作为输出目标，例如 打开的文件、建立的网络连接、etc.
 // 很多方法方法和函数都会使用 io.Reader 或 io.Writer 作为参数的类型，以便执行读写逻辑，I/O 逻辑是非常基本操作，很多地方都会用到
 
 // I/O 示例
@@ -39,17 +40,18 @@ func IOReadDemo() {
 
 	// os.File 实现了 io.Reader
 	file, _ := os.Open("test_files/test.txt")
-	defer file.Close()
 	useReader(file)
+	file.Close()
 
 	// HTTP 响应体本身就是 io.ReadCloser，实现了 io.Reader，顺带实现了 io.Closer
 	resp, _ := http.Get("https://example.com/")
 	useReader(resp.Body)
 
 	// net.Conn 实现了 io.Reader
+	// 注意：这个示例会报错，必须有可以连接的 TCP 才可以
 	conn, _ := net.DialTimeout("tcp", "0.0.0.0:23", 2*time.Second)
-	defer conn.Close()
 	useReader(conn)
+	conn.Close()
 }
 
 // 这里是一个使用 io.Reader 的示例，**只要传递进来的输入源的类型实现了 io.Reader**，即可从输入源中读取出数据
@@ -58,6 +60,8 @@ func useReader(inputSource io.Reader) {
 	bufferSize := 1024
 	buf := make([]byte, bufferSize)
 	// var buf [20]byte // 也可以使用这种方式声明
+
+	fmt.Printf("检查 inputSource 类型: %v\n", reflect.TypeOf(inputSource))
 
 	// for 循环中，每次从 inputSource 中读取 bufferSize 大小的数据，并将其存储到 buf 中
 	// 假如 inputSource 有 120 bytes，但是缓冲器大小只有 100 bytes，那么输出结果就是 2 行，第一行是 100 bytes，第二行是 20 bytes
@@ -70,12 +74,13 @@ func useReader(inputSource io.Reader) {
 		// 注意: 但是网络连接通常没有 EOF，因为网络连接通常是持续的，会持续等待接受请求然后返回响应
 		// 所以若是 inputSource 是 net.Conn 类型，通常来说是不会有 ERROR 的，数据还没有发送完，也就不可能会有 EOF 相关的返回，该循环也不会退出
 		if err != nil {
-			if err != io.EOF {
-				log.Fatalf("读取错误：%v", err)
+			if err == io.EOF {
+				log.Println("全部读取完成")
+				break
 			}
-			break
+			log.Fatalf("读取错误：%v", err)
 		}
-		fmt.Printf("%q", string(buf[:n]))
+		fmt.Printf("从 inputSource 读取到的字符串: %q\n", string(buf[:n]))
 	}
 	fmt.Printf("\n")
 	// 如果想要逐行读取，这需要在 for 循环中逐个字节地读取 inputSource，并在遇到换行符时停止读取并处理当前行。
@@ -103,12 +108,12 @@ func useReaderLineByLine(inputSource io.Reader) {
 	for {
 		n, err := inputSource.Read(buf[:])
 		if err != nil {
-			if err != io.EOF {
-				log.Fatalf("读取错误：%v", err)
+			if err == io.EOF {
+				log.Println("全部读取完成")
+				break
 			}
-			break
+			log.Fatalf("读取错误：%v", err)
 		}
-
 		if n == 0 {
 			continue
 		}
@@ -130,14 +135,14 @@ func useReaderLineByLine(inputSource io.Reader) {
 }
 
 func main() {
-	demo := flag.String("demo", "io_demo", "使用哪个示例")
+	demo := flag.String("demo", "bufio", "使用哪个示例")
 	flag.Parse()
 
 	switch *demo {
-	case "io_demo":
+	case "io":
 		// 简单 I/O Read 示例
 		IOReadDemo()
-	case "bufio_demo":
+	case "bufio":
 		// bufio 库示例
 		file, err := os.Open(inputSource)
 		if err != nil {
