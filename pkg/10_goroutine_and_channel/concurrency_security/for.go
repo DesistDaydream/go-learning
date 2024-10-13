@@ -5,7 +5,7 @@ import (
 	"sync"
 )
 
-func main() {
+func forDemo() {
 	values := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 0}
 
 	var wg sync.WaitGroup

@@ -88,5 +88,7 @@ func sampleDemo() {
 	flags := FLAG_A | FLAG_B
 	fmt.Printf("Flags: %b\n", flags)
 
-	fmt.Printf("Flags: %b\n", 1<<12)
+	fmt.Printf("Flags: %b\n", 3)
+	fmt.Printf("Flags: %b\n", 3<<2)
+	fmt.Printf("Flags: %d\n", 3<<2)
 }

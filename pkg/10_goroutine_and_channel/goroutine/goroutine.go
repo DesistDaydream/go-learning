@@ -26,16 +26,13 @@ func hello(m string) {
 }
 
 func timeSleepGorourine() {
-	// 调用了 go hello() 之后，程序控制没有等待 hello 协程结束，
+	// 调用了 go hello() 之后，程序控制没有等待 hello 函数结束，
 	// 立即返回到了代码下一行，打印 main function。
 	// 接着由于没有其他可执行的代码，Go 主协程终止，
-	// 于是 hello 协程就没有机会运行了。
+	// 于是 hello 函数就没有机会运行了。
 	go hello("timesleep")
 
-	// 调用了 time 包里的函数 Sleep，该函数会休眠执行它的 Go 协程。
-	// 在这里，我们使 Go 主协程休眠了 1 秒。因此在主协程终止之前，
-	// 调用 go hello() 就有足够的时间来执行了。
-	// 该程序首先打印 Hello world goroutine，等待 1 秒钟之后，接着打印 main function。
+	// 为了避免避免程序无法运行 hello()，需要让程序等待一段时间。
 	time.Sleep(1 * time.Second)
 	// 也可以使用下面的方式让程序在手动按回车才结束。
 	// fmt.Scanln()
@@ -69,7 +66,19 @@ func maxGoroutine() {
 	wg.Wait()
 }
 
+// Go 协程的最基本示例，demo() 函数在运行时，其实并不会输出内容
+// 因为 Go 协程的效果是：使用 go 关键字调用 hello() 之后，程序并不会等待 hello 函数结束，
+// 而是立即开始执行后面的代码，接着由于没有其他可执行的代码，Go 主协程终止，
+// 于是有可能出现 hello 的逻辑还没有处理完，程序本身就自动退出了
+// 所以，使用在使用 Go 协程时，往往不能独立使用 go 关键字，而是要搭配其他机制，比如 WaitGroup、etc.
+func demo() {
+	go hello("demo")
+	fmt.Println("这里应该看不到 demo 的输出")
+}
+
 func main() {
+	// 一个独立的 Go 协程基本演示。Note: 这函数是错误的用法，仅仅展示协程的基本概念
+	demo()
 	// 通过睡眠，让 main() 等待协程完成
 	timeSleepGorourine()
 	// 通过 WaitGroup，让 main() 等待协程完成
