@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v3"
 )
 
 // Config   系统配置配置
@@ -43,7 +43,7 @@ func main() {
 	fmt.Println(setting.SiteNginx.Path)
 
 	// TODO: 如何让程序生成的文件中，字段的值可以带双引号？
-	setting.Name = "lichenhao"
+	setting.Name = "DesistDaydream"
 	yamlData, _ := yaml.Marshal(&setting)
 	os.WriteFile(filePath, yamlData, 0666)
 }

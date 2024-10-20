@@ -1,10 +1,10 @@
 name: DesistDaydream
 user:
-- name: LiChenHao
-  addr: TianJin
-- name: ZhangNa
-  addr: TianJin
+  - name: ZhangSan
+    addr: TianJin
+  - name: LiSi
+    addr: TianJin
 nginx:
   port: 443
-  logPath:  "/var/log//nginx/nginx.log"
+  logPath: "/var/log//nginx/nginx.log"
   path: "/opt/nginx/"

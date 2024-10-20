@@ -6,7 +6,7 @@ import (
 	"os"
 	"text/template"
 
-	"gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v3"
 )
 
 // User 用户信息
