@@ -87,3 +87,7 @@ func TestSliceDelete(t *testing.T) {
 func TestSliceDeleteSpecifiedEle(t *testing.T) {
 	SliceDeleteSpecifiedEle()
 }
+
+func TestSlicesDeleteElement(t *testing.T) {
+	SlicesDeleteElement()
+}

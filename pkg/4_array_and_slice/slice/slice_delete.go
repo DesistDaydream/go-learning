@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"slices"
+)
 
 // 切片的删除
 func SliceDelete() {
@@ -31,5 +34,20 @@ func SliceDeleteSpecifiedEle() {
 
 	newSlice := append(slice[:needDelEle], slice[needDelEle+1:]...)
 
+	fmt.Println(newSlice)
+}
+
+// 使用 1.21+ 版本之后新增的 Delete 方法删除元素
+func SlicesDeleteElement() {
+	slice := []string{"a", "b", "c", "d", "e", "f", "g"}
+	needDelEle := 2
+	fmt.Println(slice[:needDelEle], slice[needDelEle+1:])
+	// Delete() 方法会返回一个新的切片，原切片不会被修改
+	// Delete() 参数：
+	// 1. s：要删除元素的切片
+	// 2. i：要删除的元素的起始索引号（包含）
+	// 3. j：要删除的元素的结束索引号（不包含）
+	// i.e. 第 i 个元素会删除，第 j 个元素不会删除
+	newSlice := slices.Delete(slice, needDelEle, needDelEle+1)
 	fmt.Println(newSlice)
 }
