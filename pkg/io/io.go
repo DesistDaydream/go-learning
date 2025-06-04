@@ -71,8 +71,13 @@ func useReader(inputSource io.Reader) {
 		n, err := inputSource.Read(buf)
 		// fmt.Println("检查 Read 返回的错误: ", err)
 		// 文件或者纯文本的结尾一般都有 EOF，用以表示这段内容已经结束，当 err 中为 EOF 则表明这部分内容已经读取完毕，可以退出循环
-		// 注意: 但是网络连接通常没有 EOF，因为网络连接通常是持续的，会持续等待接受请求然后返回响应
-		// 所以若是 inputSource 是 net.Conn 类型，通常来说是不会有 ERROR 的，数据还没有发送完，也就不可能会有 EOF 相关的返回，该循环也不会退出
+		// 注意:
+		// 网络连接没有 EOF，因为网络连接通常会持续得等待连接中的数据到达（毕竟不知道数据是否发送完毕，除非是 HTTP 那种有明确结构得，或者对方直接关闭连接）。
+		// 所以若是 inputSource 是 net.Conn 类型，默认不会有 ERROR，毕竟数据还没有发送完并一直等待，也就不可能会有 EOF 相关的返回，该循环也不会退出
+		// net.Conn 如果想要想要知道数据是否已经读取完毕，需要自行使用 net.Conn.SetReadDeadline 设置读取超时的时间点，
+		// 若到达时间点后还是没有数据，则会返回超时的错误。此时读取到的 n 为 0。
+		// 从 Go 标准库 net/net.go 中可以看到 Error 接口只有一个 Timeout() 方法
+		// 其中有个 Temporary() 方法已经注释弃用，注释中提到了绝大多数所谓的临时错误都是超时导致的。所以想要判断一个 net.Conn 是否已经读取完毕，主要就是靠自己设定的超时错误。
 		if err != nil {
 			if err == io.EOF {
 				log.Println("全部读取完成")
