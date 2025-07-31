@@ -71,6 +71,21 @@ func mapToJSON() {
 	// 输出如下内容：{"password":"My@Password","username":"DesistDaydream"}
 }
 
+// 评估 map 是否可以正常获取值
+func evaluatesMap() {
+	data := map[string]string{
+		"username": "DesistDaydream",
+		"password": "My@Password",
+	}
+
+	// 评估 map 是否可以正常获取值
+	if val, ok := data["username"]; ok {
+		fmt.Println("map 中 key 为 username 的值为：", val)
+	} else {
+		fmt.Println("map 中 key 为 username 的值不存在")
+	}
+}
+
 func main() {
 	// map 声明
 	var mapType map[string]int

@@ -11,3 +11,7 @@ func Test_mapToJSON(t *testing.T) {
 func TestForRangeMap(t *testing.T) {
 	ForRangeMap()
 }
+
+func TestEvaluatesMap(t *testing.T) {
+	evaluatesMap()
+}
