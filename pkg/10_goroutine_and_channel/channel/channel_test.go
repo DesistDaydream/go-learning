@@ -49,17 +49,7 @@ func Test_channelBuffer(t *testing.T) {
 
 // 使用 range 关键字持续监听 Channel，并消费其对端生产的数据
 func Test_forChannel(t *testing.T) {
-	tests := []struct {
-		name string
-	}{
-		// TODO: Add test cases.
-		{name: "使用 range 关键字持续监听 Channel，并消费其对端生产的数据"},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			rangeChannel()
-		})
-	}
+	rangeChannel()
 }
 
 func Test_isOkChannel(t *testing.T) {
@@ -74,4 +64,8 @@ func Test_isOkChannel(t *testing.T) {
 			isOkChannel()
 		})
 	}
+}
+
+func TestChannelAndSwitch(t *testing.T) {
+	ChannelAndSwitch()
 }
