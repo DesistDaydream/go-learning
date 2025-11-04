@@ -59,6 +59,7 @@ func timeFormat() {
 	currentTime := time.Now()
 	// 在 time 包的 format.go 文件中，有很多官方提供的格式，这些格式都是字符串常量，我们可以直接调用。
 	fmt.Println("ANSIC : ", currentTime.Format(time.ANSIC))
+	fmt.Println("RFC3339 : ", currentTime.Format(time.RFC3339))
 	// 除了官方提供的格式，我们还可以自动定义时间格式。
 	// 自己定义时间格式时，只需要以 2006 年 1 月 2 日 15 点 04 分 05 秒为基准即可，这是 Go 语言诞生的时间
 	fmt.Println("当前时间  : ", currentTime)
