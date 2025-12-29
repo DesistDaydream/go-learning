@@ -5,7 +5,7 @@ go 1.22
 require (
 	github.com/jinzhu/copier v0.4.0
 	github.com/olekukonko/tablewriter v0.0.5
-	gopkg.in/yaml.v3 v3.0.1
+	go.yaml.in/yaml/v4 v4.0.0-rc.3
 	gorm.io/driver/sqlite v1.5.6
 	gorm.io/gorm v1.25.12
 )

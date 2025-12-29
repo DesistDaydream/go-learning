@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"gopkg.in/yaml.v3"
+	"go.yaml.in/yaml/v4"
 )
 
 // Config   系统配置配置
